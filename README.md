@@ -15,7 +15,7 @@
 
 ## 下载与使用
 
-发布的应用 ZIP 应从本仓库 Releases 获取。源代码 ZIP 需要自行构建，不是可直接打开的软件。
+从 [Releases 下载中文版应用 ZIP](https://github.com/inothing-cyber/MLX-LoRA-Studio-zh-CN/releases/latest)，解压后将应用放入“应用程序”。`Source code` 和 `source` ZIP 是源码，需要自行构建。
 
 支持 Apple Silicon / macOS 14 及以上。当前构建使用本地 ad-hoc 签名，**没有 Apple Developer ID 公证**；签名核对不等于已获得 Apple 公证。不要运行来源不明的重打包版本。
 
