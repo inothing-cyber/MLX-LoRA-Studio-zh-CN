@@ -38,11 +38,14 @@ python3 tools/review_candidate.py --source .cache/candidate --commit NEW_COMMIT_
 3. 审查候选清单后，更新 `source-baseline.json` 的官方 commit／文件哈希与 `string-candidates.json`。重新审定 TSV 选择器、补丁边界与最小必要的 native 显示辅助代码；不要全局替换用户数据或协议值。
 4. 用该版本官方应用重新生成 `original-app-manifest.json`，核对官方应用与源代码、内置训练器版本。更新 `reviewed-upstream.json` 的版本、commit、清单哈希和汉化修订。这些是维护者审查后提交的版本锁，检测脚本不会替你改写或批准。
 5. 执行 `localize.py catalog` 重新生成审定词条，再用 `prepare --output` 生成到全新目录。核对生成的 `Sources/MLXLoRAStudio`、`Backend`、`Tests`，再同步当前仓库源码。不要把生成目录里的官方发布工作流或构建脚本复制到本仓库工作流。
+6. 核对[译文来源与论文关系](TRANSLATION_SOURCES.md)，按新官方 commit 重新审查 `document_sources.py` 的指南区段和引用范围，更新书目后生成、检查来源索引。检测到原文位置仍存在不代表论文支持范围自动成立。
 
 ```sh
 python3 tools/localize.py catalog --source .cache/candidate
 python3 tools/localize.py prepare --source .cache/candidate --output .build/candidate-zh
 ```
+
+更新目录和源码并完成上述引用审查后，运行 `python3 tools/document_sources.py --write` 与 `--check`。来源工具按 `.cache/upstream` 中已审定的源码核对；先把审定源准备到该位置，不用未批准候选替换版本锁。
 
 版本锁是受版本控制的审查记录，不是外部签名认证；不能把“改了哈希后能构建”当成已经完成审查。首次迁移应在独立分支上进行，所有检查通过后再合入默认分支。
 

@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-21",
+  "checked_scope": "一手页面的标题、作者、首发年、摘要或官方章节与引用用途核对；不代表所有指南公式与后端实现已逐行证明等价。",
+  "papers": [
+    {
+      "id": "P01",
+      "topic": "LoRA",
+      "authors": "Hu 等",
+      "first_year": 2021,
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "role": "区分预训练权重、可训练低秩矩阵、rank 和 scale；专业标签保留原文。"
+    },
+    {
+      "id": "P02",
+      "topic": "QLoRA",
+      "authors": "Dettmers 等",
+      "first_year": 2023,
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "url": "https://arxiv.org/abs/2305.14314",
+      "role": "区分量化基础模型与训练 adapter；原论文中的 NF4、双重量化和分页优化器不能直接等同于本机所有 MLX 量化选项。"
+    },
+    {
+      "id": "P03",
+      "topic": "DoRA",
+      "authors": "Liu 等",
+      "first_year": 2024,
+      "title": "DoRA: Weight-Decomposed Low-Rank Adaptation",
+      "url": "https://arxiv.org/abs/2402.09353",
+      "role": "核对 magnitude 与 direction 的区别；不能将 DoRA 的结构和训练行为直接等同于 LoRA。"
+    },
+    {
+      "id": "P04",
+      "topic": "SFT / RLHF",
+      "authors": "Ouyang 等",
+      "first_year": 2022,
+      "title": "Training language models to follow instructions with human feedback",
+      "url": "https://arxiv.org/abs/2203.02155",
+      "role": "区分示范数据训练、偏好数据和奖励反馈。此文是相关流程依据，并非 SFT 概念的首创论文。"
+    },
+    {
+      "id": "P05",
+      "topic": "DPO",
+      "authors": "Rafailov 等",
+      "first_year": 2023,
+      "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+      "url": "https://arxiv.org/abs/2305.18290",
+      "role": "区分 policy model、frozen reference model、chosen response 和 rejected response。"
+    },
+    {
+      "id": "P06",
+      "topic": "CPO",
+      "authors": "Xu 等",
+      "first_year": 2024,
+      "title": "Contrastive Preference Optimization: Pushing the Boundaries of LLM Performance in Machine Translation",
+      "url": "https://arxiv.org/abs/2401.08417",
+      "role": "本应用中的 CPO 指 Contrastive Preference Optimization，避免误用同缩写的其他优化算法名称。"
+    },
+    {
+      "id": "P07",
+      "topic": "ORPO",
+      "authors": "Hong 等",
+      "first_year": 2024,
+      "title": "ORPO: Monolithic Preference Optimization without Reference Model",
+      "url": "https://arxiv.org/abs/2403.07691",
+      "role": "odds ratio 与 advantage 均保留原文并区分含义；保留其无需独立 reference model 的概念。"
+    },
+    {
+      "id": "P08",
+      "topic": "GRPO",
+      "authors": "Shao 等",
+      "first_year": 2024,
+      "title": "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models",
+      "url": "https://arxiv.org/abs/2402.03300",
+      "role": "区分采样组、组相对奖励和逐个 token 的指标。"
+    },
+    {
+      "id": "P09",
+      "topic": "PPO",
+      "authors": "Schulman 等",
+      "first_year": 2017,
+      "title": "Proximal Policy Optimization Algorithms",
+      "url": "https://arxiv.org/abs/1707.06347",
+      "role": "区分裁剪、概率比、策略更新和奖励。"
+    },
+    {
+      "id": "P10",
+      "topic": "XPO",
+      "authors": "Xie 等",
+      "first_year": 2024,
+      "title": "Exploratory Preference Optimization: Harnessing Implicit Q*-Approximation for Sample-Efficient RLHF",
+      "url": "https://arxiv.org/abs/2405.21046",
+      "role": "保留在线探索、探索奖励与普通 DPO 的区别；参数含义仍以本版本后端为准。"
+    },
+    {
+      "id": "P11",
+      "topic": "REINFORCE",
+      "authors": "Williams",
+      "first_year": 1992,
+      "title": "Simple statistical gradient-following algorithms for connectionist reinforcement learning",
+      "url": "https://doi.org/10.1007/BF00992696",
+      "role": "REINFORCE 是算法名，保持原文。"
+    },
+    {
+      "id": "P12",
+      "topic": "在线 DPO 的相关研究背景",
+      "authors": "Yuan 等",
+      "first_year": 2024,
+      "title": "Self-Rewarding Language Models",
+      "url": "https://arxiv.org/abs/2401.10020",
+      "role": "说明训练中生成样本、评审及迭代偏好学习；此文与本应用 Online DPO 不能简单视为同一实现。"
+    },
+    {
+      "id": "P13",
+      "topic": "FTPO",
+      "authors": "Paech 等",
+      "first_year": 2025,
+      "title": "Antislop: A Comprehensive Framework for Identifying and Eliminating Repetitive Patterns in Language Models",
+      "url": "https://arxiv.org/abs/2510.15061",
+      "role": "区分在指定上下文后的单个续接位置优化与整段回答偏好优化；应用的 Antidoom 数据格式必须按本机后端保留。"
+    },
+    {
+      "id": "P14",
+      "topic": "Dynamic Fine-Tuning / DFT",
+      "authors": "Wu 等",
+      "first_year": 2025,
+      "title": "On the Generalization of SFT: A Reinforcement Learning Perspective with Reward Rectification",
+      "url": "https://arxiv.org/abs/2508.05629",
+      "role": "DFT 是 SFT 目标函数选项之一，不能描述成通用动态 learning rate 策略。"
+    },
+    {
+      "id": "P15",
+      "topic": "GSPO",
+      "authors": "Zheng 等",
+      "first_year": 2025,
+      "title": "Group Sequence Policy Optimization",
+      "url": "https://arxiv.org/abs/2507.18071",
+      "role": "为指南中 sequence / token 级重要性比的区别提供术语依据，不因此给应用增加新算法选项。"
+    },
+    {
+      "id": "P16",
+      "topic": "Adam：保留名称",
+      "authors": "Kingma、Ba",
+      "first_year": 2014,
+      "title": "Adam: A Method for Stochastic Optimization",
+      "url": "https://arxiv.org/abs/1412.6980",
+      "role": "核对 Adam 的一阶与二阶矩、自适应更新等概念。2014 为预印本首发年，会议发表为 ICLR 2015。"
+    },
+    {
+      "id": "P17",
+      "topic": "AdamW",
+      "authors": "Loshchilov、Hutter",
+      "first_year": 2017,
+      "title": "Decoupled Weight Decay Regularization",
+      "url": "https://arxiv.org/abs/1711.05101",
+      "role": "核对 decoupled weight decay 与一般 L2 regularization 的区别。2017 为预印本首发年，会议发表为 ICLR 2019。"
+    },
+    {
+      "id": "P18",
+      "topic": "Quantization-Aware Training / QAT",
+      "authors": "Jacob 等",
+      "first_year": 2017,
+      "title": "Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference",
+      "url": "https://arxiv.org/abs/1712.05877",
+      "role": "为量化和训练过程的关系提供基础术语；此文不能当作本机所有 QAT hook 的逐行实现说明。"
+    }
+  ],
+  "documents": [
+    {
+      "id": "D01",
+      "topic": "Muon 作者技术说明",
+      "authors": "Keller Jordan",
+      "first_year": 2024,
+      "title": "Muon: An optimizer for hidden layers in neural networks",
+      "url": "https://kellerjordan.github.io/posts/muon/",
+      "role": "核对动量、矩阵正交化和 Newton–Schulz 迭代。属于作者技术博客，不能标为已发表论文；其中速度结果不构成本项目的性能保证。"
+    },
+    {
+      "id": "D02",
+      "topic": "Muon 作者实现",
+      "authors": "KellerJordan/Muon",
+      "first_year": null,
+      "title": "Muon implementation",
+      "url": "https://github.com/KellerJordan/Muon",
+      "role": "作者实现入口，作为算法说明补充；当前分支不代表本版 MLX 优化器逐行实现。"
+    },
+    {
+      "id": "D03",
+      "topic": "MLX 内存术语",
+      "authors": "Apple MLX",
+      "first_year": null,
+      "title": "Unified Memory",
+      "url": "https://ml-explore.github.io/mlx/build/html/usage/unified_memory.html",
+      "role": "用于理解 unified memory；“实时内存”是本项目对 Live memory 的显示译法，不宣称为 Apple 专门规定的术语。"
+    },
+    {
+      "id": "D04",
+      "topic": "MLX 执行术语",
+      "authors": "Apple MLX",
+      "first_year": null,
+      "title": "Lazy Evaluation",
+      "url": "https://ml-explore.github.io/mlx/build/html/usage/lazy_evaluation.html",
+      "role": "核对 lazy evaluation 的含义；文档网址可能随官方版本更新。"
+    },
+    {
+      "id": "D05",
+      "topic": "MLX-LM 实现入口",
+      "authors": "ml-explore",
+      "first_year": null,
+      "title": "MLX-LM official repository",
+      "url": "https://github.com/ml-explore/mlx-lm",
+      "role": "具体 LoRA scale 定义应以用户选择的 mlx-lm 版本源码为准；当前 HEAD 不是所有安装环境的版本锁。"
+    },
+    {
+      "id": "D06",
+      "topic": "训练器实现入口",
+      "authors": "Gökdeniz Gülmez",
+      "first_year": null,
+      "title": "mlx-lm-lora official repository",
+      "url": "https://github.com/Goekdeniz-Guelmez/mlx-lm-lora",
+      "role": "本版已核对内置训练器 3.1.2；链接为官方入口，不能把当前 HEAD 视作本版逐行实现。精确分发内容见本仓库原版应用清单。"
+    },
+    {
+      "id": "D07",
+      "topic": "Apple 本地化方法",
+      "authors": "Apple",
+      "first_year": 2023,
+      "title": "Discover String Catalogs",
+      "url": "https://developer.apple.com/videos/play/wwdc2023/10155/",
+      "role": "SwiftUI/Xcode 本地化方法参考，不提供本项目中文译文，也不表示本项目采用 .xcstrings 或获得 Apple 认证。"
+    },
+    {
+      "id": "D08",
+      "topic": "Apple 本地化方法",
+      "authors": "Apple",
+      "first_year": 2025,
+      "title": "Code-along: Explore localization with Xcode",
+      "url": "https://developer.apple.com/videos/play/wwdc2025/225/",
+      "role": "本地化边界和界面验收方法参考；不作为算法、中文术语或性能结论来源。"
+    },
+    {
+      "id": "D09",
+      "topic": "MXFP4 格式",
+      "authors": "Open Compute Project",
+      "first_year": 2023,
+      "title": "OCP Microscaling Formats (MX) Specification, Version 1.0",
+      "url": "https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf",
+      "role": "见 5.2–5.4 节（10–14 页），核对具体 MX 格式、block size 与 E8M0 scale；不能把 MXFP4 等同于普通对称整数 4-bit。"
+    }
+  ]
+}

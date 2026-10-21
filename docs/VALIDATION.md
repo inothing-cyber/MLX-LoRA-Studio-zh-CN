@@ -10,10 +10,12 @@
 python3 -B tools/check_public.py
 python3 -B -m unittest discover -s tool_tests -v
 python3 -B tools/localize.py verify --source .cache/upstream
+python3 -B tools/document_sources.py --check
 python3 -B tools/validate.py --source .cache/upstream --python /path/to/python
 ```
 
 - 重新生成的中文源码应与提交的源码逐字节一致，Backend 源码与官方版本一致。
+- [译文来源索引](translation_sources/README.md)核对 971 处资源与原文／译文位置、参考编号和生成文档一致；引用用于概念核对，不等同于所有说明得到论文证明。
 - 原版／中文版 170 组训练配置相同；13 项显示合同、13 项数值编辑合同。
 - 官方 11 项 Swift 测试及 9 项 Python 测试；5 项指标读数测试含 13 个参数化用例。
 - 维护工具检查稳定版本识别、同名标签变动、旧版本不降级、归档越界／链接／重复条目、隐私检查与原版应用内容变动拒绝。工具不绕过 TLS 证书或主机名校验。

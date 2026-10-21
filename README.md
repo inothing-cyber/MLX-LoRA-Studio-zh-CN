@@ -13,6 +13,10 @@
 
 训练后端、模型权重、Python 环境与训练配置不会因汉化而更新。971 是审定的显示资源出现次数，不是翻译覆盖率百分比。
 
+## 译文与论文出处
+
+界面与指南直接依据官方 v2.0.3 英文源码翻译，中文表述由本项目 AI 辅助翻译、整理。参见[译文来源说明](docs/TRANSLATION_SOURCES.md)、[逐条原文与译文索引](docs/translation_sources/README.md)以及[18 篇论文与 9 项其他一手资料](docs/REFERENCES.md)。论文用于核对算法和术语；参数、字段、默认值及应用行为以对应版本实现为准。新增提示和必要澄清在来源说明中单独标明。
+
 ## 下载与使用
 
 从 [Releases 下载中文版应用 ZIP](https://github.com/inothing-cyber/MLX-LoRA-Studio-zh-CN/releases/latest)，解压后将应用放入“应用程序”。`Source code` 和 `source` ZIP 是源码，需要自行构建。

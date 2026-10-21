@@ -30,6 +30,8 @@ jobs:
         run: python3 -B tools/upstream.py fetch --output .cache/upstream
       - name: 核对中文源码可重现与后端不变
         run: python3 -B tools/localize.py verify --source .cache/upstream
+      - name: 核对译文出处、引用编号与文档对应
+        run: python3 -B tools/document_sources.py --check
 
   swift:
     runs-on: macos-15
