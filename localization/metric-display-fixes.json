@@ -1,0 +1,30 @@
+[
+  {
+    "file": "Sources/MLXLoRAStudio/Services/PythonJobRunner.swift",
+    "count": 1,
+    "reason": "Bound throughput values to the same field in either unit order.",
+    "before": "firstDouble(afterAnyOf: [\"it/s\", \"iterations/s\", \"it /s\"], in: lower)",
+    "after": "StudioMetricReadings.throughput(.iterations, in: lower)"
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Services/PythonJobRunner.swift",
+    "count": 1,
+    "reason": "Do not read the following memory value as tokens/s.",
+    "before": "firstDouble(afterAnyOf: [\"tok/s\", \"tokens/s\", \"tok /s\"], in: lower)",
+    "after": "StudioMetricReadings.throughput(.tokens, in: lower)"
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Services/PythonJobRunner.swift",
+    "count": 1,
+    "reason": "Preserve exact structured throughput when a rounded text report arrives at the same step.",
+    "before": "metrics[lastIndex] = TrainingMetric(\n                        step: existing.step,\n                        values: merged,\n                        rawLine: existing.rawLine + \"\\n\" + metric.rawLine\n                    )",
+    "after": "metrics[lastIndex] = StudioMetricReadings.correctedForDisplay(TrainingMetric(\n                        step: existing.step,\n                        values: merged,\n                        rawLine: existing.rawLine + \"\\n\" + metric.rawLine\n                    ))"
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Services/RunArchive.swift",
+    "count": 1,
+    "reason": "Correct historical UI readings in memory only; do not rewrite archive files.",
+    "before": "let metrics = TrainingMetricIO.read(from: metricsURL)",
+    "after": "let metrics = TrainingMetricIO.read(from: metricsURL).map(StudioMetricReadings.correctedForDisplay)"
+  }
+]

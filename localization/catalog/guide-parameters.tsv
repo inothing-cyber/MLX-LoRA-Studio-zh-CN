@@ -1,0 +1,87 @@
+AlgorithmGuideView.swift:539	Base model 的 Hugging Face id 或本地路径。加载时采用所选 quantisation，并配置 LoRA/DoRA/full-finetune adapters。
+AlgorithmGuideView.swift:541	HF dataset id、本地目录或 JSONL。Trainer 的 `create_dataset` 会根据 `train_mode` 选择列名；对于内置默认 dataset，此过程自动完成。
+AlgorithmGuideView.swift:543	可选 `lora`、`dora` 或 `full`。LoRA 为 attention/MLP projections 添加 low-rank adapters；DoRA 将 weight 分解为 magnitude 和 direction updates；`full` 对全部 parameter 进行 fine-tuning。
+AlgorithmGuideView.swift:545	LoRA adapters 的内部 rank。更高的 rank 意味着更大容量和更多 parameters。笔记本上常用 4–16；32+ 需要仔细规划 memory。
+AlgorithmGuideView.swift:547	原版指南采用论文约定描述 scaling factor：`(α/r) · B·A`。本机 mlx-lm 0.32.2 的 LoRA 层实际直接以 `scale` 乘以更新量；此处 `scale` 保持原值，不应再除以 `rank`。这是文档约定的区别，计算实现未改变。
+AlgorithmGuideView.swift:549	LoRA 分支中的 Dropout。通常只在 dataset 很小，或 validation curve 出现 overfitting 时，才有必要设为大于 0。
+AlgorithmGuideView.swift:551	为多少个 transformer layers 添加 LoRA adapters，从顶部开始计数。较小 model 可使用全部 layers；较大 model 可仅使用最后 N 个。
+AlgorithmGuideView.swift:553	每个 device 的 minibatch size。实际 batch size 为 `batch_size · gradient_accumulation_steps`。
+AlgorithmGuideView.swift:555	在执行一次 optimiser step 前累积的 micro-batches 数量。Memory 紧张时，可增加此值模拟更大的 effective batch。
+AlgorithmGuideView.swift:557	采用固定 iterations，或完整遍历 dataset 的次数。设置 `epochs > 0` 会将 runner 切换为按 epoch 计数的训练。
+AlgorithmGuideView.swift:559	Peak learning rate。LoRA 常用范围为 1e-5 至 5e-5；full fine-tuning 通常采用 1e-6 至 5e-6。
+AlgorithmGuideView.swift:561	每 N 个 optimiser steps 输出一行 loss/reward，同时驱动实时 metrics 更新。
+AlgorithmGuideView.swift:563	每 N 个优化器 steps 执行一次验证。必须为正整数；当前运行器不接受 -1。
+AlgorithmGuideView.swift:565	每次评估使用的验证小批次数量。必须为非负整数；当前运行器不支持用 -1 表示整个验证集。
+AlgorithmGuideView.swift:567	每隔多少个 optimiser steps，将 adapter weights 保存为 `<adapter_path>/<iter>_adapters.safetensors` checkpoint。
+AlgorithmGuideView.swift:569	每条示例 token length 的硬性上限。超过上限的示例会被截断；此值影响 KV-cache 的 memory 预算。
+AlgorithmGuideView.swift:571	将每个 transformer layer 的 forward 改为使用 `mx.checkpoint`。Activation memory 大致减半，代价是每层额外执行一次 recompute。
+AlgorithmGuideView.swift:573	将长 sequences 切分为 `seq_step_size` chunks，并在其间复用 KV-cache。当 `max_seq_length` 较大且出现 OOM 时可启用。
+AlgorithmGuideView.swift:575	`efficient_long_context` 使用的 chunk size。256–1024 是常见范围；更小的值占用更少 memory，但需要更多 recompute。
+AlgorithmGuideView.swift:577	为 true 时，仅在示例的 completion 部分计算 loss，prompt 被 mask。SFT 和 DPO 内部强制采用此行为；该 flag 用于自定义 dataset。
+AlgorithmGuideView.swift:579	训练后将 LoRA weights 合并回 base model，并保存独立 checkpoint。关闭时将 adapter 文件分开保留。
+AlgorithmGuideView.swift:581	填写后，会在 LM Studio models 目录下使用该名称写入 merged model，作为 `adapter_path` 输出的补充或替代。
+AlgorithmGuideView.swift:583	此前保存的 `adapters.safetensors` 路径，用于 warm-start。适合继续长时间运行，或构建先 SFT 后 DPO 的 pipeline。
+AlgorithmGuideView.swift:585	`numpy` 和 `mlx.core` 的 Seed。固定此值有助于复现运行；但不同 driver 版本的 MLX GPU kernels 不保证 bit-exact。
+AlgorithmGuideView.swift:587	加载 base model 时使用的 Quantisation。`4-bit` 和 `MXFP4` 最激进；8-bit 是 preference training 较稳妥的默认选择。
+AlgorithmGuideView.swift:589	在首次 optimiser step 后（可配置）为每个 `nn.Linear` 安装 symmetric fake-quantise hook。Gradients 通过 straight-through estimator 传播，使 model 在训练时模拟 inference quantisation。
+AlgorithmGuideView.swift:591	依次为 bit-width、group size（0 表示 per-tensor）、首次启用的 optimiser step，以及重新 projection 的间隔。默认值对应 MLX 的 affine quantiser scheme。
+AlgorithmGuideView.swift:593	当 `test` 为 true 时，runner 在训练结束后评估留出的 test split，并将结果写入运行记录。
+AlgorithmGuideView.swift:603	覆盖 `(prompt, completion)` schema 的列名。留空时使用 trainer 默认值。
+AlgorithmGuideView.swift:605	覆盖 chat-template `messages` schema 的列名，适用于包含 multi-turn conversations 的 dataset。
+AlgorithmGuideView.swift:607	覆盖 raw-pretraining `text` schema 的列名。
+AlgorithmGuideView.swift:613	DPO sigmoid 中的 Temperature。较低时更新更温和，较高时偏离 reference 的力度更大。
+AlgorithmGuideView.swift:615	Loss 变体：`sigmoid`（普通 DPO）、`hinge`（margin loss）、`ipo`（围绕 `1/(2β)` 的 squared error）、`dpop`（带 reference-drift penalty 的 DPO）。
+AlgorithmGuideView.swift:617	`dpop` reference-drift penalty 的系数。仅在 `dpo_cpo_loss_type = dpop` 时使用。
+AlgorithmGuideView.swift:619	冻结 reference model 的路径或 HF id。留空时，trainer 创建 base model 的第二份副本，因此 GPU memory 占用增加。
+AlgorithmGuideView.swift:621	覆盖 preference schema 的列名。
+AlgorithmGuideView.swift:626#2	对 chosen 和 rejected 的 target logits 过度漂移施加的 penalty。
+AlgorithmGuideView.swift:627#2	触发 target MSE penalty 前允许的 target-logit 绝对漂移幅度。
+AlgorithmGuideView.swift:628#2	使全部 non-target vocabulary logits 保持接近 reference 的 penalty。
+AlgorithmGuideView.swift:629#2	Logit 空间中的 preference margin 和 clipping threshold，必须为正。
+AlgorithmGuideView.swift:630#2	冻结的 reference model；留空时使用 base model 的冻结副本。
+AlgorithmGuideView.swift:636	CPO sigmoid 中的 Temperature。
+AlgorithmGuideView.swift:638	Loss 变体。CPO 支持与 DPO 相同的四个选项；此处 `dpop` 表示 policy-side drift penalty。
+AlgorithmGuideView.swift:640	CPO drift penalty 的系数。仅在 `loss_type = dpop` 时使用。
+AlgorithmGuideView.swift:642	覆盖列名。CPO 的 dataset 格式与 DPO 相同，不需要单独的 `prompt` 列。
+AlgorithmGuideView.swift:648	ORPO log-odds 项的乘数。
+AlgorithmGuideView.swift:650	为未来变体保留；当前 ORPO loss 不将它作为独立乘数使用。
+AlgorithmGuideView.swift:652	覆盖列名。ORPO trainer 需要 `chosen`、`rejected`，并可选用 `preference_score`。
+AlgorithmGuideView.swift:658	每个 prompt 采样的 completions 数量。更高时 advantage estimates 的 variance 更低，但每个 step 的计算量更大。
+AlgorithmGuideView.swift:660	相对于 reference model 的 KL penalty 系数。设为 0 时完全禁用 KL。
+AlgorithmGuideView.swift:662	非对称 PPO clip range（`epsilon_low`、`epsilon_high`）。`epsilon_high` 留空时，两侧均采用 `epsilon`，即经典 PPO。
+AlgorithmGuideView.swift:664	每个 completion 最多采样的 tokens 数量，影响每个 step 的耗时预算。
+AlgorithmGuideView.swift:666	训练循环内 generation 的 Sampler 设置。`temperature=0` 无效；提高此值可增加多样性，降低则更接近确定性的 completions。
+AlgorithmGuideView.swift:668	要使用的 reward function names，以逗号分隔。留空时加载默认 DeepSeek-R1 系列：`r1_accuracy`、`r1_int`、`r1_strict_format`、`r1_soft_format`、`r1_count_xml`。
+AlgorithmGuideView.swift:670	自定义奖励函数的 Python 文件路径。文件应通过 `@register_reward_function()` 注册函数，并在 `reward_functions` 中填写注册名称；`load_reward_functions_from_file` 会导入该文件。
+AlgorithmGuideView.swift:672	与 reward function 列表对应的 weights，以逗号分隔。留空时全部 weights 均为 1.0。
+AlgorithmGuideView.swift:674	可选 `token`（默认）、`sequence` 或留空。`sequence` 按每个 sequence 对 log-ratio 求平均；GSPO 论文建议用它改善稳定性。
+AlgorithmGuideView.swift:676	可选 `grpo`（对全部 tokens 求 mean）、`bnpo`（按实际 token count 归一化）或 `dr_grpo`（除以 `batch_size · max_tokens`）。
+AlgorithmGuideView.swift:678	Reference model 的路径或 HF id，用于 KL，以及 `importance_sampling_level != none` 时的 importance ratio。
+AlgorithmGuideView.swift:686	Loss 变体，与 DPO 的四个选项相同。
+AlgorithmGuideView.swift:688	`dpop` loss 的 drift-penalty 系数。
+AlgorithmGuideView.swift:690	Judge LLM 的 Hugging Face id / 本地路径，或原文字串 `human`。使用 `human` 时，runner 会暂停，请你标注每个 pair。
+AlgorithmGuideView.swift:692	发给 LLM judge 的 System prompt，应作为评判标准。简短、具体、明确通常效果最好。
+AlgorithmGuideView.swift:694	训练循环内 generation 时，每个 completion 最多采样的 tokens 数量。
+AlgorithmGuideView.swift:696	Policy 的 Sampling temperature。较低时两个 completions 更相似，judge 面临的比较也更困难。
+AlgorithmGuideView.swift:698	冻结 reference model 的路径或 HF id。留空时使用 base model 的第二份副本。
+AlgorithmGuideView.swift:706	Exploration-bonus 系数。单个 float 表示固定值；列表（如 `[1e-4, 1e-5, 1e-6]`）可提供按 epoch 随训练衰减的 schedule。
+AlgorithmGuideView.swift:708	基础 DPO loss 的变体。
+AlgorithmGuideView.swift:710	`dpop` 的 drift-penalty 系数。
+AlgorithmGuideView.swift:712	用于 pairwise judge 的 LLM 或 `human`。
+AlgorithmGuideView.swift:714	Judge 使用的评判标准 system prompt。
+AlgorithmGuideView.swift:716	采样 completion 的最大 length。
+AlgorithmGuideView.swift:718	Policy 的 Sampling temperature。
+AlgorithmGuideView.swift:720	冻结 reference model 的路径或 HF id。
+AlgorithmGuideView.swift:726	Per-token advantage（`A = R − β · KL`）中 KL 项的系数。设为 0 时禁用 KL regularisation。
+AlgorithmGuideView.swift:728	产生 scalar reward 的 LLM judge。Judge 只加载一次，每个 (prompt, completion pair) 调用一次。
+AlgorithmGuideView.swift:730	每个 completion 最多采样的 tokens 数量。RLHF-REINFORCE 对 variance 敏感，因此较短的 completions 通常更有帮助。
+AlgorithmGuideView.swift:732	用于计算 per-token KL 的冻结 reference model。留空时使用 base model 的第二份副本。
+AlgorithmGuideView.swift:738	加在 clipped surrogate 之外的 KL regulariser weight。
+AlgorithmGuideView.swift:740	Importance ratio 的 PPO clip range。使用经典值起步；降低此值可使更新更保守。
+AlgorithmGuideView.swift:742	Loss 变体。Chosen/rejected 的划分相同，只改变内部 objective；runner 会原样传递该选项。
+AlgorithmGuideView.swift:744	`dpop` 的 drift-penalty 系数。
+AlgorithmGuideView.swift:746	Pairwise judge，可用 LLM 或 `human`。
+AlgorithmGuideView.swift:748	Judge 使用的评判标准 system prompt。
+AlgorithmGuideView.swift:750	采样 completion 的最大 length。
+AlgorithmGuideView.swift:752	Policy completions 的 Sampling temperature。
+AlgorithmGuideView.swift:754	用于 importance ratio 的冻结 reference model。

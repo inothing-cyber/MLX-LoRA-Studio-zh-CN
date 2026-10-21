@@ -1,0 +1,52 @@
+AlgorithmGuideView.swift:764	SFT 支持三种格式，优先级依次为：\n\n1. **chat messages**：由包含 `"role"`、`"content"` 的 dict 组成的 `messages` 列表，可带可选的 `system` 字段。Trainer 会应用 tokenizer 的 chat template。\n2. **prompt / completion**：明确的 `(prompt, completion)` 字符串；当 `mask_prompt = true` 时，prompt 不计入 loss。\n3. **text**：单个 `text` 字符串，用于原始 next-token pretraining 风格的 fine-tuning。\n\nSFT 的内置默认 dataset 是 `mlx-community/JOSIE-v2-Instruct-5K`，包含 5K 行 messages 格式的 instruction-tuning 数据。
+AlgorithmGuideView.swift:774	DPO 需要每行对应一个 preference 的 dataset，至少包含 `chosen` 和 `rejected`。`prompt` 列可选但建议提供；若存在，会在 tokenisation 前添加到两个 completions 的开头。\n\n内置默认值为 `mlx-community/Human-Like-DPO`，采用 prompt/chosen/rejected 格式。
+AlgorithmGuideView.swift:780	FTPO 接受 Hugging Face dataset repo 或本地 Antidoom JSONL 文件：`train.jsonl`，以及可选的 `valid.jsonl` 和 `test.jsonl`。每行必须包含 `context_with_chat_template`、`rejected_decoded` 和 `multi_chosen_decoded`。最后一个字段包含一个或多个可接受的 next-token continuations。
+AlgorithmGuideView.swift:784	与 DPO 相同：每个 preference 一行，包含 `chosen` 和 `rejected`。CPO 不使用 `prompt` 列。
+AlgorithmGuideView.swift:788	ORPO 需要 `chosen` 和 `rejected`，且**不需要** `prompt` 列。Chosen 与 rejected 字符串会原样使用，由 model 自行学习 prompt–completion 的边界。可选的 `preference_score`（float）列用于缩放每条示例的 gradient。\n\n内置默认值为 `mlx-community/Josiefied-Qwen3-dpo-v1-flat`，是展平后的 DPO dataset。
+AlgorithmGuideView.swift:794	GRPO 至少需要 `prompt` 字段；使用默认 `r1_*` reward functions 时还需要 `answer` 字段。Trainer 为每行生成的 4-tuple 是 `(prompt_tokens, answer_tokens, prompt_text, answer_text)`；可选的第 5 个元素是 `type`，用于按类别切换 reward functions。\n\n内置默认值为 reasoning dataset `mlx-community/Dolci-Think-RL-7B-2k`。
+AlgorithmGuideView.swift:800	这些 online loops 在训练时只需要 `prompt` 字段。Completions 由 policy 自身采样，(chosen, rejected) pair 或 scalar reward 来自 judge，而非 dataset。\n\n内置默认值为 `mlx-community/Human-Like-DPO`，因为它体积较小且带有标准 prompt 列。
+AlgorithmGuideView.swift:813	**通常应当首先进行。** SFT 建立 model 的基本行为，包括语气、格式、拒绝方式和领域知识。本列表中的其他算法一般假设你已有大致适合任务的 SFT checkpoint，并在其上进一步 fine-tune alignment。\n\n常用起始值：`lr=1e-5`、`batch_size=1`、`grad_accum=8`、`iters=1000`、`rank=8`、`scale=20.0`。
+AlgorithmGuideView.swift:819	适合在 SFT 后、已有静态 preference dataset（如 UltraFeedback、HelpSteer、Anthropic HH）时使用。原指南将 DPO 描述为计算开销较低的 preference 算法：每个 completion 在 policy 上一次 forward pass，在 reference 上一次 forward pass。\n\n标签有噪声或相互矛盾时可用 `loss_type=ipo`；若 policy 出现 SFT loss 未能约束的 reference 漂移，可用 `loss_type=dpop`。
+AlgorithmGuideView.swift:825	当 reasoning model 反复进入已知的不良 continuation loops，且已有 Antidoom 数据行标明 rejected 分支和可接受替代项时，可使用 FTPO 定向修复。它不能替代广泛的 SFT 或 DPO alignment。
+AlgorithmGuideView.swift:829	适用场景与 DPO 类似，但尤其适合 GPU 放不下第二个 reference model，或希望更新更激进的情况。通常应搭配比 DPO 略小的 `beta`。
+AlgorithmGuideView.swift:833	希望用单阶段方案替代“先 SFT 后 DPO”时使用。ORPO 在小型 chat models 上已有良好效果，也适合带每条示例 preference score 的 dataset，例如 UltraFeedback 风格的 `score_chosen - score_rejected`。
+AlgorithmGuideView.swift:837	适用于拥有*可验证* reward（数学正确性、代码执行、格式合规等），而非标注 preference dataset 的情况。GRPO 是近期 reasoning models（DeepSeek-R1、Qwen3-Instruct reasoning mode）使用的重要方法。其 completions 可能与 SFT 输出明显不同，这正是训练目的。
+AlgorithmGuideView.swift:841	适用于有较强 LLM judge 或人类参与评审，并能持续从基础 prompt distribution 采样的情况。Online DPO 可避免静态 DPO 的 off-policy gap，适合同一 model 的迭代改进。
+AlgorithmGuideView.swift:845	当 online DPO 向 reference completion 收缩，而你希望引入可控探索时使用。可先尝试 `alpha=1e-4`，再保持固定或随 epochs 逐步降低。
+AlgorithmGuideView.swift:849	适合教学或简化版 RLHF。使用现代 LLM judge 时，REINFORCE 在较短 completions 上可与 PPO 竞争，且更容易调试。它对 judge 质量和 learning rate 也很敏感，可从 `lr=5e-6`、`beta=0.05` 开始。
+AlgorithmGuideView.swift:853	PPO 是经典、表达能力强、也需要细调的方法。其他 loops 在 judge 能可靠衡量的 metric 上表现不足，且你有时间共同调整 `epsilon` 和 `beta` 时，可考虑使用。始终记录 `clip_fraction`：若持续为 0%，policy 可能没有变化；若持续 >30%，则每个 step 的变化可能过大。
+AlgorithmGuideView.swift:879	先用内置默认 dataset 运行少量 iters，通常应在 100 steps 内看到 `loss` 下降。若没有，可能是 dataset 列名不符合 SFT 要求，此时 trainer 会报 `Unsupported data format`。
+AlgorithmGuideView.swift:880	出现 OOM 时，先启用 `grad_checkpoint`，再降低 `max_seq_length`，然后尝试 `efficient_long_context`，并将 `seq_step_size` 设为 256。
+AlgorithmGuideView.swift:881	计划为 LM Studio 发布 4-bit 或 8-bit adapter 时，QAT 最有用。开发阶段可先关闭，因为它会增加明显的 per-step 开销。
+AlgorithmGuideView.swift:882	Trainer 中 SFT 的默认行为是 `mask_prompt=true`；提供此 flag 是为了支持混合 masked 与 unmasked 数据行的自定义 dataset。
+AlgorithmGuideView.swift:886	可将 `reference_model_path` 设为 SFT checkpoint，而非原始 base model，使 implicit reward 反映 `Δ log-prob vs the SFT model`，与标签所描述的相对偏好对应。
+AlgorithmGuideView.swift:887	观察实时 metrics 中的 `accuracies` 和 `margins`。`accuracies > 0.7` 且 `margins > 0` 表示 loss 正在产生效果；若 `margins` 进入平台期，可略微提高 `beta`。
+AlgorithmGuideView.swift:888	出现 NaNs 时，常见原因是在当前 `lr` 下使用 `loss_type=dpop` 且 `delta` 过大，可先将 `delta` 降至 10。
+AlgorithmGuideView.swift:889	这里也支持 `efficient_long_context`。回答较长的 preference dataset（例如完整文档 diffs）可受益于分块 forward passes。
+AlgorithmGuideView.swift:893	长时间运行前先核对 Antidoom 字段名；FTPO 不接受普通 DPO chosen/rejected 数据行。
+AlgorithmGuideView.swift:894	从上游默认值和较小 learning rate 开始，MSE 项旨在限制修复影响的范围。
+AlgorithmGuideView.swift:895	保持 `clip_epsilon_logits` 为正。值较低时，chosen token 达到较小 margin 后就会停止更新。
+AlgorithmGuideView.swift:896	除非有意采用其他锚点，否则冻结 reference 应使用与 Antidoom 生成目标相同的 checkpoint。
+AlgorithmGuideView.swift:900	使用比 DPO 更小的 `beta`，可从 0.05 开始。没有 reference 项时 gradient 缺少锚点，较大的 `beta` 容易更新过度。
+AlgorithmGuideView.swift:901	原指南认为 CPO 适合无法容纳 base model 第二份副本的 integrated Apple Silicon GPU 场景；具体 reference 需求以所选算法和本机后端实现为准。
+AlgorithmGuideView.swift:902	若 validation reward 很早进入平台期，可切换到 `dpop` loss 并添加 `delta` 以限制漂移。
+AlgorithmGuideView.swift:906	确认 dataset 中没有 `prompt` 列。如果提供它，ORPO 可能将 prompt 拼接到 chosen/rejected 中，这通常不是预期行为。
+AlgorithmGuideView.swift:907	训练前应将 `preference_score` 大致归一化到 0..1；分数过大会将 loss 推入 `log_sigmoid` 的饱和区域。
+AlgorithmGuideView.swift:908	ORPO 不需要独立的 SFT warm-up，同一 loss 也会改善 NLL。若原计划为“先 SFT 后 DPO”，可使用这一单阶段方案。
+AlgorithmGuideView.swift:912	可从默认 DeepSeek-R1 reward 系列开始。它们面向 `<reasoning>...</reasoning><answer>...</answer>` 格式的 completions；数据不符合此结构时，应编写自定义 reward function。
+AlgorithmGuideView.swift:913	常见失败情况是 `hit_max_tokens_ratio = 1.0`：model 一直生成到上限，始终无法到达 answer tag。可降低 `max_completion_length`，或加强 format reward。
+AlgorithmGuideView.swift:914	原指南建议 `clip_ratio_total` 在 0.05–0.2 范围。低于此范围时 advantage 信号可能较弱；高于此范围时 policy 的每个 step 可能过于激进。
+AlgorithmGuideView.swift:915	对于包含较长 completions 的 reasoning 任务，`importance_sampling_level = sequence` 可帮助改善稳定性。
+AlgorithmGuideView.swift:916	GRPO 的每个 step 都包含 generation pass，因此较慢。原指南估计，相同 `batch_size` 下耗时可能为 SFT step 的 4–8x；实际速度取决于配置与 model。
+AlgorithmGuideView.swift:920	Judge system prompt 是整个 config 中影响很大的文字。应写成具体的条目式评判标准，而不是模糊地询问“哪个更好？”。
+AlgorithmGuideView.swift:921	Policy 可采用 `temperature ≈ 0.8`、`top_p=0.95`。过低会使两个 completions 相同，过高可能使 judge 的标签近似随机。
+AlgorithmGuideView.swift:922	设置 `judge = \"human\"` 后，runner 会暂停并要求你标注每个 pair；请预留相应时间，或将 `batch_size` 降为 1。
+AlgorithmGuideView.swift:926	默认 `alpha = 1e-5` 很小。若 completions 与 reference 几乎无法区分，可将 `alpha` 提高到 `1e-4`，并观察实时 metrics 中的 `exploration_bonus`。
+AlgorithmGuideView.swift:927	对于 3-epoch 运行，可尝试 `alpha = [1e-4, 1e-5, 1e-6]`：前期探索较强，在最后一个 epoch 逐步衰减。
+AlgorithmGuideView.swift:931	使用较小的 `max_completion_length`，128 是一个起点。REINFORCE variance 会随 trajectory length 增长。
+AlgorithmGuideView.swift:932	可优先尝试 `lr=5e-6` 而非 `1e-5`；REINFORCE 没有 clipping 来限制过度激进的 step。
+AlgorithmGuideView.swift:933	始终记录 `rewards` 和 `kl_penalty`。若 `kl_penalty` 上升而 `rewards` 进入平台期，policy 可能在向 judge 无法察觉的方向漂移。
+AlgorithmGuideView.swift:937	记录 `clip_fraction`。如果持续 > 0.3，则每个 step 的 policy 变化过大，可降低 `lr` 或将 `epsilon` 收紧至 0.1。
+AlgorithmGuideView.swift:938	`epsilon = 0.2` 是原始 PPO 默认值，也是合理起点。至少观察 policy 完成一次完整遍历后，再考虑降低。
+AlgorithmGuideView.swift:939	过小的 KL weight（`beta`）会让 policy 远离 reference；过大的 `beta` 则可能在学到内容前就抑制 policy。可从 0.1 开始，依据 `kl_penalty` 日志调整。
+AlgorithmGuideView.swift:940	Judge 对效果的影响可能大于算法。PPO 会放大 judge 奖励的行为，无论这些行为是否符合你的真实目标。

@@ -1,0 +1,54 @@
+SyntheticDataView.swift:10	合成数据
+SyntheticDataView.swift:10#1	\(store.synthetic.kind.title) 生成器
+SyntheticDataView.swift:29	取消生成
+SyntheticDataView.swift:41	Dataset 类型
+SyntheticDataView.swift:72	合成数据
+SyntheticDataView.swift:77	生成 Synthetic Dataset
+SyntheticDataView.swift:78	继续生成 Synthetic Dataset
+SyntheticDataView.swift:98	实时运行
+SyntheticDataView.swift:98#1	运行控制台
+SyntheticDataView.swift:111	清空
+SyntheticDataView.swift:121	就绪
+SyntheticDataView.swift:151	就绪
+SyntheticDataView.swift:162	来源
+SyntheticDataView.swift:188	最终记录中包含 system prompt
+SyntheticDataView.swift:189	将 ground-truth 部分作为 generation context
+SyntheticDataView.swift:191	生成
+SyntheticDataView.swift:228	生成 multi-turn conversations
+SyntheticDataView.swift:236	Human-role model（可选）
+SyntheticDataView.swift:240	\(config.backend.title) 的同时进行 API requests 数量。此项控制所有非 MLX 后端（OpenAI / OpenRouter / Ollama / LM Studio / oMLX / Custom）的并行度；下方的 Batch 对这些后端均无效，只影响本地 MLX 后端。
+SyntheticDataView.swift:263	已保存的 provider
+SyntheticDataView.swift:267	尚未保存的自定义 provider
+SyntheticDataView.swift:274	新建自定义 provider
+SyntheticDataView.swift:276	Provider 名称
+SyntheticDataView.swift:279	保存 Provider
+SyntheticDataView.swift:361	选择
+SyntheticDataView.swift:380	重新获取 \(backend.title) 的最新 model 列表
+SyntheticDataView.swift:407	正在获取 \(backend.title) 的 model…
+SyntheticDataView.swift:414	尚未获取 model，请点击刷新按钮
+SyntheticDataView.swift:441	正在从 \(backend.title) 获取实时 model 列表…
+SyntheticDataView.swift:445	已从 \(backend.title) 获取 \(scrapedModels.count) 个 model
+SyntheticDataView.swift:449	点击刷新按钮，从 \(backend.title) 获取 model
+SyntheticDataView.swift:521	保存
+SyntheticDataView.swift:524	取消
+SyntheticDataView.swift:529	替换…
+SyntheticDataView.swift:529#1	设置…
+SyntheticDataView.swift:539	移除为 \(backend.title) 保存的 key
+SyntheticDataView.swift:556	••• \(backend.title) key 已保存在 Keychain 中
+SyntheticDataView.swift:557	未设置 key，\(backend.title) 可不填写
+SyntheticDataView.swift:577	System prompt 文本或文件
+SyntheticDataView.swift:595	输出
+SyntheticDataView.swift:596	运行目录名称
+SyntheticDataView.swift:609	根目录：\(outputRoot)
+SyntheticDataView.swift:611	生成的 dataset 保存在运行目录的 generated-data 子目录中。要继续未完成的运行，请在此选择已有记录，并将 Samples 保持为所需的最终总数。
+SyntheticDataView.swift:658	继续运行
+SyntheticDataView.swift:659	重新开始
+SyntheticDataView.swift:664	自定义：\(URL(fileURLWithPath: selection).deletingLastPathComponent().lastPathComponent)
+SyntheticDataView.swift:677	刷新运行记录
+SyntheticDataView.swift:680	刷新合成数据运行记录
+SyntheticDataView.swift:684	输出根目录中尚未找到 generated-data 目录。
+SyntheticDataView.swift:727	使用自定义 generation 设置
+SyntheticDataView.swift:742	API requests 将不携带 generation 设置，由 provider 或本地服务器使用其默认值。
+SyntheticDataView.swift:757	Batch 控制本地 MLX 生成器的并行度。来源区域的 Concurrent 字段在使用 MLX 时隐藏，仅对下方非 MLX 后端显示。
+SyntheticDataView.swift:759	\(config.backend.title) 会忽略 Batch，其他所有非 MLX 后端也一样（OpenAI / OpenRouter / Ollama / LM Studio / oMLX / Custom 均使用相同的 OpenAI-compatible 路径）。Batch 只影响本地 MLX 后端。请使用上方来源区域的 Concurrent 字段控制此 provider 的并行度。
+SyntheticDataView.swift:774	Split 字段留空时，全部生成样本将写入 train parquet。

@@ -1,0 +1,23 @@
+[
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SharedControls.swift",
+    "before": "    private static func parse(_ text: String) -> Double? {\n        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)\n        guard !trimmed.isEmpty else { return nil }\n        return Double(trimmed)\n    }",
+    "after": "    private static func parse(_ text: String) -> Double? {\n        StudioNumericInput.parse(text)\n    }",
+    "count": 1,
+    "purpose": "Reject incomplete and non-finite text at UI editing boundary; valid finite values use the original Double conversion."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SharedControls.swift",
+    "before": "            TextField(title, text: $text)\n                .textFieldStyle(.roundedBorder)\n                .font(.system(.body, design: .monospaced))",
+    "after": "            TextField(title, text: $text)\n                .textFieldStyle(.roundedBorder)\n                .font(.system(.body, design: .monospaced))\n                .accessibilityHint(Text(StudioNumericInput.warning(for: text, actualValue: value) ?? \"支持小数与科学计数法，例如 0.001 或 1e-5。\"))\n                .overlay {\n                    if StudioNumericInput.warning(for: text, actualValue: value) != nil {\n                        RoundedRectangle(cornerRadius: 5).stroke(.orange, lineWidth: 1)\n                            .allowsHitTesting(false)\n                    }\n                }",
+    "count": 1,
+    "purpose": "Make invalid editing state visible and audible; do not change the bound fallback value."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SharedControls.swift",
+    "before": "                    if formatted != text, Self.parse(text) != newValue {\n                        text = formatted\n                    }\n                }\n        }\n        .frame(minWidth: 88, maxWidth: .infinity, alignment: .leading)",
+    "after": "                    if formatted != text, Self.parse(text) != newValue {\n                        text = formatted\n                    }\n                }\n            if let warning = StudioNumericInput.warning(for: text, actualValue: value) {\n                Label(warning, systemImage: \"exclamationmark.triangle\")\n                    .font(.caption)\n                    .foregroundStyle(.orange)\n                    .fixedSize(horizontal: false, vertical: true)\n            }\n        }\n        .frame(minWidth: 88, maxWidth: .infinity, alignment: .leading)",
+    "count": 1,
+    "purpose": "Explain the actual retained numeric value immediately when text cannot be parsed; Return keeps original restore behavior."
+  }
+]

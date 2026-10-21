@@ -1,0 +1,184 @@
+[
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SharedControls.swift",
+    "before": "                chart(in: proxy.size)\n            }\n        }\n    }\n\n    private var placeholder",
+    "after": "                chart(in: proxy.size)\n            }\n        }\n        .frame(minHeight: max(120, CGFloat(series.count) * 50))\n    }\n\n    private var placeholder",
+    "count": 1,
+    "purpose": "Reserve enough display height for multi-series bilingual legends, without changing data, axes, normalization, series order or hover calculations."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SharedControls.swift",
+    "before": "                        Text(s.label)\n                            .font(.caption2)\n                            .lineLimit(1)\n                        if let v = s.latest",
+    "after": "                        Text(s.label)\n                            .font(.caption2)\n                            .fixedSize(horizontal: false, vertical: true)\n                            .help(s.label)\n                        if let v = s.latest",
+    "count": 1,
+    "purpose": "Display complete bilingual series names in the permanent legend, with wrapping and the same full text as a tooltip. Keep numerical labels unchanged."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "            Picker(\"模型类型（Model family）\", selection: $config.modelFamily) {\n                ForEach(ModelFamily.allCases) { family in\n                    Text(family.title).tag(family)\n                }\n            }\n            .pickerStyle(.segmented)",
+    "after": "            Text(\"模型类型（Model family）\")\n                .font(.caption)\n                .foregroundStyle(.secondary)\n                .fixedSize(horizontal: false, vertical: true)\n            Picker(\"模型类型（Model family）\", selection: $config.modelFamily) {\n                ForEach(ModelFamily.allCases) { family in\n                    Text(family.title).tag(family)\n                }\n            }\n            .pickerStyle(.segmented)\n            .labelsHidden()",
+    "count": 1,
+    "purpose": "Place the bilingual family label above the original segmented picker so a minimum-width window cannot squeeze it into a narrow vertical column. Preserve choices, tags, selection binding and model-family behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "// scrolls, but the user always sees all the labels.\n            ScrollView(.horizontal, showsIndicators: false)",
+    "after": "// scrolls; the indicator and hint keep the extra choices discoverable.\n            ScrollView(.horizontal, showsIndicators: true)",
+    "count": 1,
+    "purpose": "Show the algorithm picker scroll indicator; keep segmented style, choices, tags and selection unchanged."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "config.applyDefaultDataset(for: mode)\n            }\n\n            HStack(alignment: .top, spacing: 12)",
+    "after": "config.applyDefaultDataset(for: mode)\n            }\n            Label(\"可横向滚动查看全部训练模式\", systemImage: \"arrow.left.and.right\")\n                .font(.caption)\n                .foregroundStyle(.secondary)\n                .fixedSize(horizontal: false, vertical: true)\n\n            HStack(alignment: .top, spacing: 12)",
+    "count": 1,
+    "purpose": "Make the horizontally scrollable algorithm choices discoverable without changing any selection behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "value: $config.batchSize)\n            }\n            HStack {",
+    "after": "value: $config.batchSize)\n            }\n            Text(config.epochs > 0\n                 ? \"当前按数据轮次（Epochs）训练（\\(config.epochs) 轮）；迭代次数（Iterations）在本次运行中不生效。\"\n                 : \"当前按迭代次数（Iterations）训练（\\(config.iters) 次）；数据轮次（Epochs）大于 0 时优先生效。\")\n                .font(.callout)\n                .foregroundStyle(.secondary)\n                .fixedSize(horizontal: false, vertical: true)\n            HStack {",
+    "count": 1,
+    "purpose": "Explain the existing epochs-over-iters precedence as read-only text; do not change either value or serialization."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.ftpoContextFeature)",
+    "after": "text: $config.ftpoContextFeature)\n                    .studioFieldLabel(\"上下文（Context）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual ftpoContextFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.ftpoRejectedFeature)",
+    "after": "text: $config.ftpoRejectedFeature)\n                        .studioFieldLabel(\"被拒绝的回答（Rejected）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual ftpoRejectedFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.ftpoChosenFeature)",
+    "after": "text: $config.ftpoChosenFeature)\n                        .studioFieldLabel(\"多个优选回答（Multiple chosen）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual ftpoChosenFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.promptFeature)",
+    "after": "text: $config.promptFeature)\n                    .studioFieldLabel(\"提示（Prompt）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual promptFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.completionFeature)",
+    "after": "text: $config.completionFeature)\n                    .studioFieldLabel(\"回答（Completion）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual completionFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.chosenFeature)",
+    "after": "text: $config.chosenFeature)\n                    .studioFieldLabel(\"优选回答（Chosen）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual chosenFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.rejectedFeature)",
+    "after": "text: $config.rejectedFeature)\n                    .studioFieldLabel(\"被拒绝的回答（Rejected）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual rejectedFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.chatFeature)",
+    "after": "text: $config.chatFeature)\n                    .studioFieldLabel(\"对话（Chat）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual chatFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.textFeature)",
+    "after": "text: $config.textFeature)\n                    .studioFieldLabel(\"文本（Text）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual textFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.systemFeature)",
+    "after": "text: $config.systemFeature)\n                    .studioFieldLabel(\"系统（System）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual systemFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.answerFeature)",
+    "after": "text: $config.answerFeature)\n                    .studioFieldLabel(\"答案（Answer）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual answerFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.typeFeature)",
+    "after": "text: $config.typeFeature)\n                    .studioFieldLabel(\"类型（Type）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual typeFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "text: $config.preferenceScoreFeature)",
+    "after": "text: $config.preferenceScoreFeature)\n                .studioFieldLabel(\"偏好分数（Preference score）\")",
+    "count": 1,
+    "purpose": "Keep the bilingual preferenceScoreFeature label visible while retaining the original TextField, binding, placeholder and input behavior."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift",
+    "before": ".help(\"显示运行控制台\")",
+    "after": ".help(\"显示运行控制台\")\n            .accessibilityLabel(\"显示运行控制台（Show Run Console）\")",
+    "count": 1,
+    "purpose": "Give the icon-only expand button a functional VoiceOver label."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift",
+    "before": ".help(\"隐藏运行控制台\")",
+    "after": ".help(\"隐藏运行控制台\")\n                .accessibilityLabel(\"隐藏运行控制台（Hide Run Console）\")",
+    "count": 1,
+    "purpose": "Give the icon-only collapse button a functional VoiceOver label."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift",
+    "before": "        HStack(spacing: 12) {\n            tile(title: \"Step\", value: stepValue)\n            tile(title: \"Loss\", value: lossValue)\n            tile(title: \"Speed\", value: speedValue)\n            tile(title: \"Tokens/s\", value: tokensPerSecValue)\n            tile(title: \"内存\", value: memoryValue)\n            tile(title: \"LR\", value: lrValue)\n        }\n        .padding(.horizontal, 12)",
+    "after": "        ViewThatFits(in: .horizontal) {\n            HStack(spacing: 12) {\n                metricTiles\n            }\n            .fixedSize(horizontal: true, vertical: false)\n            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), alignment: .leading), count: 3),\n                      alignment: .leading, spacing: 8) {\n                metricTiles\n            }\n        }\n        .padding(.horizontal, 12)",
+    "count": 1,
+    "reason": "Adaptive console metric summary: keep the same labels, accessors and formatters; use two rows when six intrinsic-width tiles do not fit. Do not split technical units across lines."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift",
+    "before": "    private var stepValue: String { metric.map { \"Iter \\($0.step)\" } ?? \"—\" }",
+    "after": "    @ViewBuilder private var metricTiles: some View {\n        tile(title: \"Step\", value: stepValue)\n        tile(title: \"Loss\", value: lossValue)\n        tile(title: \"Speed\", value: speedValue)\n        tile(title: \"Tokens/s\", value: tokensPerSecValue)\n        tile(title: \"内存\", value: memoryValue)\n        tile(title: \"LR\", value: lrValue)\n    }\n\n    private var stepValue: String { metric.map { \"Iter \\($0.step)\" } ?? \"—\" }",
+    "count": 1,
+    "reason": "Adaptive console metric summary: keep the same labels, accessors and formatters; use two rows when six intrinsic-width tiles do not fit. Do not split technical units across lines."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift",
+    "before": "            Text(title)\n                .font(.caption2)\n                .foregroundStyle(.secondary)\n            Text(value)",
+    "after": "            Text(title)\n                .font(.caption2)\n                .fixedSize(horizontal: true, vertical: false)\n                .foregroundStyle(.secondary)\n            Text(value)",
+    "count": 1,
+    "reason": "Adaptive console metric summary: keep the same labels, accessors and formatters; use two rows when six intrinsic-width tiles do not fit. Do not split technical units across lines."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "        // HSplitView (backed by NSSplitView) gives us a real draggable\n        // divider with no overlap. Each side uses `minWidth` as a hard\n        // floor and `idealWidth` as the starting size; the `Layout`\n        // priorities below make sure the form (left) wins when the\n        // window is too small to give both columns their ideal width.\n        GeometryReader { proxy in\n            let available = proxy.size.width\n            // Threshold where the two columns together can't both be\n            // at their ideal size. Below this, we auto-collapse the\n            // console unless the user has manually toggled it.\n            let shouldAutoCollapse = available < 900\n            let isCollapsed = effectiveCollapsed(shouldAutoCollapse: shouldAutoCollapse)\n            let settingsWidth = available * 0.6\n            let consoleWidth = available - settingsWidth\n\n            HSplitView {\n                ScrollView {\n                    VStack(alignment: .leading, spacing: 18) {\n                        HeaderView(\n                            title: \"训练\",\n                            subtitle: \"\\(store.training.trainMode.title) 使用 \\(store.training.trainType.title)\",\n                            symbol: \"cpu\"\n                        )\n\n                        ModeStrip(config: $store.training)\n                        ModelDataSection(config: $store.training)\n                            .environment(store)\n                        OutputSection(config: $store.training, outputRoot: store.outputRoot, lastRunFolder: store.trainingRunner.lastRunFolder)\n                        CoreTrainingSection(config: $store.training)\n                        FTPOSection(config: $store.training)\n                        PreferenceSection(config: $store.training)\n                        GRPOSection(config: $store.training)\n                        OnlinePreferenceSection(config: $store.training)\n                        QATSection(config: $store.training)\n                        DatasetMappingSection(config: $store.training)\n                    }\n                    .padding(24)\n                }\n                .layoutPriority(1)\n                .frame(\n                    minWidth: 360,\n                    idealWidth: isCollapsed ? 620 : settingsWidth,\n                    maxWidth: isCollapsed ? .infinity : settingsWidth\n                )\n                .trainSettingsPane(cornerRadius: 18)\n                .padding(16)\n\n                LiveRunPanel(\n                    runner: store.trainingRunner,\n                    collapsed: Binding(\n                        get: { isCollapsed },\n                        set: { manualConsoleCollapsed = $0 }\n                    )\n                )\n                .frame(\n                    minWidth: isCollapsed ? 56 : 260,\n                    idealWidth: isCollapsed ? 56 : consoleWidth,\n                    maxWidth: isCollapsed ? 56 : consoleWidth\n                )\n            }\n        }\n        .navigationTitle(\"训练\")\n    }\n",
+    "after": "        GeometryReader { proxy in\n            let shouldAutoCollapse = proxy.size.width < 900\n            let isCollapsed = effectiveCollapsed(shouldAutoCollapse: shouldAutoCollapse)\n            StudioTrainingPanes(available: proxy.size, collapsed: isCollapsed) {\n                ScrollView {\n                    VStack(alignment: .leading, spacing: 18) {\n                        HeaderView(\n                            title: \"训练\",\n                            subtitle: \"\\(store.training.trainMode.title) 使用 \\(store.training.trainType.title)\",\n                            symbol: \"cpu\"\n                        )\n\n                        ModeStrip(config: $store.training)\n                        ModelDataSection(config: $store.training)\n                            .environment(store)\n                        OutputSection(config: $store.training, outputRoot: store.outputRoot, lastRunFolder: store.trainingRunner.lastRunFolder)\n                        CoreTrainingSection(config: $store.training)\n                        FTPOSection(config: $store.training)\n                        PreferenceSection(config: $store.training)\n                        GRPOSection(config: $store.training)\n                        OnlinePreferenceSection(config: $store.training)\n                        QATSection(config: $store.training)\n                        DatasetMappingSection(config: $store.training)\n                    }\n                    .padding(24)\n                }\n                .trainSettingsPane(cornerRadius: 18)\n                .padding(16)\n            } console: {\n                LiveRunPanel(\n                    runner: store.trainingRunner,\n                    collapsed: Binding(\n                        get: { isCollapsed },\n                        set: { manualConsoleCollapsed = $0 }\n                    )\n                )\n            }\n        }\n        .navigationTitle(\"训练\")\n    }\n",
+    "count": 1,
+    "purpose": "Fix unusable narrow split: include pane padding, allow divider resizing, stack expanded console below settings under 1000 pt. Preserve every form control and job binding."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift",
+    "before": "            }\n        }\n        .padding(20)\n        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)",
+    "after": "            }\n            .frame(maxWidth: .infinity, maxHeight: .infinity)\n            .overlay {\n                if runner.logLines.isEmpty {\n                    VStack(spacing: 10) {\n                        Image(systemName: \"terminal\")\n                            .font(.title2)\n                            .foregroundStyle(.secondary)\n                        Text(runner.isRunning ? \"等待任务输出\" : \"尚无运行日志\")\n                            .font(.headline)\n                        Text(runner.isRunning\n                             ? \"任务已启动，正在等待第一条日志。\"\n                             : \"点击右上角“运行”后，这里会显示本次任务的输出。\")\n                        Text(\"终端或其他应用启动的 Python 任务不会出现在这里。\")\n                            .font(.caption)\n                    }\n                    .foregroundStyle(.secondary)\n                    .multilineTextAlignment(.center)\n                    .fixedSize(horizontal: false, vertical: true)\n                    .padding(24)\n                    .frame(maxWidth: 400)\n                    .allowsHitTesting(false)\n                }\n            }\n        }\n        .padding(20)\n        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)",
+    "count": 1,
+    "purpose": "Make the console fill its available area and explain empty/waiting state. Overlay cannot intercept clicks or scrolling; original log list and auto-scroll are unchanged."
+  }
+]

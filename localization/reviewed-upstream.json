@@ -1,0 +1,14 @@
+{
+  "repository": "Goekdeniz-Guelmez/MLX-LoRA-Studio",
+  "tag": "v2.0.3",
+  "version": "2.0.3",
+  "commit": "69e34a31aca717b6d5a0a4f5306e25cf7c0b18f1",
+  "translation_revision": "2026-10-21-console-usability",
+  "source_manifest_sha256": "902f47625244c6b84d041791bb3d71ee24f63f6d23428c3aba88dd06ba24bcce",
+  "original_app_manifest_sha256": "400930610b8bb5e17e4d7c8e49f6e8a1d871fa019c676a688609fb6918a68e3b",
+  "bundled_backend_version": "3.1.2",
+  "architecture": "arm64",
+  "minimum_macos": "14.0",
+  "update_policy": "Detect and report only. A new version or moved tag requires reviewed source/app manifests, translation migration, tests and a separate release.",
+  "optional_app_cache_manifest_sha256": "4c12383ecb051a1ab09d2654e5adf79514e821f24b2f1c527029135b4e296b62"
+}

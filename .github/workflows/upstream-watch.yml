@@ -1,0 +1,35 @@
+name: 检查官方版本
+
+on:
+  schedule:
+    - cron: '23 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: upstream-version-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: 只读检测最新稳定版；有变化时提示适配
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -B tools/upstream.py check --fail-on-update
+      - name: 保存适配状态报告
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: upstream-version-review
+          path: .build/upstream-review.json
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,15 @@
+TrainingModels.swift:17	训练
+TrainingModels.swift:18	实时指标
+TrainingModels.swift:19	合成数据（旧版）
+TrainingModels.swift:20	上传到 HF
+TrainingModels.swift:21	算法指南
+TrainingModels.swift:22	运行记录
+TrainingModels.swift:23	关于
+TrainingModels.swift:292	提取的 <answer> 与 dataset answer 完全一致时，得分为 2.0。
+TrainingModels.swift:297	提取的 <answer> 是仅含数字的 integer 时，得分为 0.5。
+TrainingModels.swift:302	输出严格符合 <think> ... </think> <answer> ... </answer> 格式时，得分为 0.5。
+TrainingModels.swift:307	think 和 answer XML tags 按正确顺序出现且包含内容时，得分为 0.5。
+TrainingModels.swift:312	恰好有一组 think/answer tags 时给予少量得分，并对末尾多余文本扣分。
+TrainingModels.swift:347	生成完整的 DPO triple：teacher response 作为 chosen，base response 作为 rejected。
+TrainingModels.swift:349	仅生成或重新生成 chosen，并保留源 dataset 中的 rejected。
+TrainingModels.swift:351	仅生成或重新生成 rejected，并保留源 dataset 中的 chosen。

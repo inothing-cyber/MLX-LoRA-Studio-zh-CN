@@ -1,0 +1,294 @@
+{
+  "Contents/Info.plist": {
+    "size": 1023,
+    "sha256": "fde712efbf1242d518fc82b9b226b90cd9e5dd442333fb26203ff3e90e599bf1"
+  },
+  "Contents/MacOS/MLXLoRAStudio": {
+    "size": 9908784,
+    "sha256": "eab042b0d716ab11d22a0d56350e2ff97e7a288b6315314dfe248fa98aaf9b8a"
+  },
+  "Contents/Resources/AppIcon.png": {
+    "size": 2595601,
+    "sha256": "c2e7355cba237cc7977b5ae2e829012f6808a35edf5460e48e9001b2e6990878"
+  },
+  "Contents/Resources/StudioSupport/Backend/hf_upload.py": {
+    "size": 42101,
+    "sha256": "166c0401e3a8529b9f6ee0e013e29316e3f653b114543c0f169fb96a1eb5f86f"
+  },
+  "Contents/Resources/StudioSupport/Backend/requirements.txt": {
+    "size": 34,
+    "sha256": "c0533ab8362c96101634182c4d79b4b73871eb17b9a37ca092528ca372ac21c6"
+  },
+  "Contents/Resources/StudioSupport/Backend/training_runner.py": {
+    "size": 34978,
+    "sha256": "624e9f7b1d7158b86e7daaf0e09939e7e1d34622e83dbb1db92ca3404360e9d3"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/HEAD": {
+    "size": 41,
+    "sha256": "fdb6383e086fada249bbe868159d1c2a8394f16caf35508563ce997e4fc2f6d6"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/config": {
+    "size": 259,
+    "sha256": "f0f61e7cb773c8b73a3ee4e9644a2946dceff2bc9c9ae7b6758ebe487a3fc60d"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/description": {
+    "size": 73,
+    "sha256": "85ab6c163d43a17ea9cf7788308bca1466f1b0a8d1cc92e26e9bf63da4062aee"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/applypatch-msg.sample": {
+    "size": 478,
+    "sha256": "0223497a0b8b033aa58a3a521b8629869386cf7ab0e2f101963d328aa62193f7"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/commit-msg.sample": {
+    "size": 1972,
+    "sha256": "efc1401b0e99d1ff51494d154d98b46c1e99059bcd8bf9f73cecde19fd3eb23b"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/fsmonitor-watchman.sample": {
+    "size": 4611,
+    "sha256": "9159720099ad5595b8e66645cbfd47763c1e920f46e0b50ae75e642bbec57ef0"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/post-update.sample": {
+    "size": 189,
+    "sha256": "81765af2daef323061dcbc5e61fc16481cb74b3bac9ad8a174b186523586f6c5"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/pre-applypatch.sample": {
+    "size": 424,
+    "sha256": "e15c5b469ea3e0a695bea6f2c82bcf8e62821074939ddd85b77e0007ff165475"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/pre-commit.sample": {
+    "size": 1649,
+    "sha256": "57185b7b9f05239d7ab52db045f5b89eb31348d7b2177eab214f5eb872e1971b"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/pre-merge-commit.sample": {
+    "size": 416,
+    "sha256": "d3825a70337940ebbd0a5c072984e13245920cdf8898bd225c8d27a6dfc9cb53"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/pre-push.sample": {
+    "size": 1374,
+    "sha256": "ecce9c7e04d3f5dd9d8ada81753dd1d549a9634b26770042b58dda00217d086a"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/pre-rebase.sample": {
+    "size": 4898,
+    "sha256": "4febce867790052338076f4e66cc47efb14879d18097d1d61c8261859eaaa7b3"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/pre-receive.sample": {
+    "size": 544,
+    "sha256": "a4c3d2b9c7bb3fd8d1441c31bd4ee71a595d66b44fcf49ddb310252320169989"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/prepare-commit-msg.sample": {
+    "size": 1492,
+    "sha256": "e9ddcaa4189fddd25ed97fc8c789eca7b6ca16390b2392ae3276f0c8e1aa4619"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/push-to-checkout.sample": {
+    "size": 2783,
+    "sha256": "a53d0741798b287c6dd7afa64aee473f305e65d3f49463bb9d7408ec3b12bf5f"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/sendemail-validate.sample": {
+    "size": 2308,
+    "sha256": "44ebfc923dc5466bc009602f0ecf067b9c65459abfe8868ddc49b78e6ced7a92"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/hooks/update.sample": {
+    "size": 3650,
+    "sha256": "8d5f2fa83e103cf08b57eaa67521df9194f45cbdbcb37da52ad586097a14d106"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/index": {
+    "size": 4054,
+    "sha256": "1ba142ee77829e16cbebf0b8bf3ec704fea02df61a34bcc047b1183c95c9f9bb"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/info/exclude": {
+    "size": 240,
+    "sha256": "6671fe83b7a07c8932ee89164d1f2793b2318058eb8b98dc5c06ee0a5a3b0ec1"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/logs/HEAD": {
+    "size": 246,
+    "sha256": "8195cd459205ea70f1e1f538a680b2ae2fee33eb6739c517a21bd0afd0e00086"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/objects/pack/pack-e17dc2cd86a9274ba9932267e3006689a986646f.idx": {
+    "size": 2444,
+    "sha256": "7d83ec8fda77baa58a739f1812d2f6041639f3c3ad90ff07f952b278179e9b80"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/objects/pack/pack-e17dc2cd86a9274ba9932267e3006689a986646f.pack": {
+    "size": 2407565,
+    "sha256": "925ebd2c00a7b20df468ff437191b44e976c568f26203c36145bf59864696063"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/objects/pack/pack-e17dc2cd86a9274ba9932267e3006689a986646f.rev": {
+    "size": 248,
+    "sha256": "188d5e9f1949bf3644bbcb1db7bc200891bcc00618965ce510623f01f8576dcf"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/packed-refs": {
+    "size": 104,
+    "sha256": "18586b3518eb35b36605e15570240651fd30f141fe5e970da35cce446d8be382"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.git/shallow": {
+    "size": 41,
+    "sha256": "fdb6383e086fada249bbe868159d1c2a8394f16caf35508563ce997e4fc2f6d6"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.github/workflows/python-publish.yml": {
+    "size": 1235,
+    "sha256": "dd02ac54aa022dbb0f5f5c0864013880b2a0d0c1b610b5596a9360165a6f9284"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.gitignore": {
+    "size": 2037,
+    "sha256": "dc2e4a5a7159698bcf5e42dc8c6e85c6cd7117b6d03ba592e66fde8027ebeaa0"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/.pre-commit-config.yaml": {
+    "size": 238,
+    "sha256": "cdf44fd4436da427baa7498e390335ed945b2e8421da38a34d436b876fb56806"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/LICENSE": {
+    "size": 11357,
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/MANIFEST.in": {
+    "size": 109,
+    "sha256": "9b0f1f87b3831ea40483b85b53b4c3125d582e86e67cb7418e2f2a594f409260"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/README.md": {
+    "size": 36118,
+    "sha256": "493f02045ad5df1eef5a5f5b032467b19f7a5c7e63b0c015bdf2e1234bfe1c17"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/logos/cc.webp": {
+    "size": 10474,
+    "sha256": "9053e03d4daab981bac3dfab4bd26c658b613a46379bf471875a783783a79edd"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/logos/macpaw.png": {
+    "size": 13349,
+    "sha256": "2203a37c91f46566b698aa849b6433624ce472af365602626b74a325ade47a4f"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/logos/mlx_lm_lora.png": {
+    "size": 2296657,
+    "sha256": "b5c74b3aa91c821b0cf446f1f0fcd7650088680eb7d9e26b8f44fe3e118d70f9"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/logos/typefox.png": {
+    "size": 14245,
+    "sha256": "b4351b330279ff0c15c065674a3a4c4be35a832744edc5d818f1b67adfc486a7"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/__init__.py": {
+    "size": 100,
+    "sha256": "49bef074a99be109c719b3c6d50c8785fbf16436bac211821ef4ed794b3c91dd"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/__main__.py": {
+    "size": 430,
+    "sha256": "682fe8feca194625537fede874be8aba16ee7613183a26d98e582ba74d0f4e00"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/_version.py": {
+    "size": 22,
+    "sha256": "124c53c528542def43ecab5907f8880843b5dc8cb39680317d88171c6c293214"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/py.typed": {
+    "size": 1,
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/recurrent_patch.py": {
+    "size": 9111,
+    "sha256": "f5f6a915d6d1133f2113f4cd8731fd77e9257b20ff0a82ac75edd12e6056221a"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/ssm_patch.py": {
+    "size": 1369,
+    "sha256": "c4a31083b4bc122ca6e981768b4bdfaaf69c16a2edaa83de25ea7898e73b9c7c"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/train.py": {
+    "size": 45197,
+    "sha256": "977d515e8d1fcd065b293499e4461b3cfb6192837514e2b78e513f5f365ae391"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/train_judge.py": {
+    "size": 13427,
+    "sha256": "47f56ad1d171428caca762dc74ad56b291396cc6a3e4a06108dc6db67be9c02e"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__init__.py": {
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/cpo_trainer.py": {
+    "size": 20942,
+    "sha256": "411ef35bf210a1c41f1bdc3835d20191ccfa76a1488a7fed0deaf191316081f0"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/datasets.py": {
+    "size": 25557,
+    "sha256": "7a5e6e9a4f0fbf0315ee38029e6ba0b559be850b58de7e7730c4a721ccbfecc1"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/dpo_trainer.py": {
+    "size": 24537,
+    "sha256": "7d343fdc1d122f2f08cf8b49bcdca65d392ccc8f5b852069543bdcf7cf351be6"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/ftpo_trainer.py": {
+    "size": 11451,
+    "sha256": "297b8cc33da486838446ea5a632d10429ce8b59dd173957ed1fa8cb76150f51f"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/grpo_reward_functions.py": {
+    "size": 5308,
+    "sha256": "a27ec40a54d58a68f7a0fed8651bc501bdd9a2f03e77764d412cd439a8198b30"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/grpo_trainer.py": {
+    "size": 40580,
+    "sha256": "811e96448afd1a3575ff8af0870979d62902ef719069b6fb2eb972c39121e82c"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/judge.py": {
+    "size": 11550,
+    "sha256": "832ad85435d748b4a0bf5dbc6ae9579875ee5e30ef9006b8ab4d2ded1695c324"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/online_dpo_trainer.py": {
+    "size": 25054,
+    "sha256": "5ed1580ff7ed83cf6ca215cc5f88a3c5b7da04f29dcf5101e46d35a04b29a98e"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/orpo_trainer.py": {
+    "size": 23253,
+    "sha256": "a373ca9d84712aa8defeab00d6dc79128234d660f4bdd68c733725efcea21a1d"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/ppo_trainer.py": {
+    "size": 23519,
+    "sha256": "4b36d7e7818dc73db233f904749f5d2daef0e915cab9e848a9430e2987e0fa58"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/rlhf_reinforce_trainer.py": {
+    "size": 16609,
+    "sha256": "081586cf4c104ba6b0b065a92eb7d651738e4c540db05f6d28144cc92ff6d9cf"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/sft_trainer.py": {
+    "size": 22943,
+    "sha256": "4f5f04d99ddb03b3b4a46365998e36467411c67525fd5baad6fddef19b45b85c"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/xpo_trainer.py": {
+    "size": 24696,
+    "sha256": "34af7324548132818ab9548db469154791e5036357c9389180a24c0546621faa"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/utils.py": {
+    "size": 16104,
+    "sha256": "262485b6f6c87557084823328a042d52e439935cda37c50e34dee4d4c3378206"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/visuals.py": {
+    "size": 4842,
+    "sha256": "1bf67eb559b8fc59c3a693df2a9cbf9da4efadc7160aaffbb77b72dcfdd9d8fd"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/requirements.txt": {
+    "size": 91,
+    "sha256": "2a6ef64d49da2f2957ca0156514f71465b126c413133d70abbc914149e99e3a3"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/setup.py": {
+    "size": 959,
+    "sha256": "c602d9e1829b5908ebbadd68b3d533ba413d1d105d673c5b78520f0071a20501"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/tests/test_datasets.py": {
+    "size": 8117,
+    "sha256": "211851455e17aafb4de75e673b9ff43422c90b0fbe283a2301e60614b0fa6558"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/tests/test_grpo_importance_sampling.py": {
+    "size": 1017,
+    "sha256": "5364eba97491e13d228cb85d719d1f344af7e3e153b6777912f5c18c778ed600"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/tests/test_reward_functions.py": {
+    "size": 4222,
+    "sha256": "2e7994d94fec48f0617664170606aa94f2c73d3aa6b0f95ab119a5d1ed6f5326"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/tests/test_training_algorithms.py": {
+    "size": 18045,
+    "sha256": "0a9921e512b418518c49d5aed6c74ec22adb30250b751d243fd43529a3f5112f"
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/tests/test_utils.py": {
+    "size": 1318,
+    "sha256": "924255274d2a750956893c19101195b0fd14f7975df8d42cbfc49f94d23a923d"
+  },
+  "Contents/_CodeSignature/CodeResources": {
+    "size": 24826,
+    "sha256": "8da760942deddcb25d55c87fd113375dab64ab4db7af24f4a1c2809474292d40"
+  }
+}

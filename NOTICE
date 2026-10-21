@@ -1,0 +1,15 @@
+MLX LoRA Studio 中文版（非官方）
+
+Based on MLX LoRA Studio v2.0.3
+Copyright (c) 2026 Gökdeniz Gülmez
+https://github.com/Goekdeniz-Guelmez/MLX-LoRA-Studio
+The original application source is provided under the MIT License; see LICENSE.
+
+Chinese localization and reviewed display changes are maintained in this repository
+by inothing-cyber. This is an independent community adaptation, not an official
+release or endorsement by the original author or Apple.
+
+The official application's bundled mlx-lm-lora v3.1.2 trainer remains unchanged.
+It is provided under Apache License 2.0; see licenses/mlx-lm-lora-Apache-2.0.txt.
+Model weights, datasets, Python environments and private training records are not
+included in this source distribution.

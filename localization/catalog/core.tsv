@@ -1,0 +1,132 @@
+TrainingView.swift:33	训练
+TrainingView.swift:34	\(store.training.trainMode.title) 使用 \(store.training.trainType.title)
+TrainingView.swift:75	训练
+TrainingView.swift:174	LoRA 设置
+TrainingView.swift:236	LM Studio 导出名称
+TrainingView.swift:264	输出
+TrainingView.swift:265	运行目录名称
+TrainingView.swift:272	根目录：\(outputRoot)
+TrainingView.swift:278	完整 VLM 导出目录（可选）
+TrainingView.swift:371	训练后导出完整 VLM
+TrainingView.swift:487	默认
+TrainingView.swift:496	使用全部默认项
+TrainingView.swift:525	导入
+TrainingView.swift:635	默认
+LiveRunPanel.swift:34	显示运行控制台
+LiveRunPanel.swift:47	已暂停
+LiveRunPanel.swift:47#1	运行中
+LiveRunPanel.swift:47#2	空闲
+LiveRunPanel.swift:65	实时运行
+LiveRunPanel.swift:65#1	运行控制台
+LiveRunPanel.swift:67	就绪
+LiveRunPanel.swift:79	隐藏运行控制台
+LiveRunPanel.swift:84	清空
+SharedControls.swift:54	在 Finder 中打开
+SharedControls.swift:209	选择
+SharedControls.swift:332	取消
+SharedControls.swift:336	添加
+SharedControls.swift:392	进度
+SharedControls.swift:408	已完成 %.0f%%
+SharedControls.swift:427	已完成
+SharedControls.swift:427#1	已停止
+SharedControls.swift:430	已暂停
+SharedControls.swift:434	ETA 估算中
+SharedControls.swift:437	ETA 估算中
+SharedControls.swift:494	训练预估
+SharedControls.swift:535	点击收起
+SharedControls.swift:687	等待数据。
+LiveMetricsView.swift:34	实时指标
+LiveMetricsView.swift:36	等待训练器输出…
+LiveMetricsView.swift:37	从当前训练器自动发现
+LiveMetricsView.swift:125	各 iterations 的训练损失，是最常查看的信号。
+LiveMetricsView.swift:126	各 iterations 的训练（实线）、验证和测试（虚线）损失。
+LiveMetricsView.swift:148	正在收集样本…
+LiveMetricsView.swift:162	全部指标
+LiveMetricsView.swift:163	训练器报告过的所有指标。验证和测试指标保留各自的原始 split 前缀。
+LiveMetricsView.swift:167	尚无指标。
+LiveMetricsView.swift:192	最新值
+LiveMetricsView.swift:193#0	最小值
+LiveMetricsView.swift:194#0	最大值
+LiveMetricsView.swift:195#0	数量
+LiveMetricsView.swift:248	最近报告
+LiveMetricsView.swift:249	最近几条训练器报告的原文，便于结合上下文分析图表中的突变。
+LiveMetricsView.swift:254	尚无报告。
+LiveMetricsView.swift:323	训练（实线）和验证（虚线）批次中，优选回答（chosen）与被拒绝回答（rejected）的奖励。
+LiveMetricsView.swift:334	策略梯度训练循环中每个 step 的奖励、KL 惩罚和优势值。
+LiveMetricsView.swift:345	GRPO 每轮生成（rollout）中总奖励与各组奖励的均值和标准差。
+LiveMetricsView.swift:355	每个 step 中，当前策略与参考策略之间的 KL 散度。
+LiveMetricsView.swift:366	触发下限裁剪、上限裁剪及任一裁剪的 tokens 占比。
+LiveMetricsView.swift:377	每次生成（rollout）的 Token 数量，以及达到长度上限的比例。
+LiveMetricsView.swift:394	训练器报告的每秒 iterations 与 tokens 数量。
+RunsView.swift:19	无法删除运行记录
+RunsView.swift:48	运行记录
+RunsView.swift:64	删除运行记录？
+RunsView.swift:65	删除
+RunsView.swift:69	取消
+RunsView.swift:73	这将永久删除运行目录及其全部内容。
+RunsView.swift:75	清空全部运行记录？
+RunsView.swift:76	清空全部运行记录
+RunsView.swift:79	取消
+RunsView.swift:84	确定
+RunsView.swift:108	无法删除运行记录
+RunsView.swift:120	无法清空运行记录
+RunsView.swift:130	这将永久删除 \(count) 个已保存的运行目录。正在运行的任务目录会保留至任务结束。
+RunsView.swift:132	这将永久删除 \(count) 个已保存的运行目录及其全部内容。
+RunsView.swift:140	运行记录
+RunsView.swift:142	有任务正在运行
+RunsView.swift:143	历史记录读取自 \(store.outputRoot)
+RunsView.swift:150	清空全部运行记录
+RunsView.swift:154	没有可删除的已保存运行目录
+RunsView.swift:154#1	删除全部已保存的运行目录
+RunsView.swift:158	刷新
+RunsView.swift:171	正在运行
+RunsView.swift:172	本次会话中正在运行的任务。
+RunsView.swift:216	历史运行
+RunsView.swift:219	磁盘上有 \(store.persistedRuns.count) 条
+RunsView.swift:224	从输出目录中发现的记录。点击卡片查看指标和设置。
+RunsView.swift:230	磁盘上尚无运行记录
+RunsView.swift:232	启动训练任务后，收到首条报告时，其运行目录就会显示在这里。
+RunsView.swift:295	打开详情
+RunsView.swift:300	继续训练
+RunsView.swift:306	删除运行记录
+RunsView.swift:310	打开运行详情
+RunsView.swift:336	删除运行目录
+RunsView.swift:336#1	无法删除正在运行的任务
+RunsView.swift:358	训练
+RunsView.swift:361	合成数据
+RunsView.swift:364	HF 上传
+RunsView.swift:383	未记录到指标
+RunsView.swift:426	从 checkpoint step \(step) 继续训练
+RunsView.swift:428	从已保存的 adapter weights 继续训练
+RunsView.swift:485	在 Finder 中打开
+RunsView.swift:493	继续
+RunsView.swift:501	删除
+RunsView.swift:505	删除此运行目录
+RunsView.swift:505#1	无法删除正在运行的任务
+RunsView.swift:509	完成
+RunsView.swift:519	从 checkpoint step \(step) 继续
+RunsView.swift:521	从已保存的 adapter weights 继续
+RunsView.swift:534	各 iterations 的训练（实线）和验证（虚线）损失。
+RunsView.swift:535	各 iterations 的训练损失。
+RunsView.swift:588	自动发现的指标
+RunsView.swift:598	正在收集样本…
+RunsView.swift:616	全部指标
+RunsView.swift:637	最新值
+RunsView.swift:638#0	最小值
+RunsView.swift:639#0	最大值
+RunsView.swift:640#0	数量
+RunsView.swift:689	数据集运行设置
+RunsView.swift:695	数据集运行设置
+RunsView.swift:696	无法解码此目录中的 synthetic_spec.json。原始文件仍保存在磁盘上，可自行查看。
+RunsView.swift:703	训练设置
+RunsView.swift:709	训练设置
+RunsView.swift:710	无法解码此目录中的 run_spec.json。原始文件仍保存在磁盘上，可自行查看。
+RunsView.swift:722	数据集样本
+RunsView.swift:724	此运行目录中尚未找到生成的 JSONL 样本。
+RunsView.swift:781	最近报告
+RunsView.swift:831	输出目录（Output folder）
+RunsView.swift:833	续写目录（Resume output）
+RunsView.swift:855	包含系统提示词（Include system prompt）
+RunsView.swift:856	使用标准答案（Use ground truth）
+RunsView.swift:952	报告与保存（Reporting & Saving）
+RunsView.swift:957	开关（Toggles）

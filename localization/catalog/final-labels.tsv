@@ -1,0 +1,31 @@
+TrainingModels.swift:104	默认：mlx-community/JOSIE-v2-Instruct-5K
+TrainingModels.swift:105	默认：mlx-community/Human-Like-DPO
+TrainingModels.swift:106	默认：mlx-community/gemma-3-27b-it-antislop-ftpo-preference-dataset
+TrainingModels.swift:107	默认：mlx-community/Josiefied-Qwen3-dpo-v1-flat
+TrainingModels.swift:108	默认：mlx-community/Dolci-Think-RL-7B-2k
+TrainingModels.swift:109	默认：mlx-community/Human-Like-DPO
+AlgorithmGuideView.swift:63	训练循环
+AlgorithmGuideView.swift:207	Objective（数学形式）
+AlgorithmGuideView.swift:209	Dataset 格式
+AlgorithmGuideView.swift:211	建议与注意事项
+AlgorithmGuideView.swift:684	DPO 的 temperature。
+AlgorithmGuideView.swift:704	DPO 的 temperature。
+AlgorithmGuideView.swift:1011	建议与注意事项
+AlgorithmGuideView.swift:1274	Objective（数学形式）
+AlgorithmGuideView.swift:1371	Objective（数学形式）
+AlgorithmGuideView.swift:1478	Objective（数学形式）
+SharedControls.swift:489	已使用 \(snapshot.usedMemoryString)，共 \(snapshot.totalMemoryString)
+AlgorithmGuideView.swift:205#0	概述
+AlgorithmGuideView.swift:206#0	直观理解
+AlgorithmGuideView.swift:500#0	设置项
+AlgorithmGuideView.swift:502#0	默认值
+AlgorithmGuideView.swift:1038#0	设置项
+AlgorithmGuideView.swift:1040#0	默认值
+AlgorithmGuideView.swift:1262#0	概述
+AlgorithmGuideView.swift:1266#0	直观理解
+AlgorithmGuideView.swift:1359#0	概述
+AlgorithmGuideView.swift:1363#0	直观理解
+AlgorithmGuideView.swift:1461#0	概述
+AlgorithmGuideView.swift:1470#0	直观理解
+AlgorithmGuideView.swift:1538#0	如何选择
+LiveMetricsView.swift:491	每项奖励在生成结果（rollout）中的均值、标准差和覆盖率。

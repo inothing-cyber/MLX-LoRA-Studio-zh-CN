@@ -1,0 +1,71 @@
+# These are lookup templates at UI boundaries. Their original source files are NOT translated.
+ProviderModelCatalog.swift:40	Provider URL 为空，或不是有效的 http(s) URL。
+ProviderModelCatalog.swift:42	无法连接 provider：\(underlying.localizedDescription)
+ProviderModelCatalog.swift:44	Provider 返回 HTTP \(code)。
+ProviderModelCatalog.swift:46	Provider 返回的响应无法解析。
+PythonEnvironmentProvisioner.swift:13	环境创建失败（exit \(exitCode)）。\n\(trimmed)
+PythonEnvironmentProvisioner.swift:15	在 PATH 或常见安装位置找不到 `conda` 可执行文件。
+PythonEnvironmentProvisioner.swift:17	无法确定用于创建新环境的基础 Python 版本。
+PythonEnvironmentProvisioner.swift:49	\(target.path) 已存在环境。
+PythonEnvironmentProvisioner.swift:53	正在使用 \(basePython) 于 \(target.path) 创建 venv…
+PythonEnvironmentProvisioner.swift:65	Venv 已创建，但在 \(python.path) 找不到可执行文件。
+PythonEnvironmentProvisioner.swift:68	Venv 已就绪：\(python.path)
+PythonEnvironmentProvisioner.swift:90	正在使用 \(conda) 创建 conda env \(name)（python=\(majorMinor)）…
+PythonEnvironmentProvisioner.swift:105	Conda env 已创建，但在 \(python.path) 找不到可执行文件。
+PythonEnvironmentProvisioner.swift:108	Conda env 已就绪：\(python.path)
+PythonEnvironmentProvisioner.swift:156	命令执行失败，exit 为 \(result.status)。
+PythonJobRunner.swift:14	已有任务正在运行。
+PythonJobRunner.swift:15	工作目录不存在。
+PythonJobRunner.swift:16	无法创建输出目录。
+PythonJobRunner.swift:17	mlx-lm-lora 包路径不存在。
+PythonJobRunner.swift:18	继续生成合成数据所需的目录不存在。
+PythonJobRunner.swift:19	无法写入训练 config。
+PythonJobRunner.swift:89	运行目录：\(runURL.path)
+PythonJobRunner.swift:100	自定义 \(config.trainMode.title) pipeline
+PythonJobRunner.swift:165	从已有的 \(existingSyntheticRecords) 条记录继续生成合成数据。
+PythonJobRunner.swift:271	上传 spec：\(specURL.path)
+PythonJobRunner.swift:282	将 \(target.title) 上传到 Hugging Face
+PythonJobRunner.swift:363	重新安装 mlx、mlx-lm、matplotlib 和 mlx-lm-lora
+PythonJobRunner.swift:364	更新 mlx、mlx-lm、matplotlib 和 mlx-lm-lora
+PythonJobRunner.swift:510	任务已退出，status 为 \(process.terminationStatus)。
+PythonJobRunner.swift:576	包更新已退出，status 为 \(process.terminationStatus)。
+PythonJobRunner.swift:759	无法写入 metrics.json：\(error.localizedDescription)
+RunArchive.swift:23	此运行目录不在配置的输出目录内，因此未执行删除。
+AppStore.swift:269	等待管理员授权…
+AppStore.swift:275	已应用 iogpu.wired_limit_mb=\(iogpuWiredLimitMB)。
+AppStore.swift:278	无法应用 iogpu.wired_limit_mb：\(error.localizedDescription)
+AppStore.swift:528	\(training.trainMode.title) 训练已完成
+AppStore.swift:529	\(training.trainMode.title) 训练已停止
+AppStore.swift:530	训练任务已完成。
+AppStore.swift:531	训练任务在成功完成前退出。
+AppStore.swift:539	无法启动训练：\(error.localizedDescription)
+AppStore.swift:546	无法恢复运行：未找到已保存的 adapter checkpoint。
+AppStore.swift:557	准备从 \(candidate.adapterFile.path) 恢复
+AppStore.swift:584	\(synthetic.kind.title) 数据生成已完成
+AppStore.swift:585	\(synthetic.kind.title) 数据生成已停止
+AppStore.swift:586	合成数据任务已完成。
+AppStore.swift:587	合成数据任务在成功完成前退出。
+AppStore.swift:595	无法启动合成数据任务：\(error.localizedDescription)
+AppStore.swift:613	Hugging Face 上传已完成
+AppStore.swift:614	Hugging Face 上传已停止
+AppStore.swift:615	上传任务已完成。
+AppStore.swift:616	上传任务在成功完成前退出。
+AppStore.swift:624	无法启动 HF 上传：\(error.localizedDescription)
+AppStore.swift:642	无法启动包更新：\(error.localizedDescription)
+AppStore.swift:661	无法启动包重新安装：\(error.localizedDescription)
+AppStore.swift:744	任务完成通知已关闭。
+AppStore.swift:750	仅从构建好的 .app bundle 运行 MLX LoRA Studio 时，才能使用通知。
+AppStore.swift:755	正在请求 macOS 通知权限…
+AppStore.swift:760	任务完成通知已开启。
+AppStore.swift:761	macOS 未授予通知权限。请在系统设置 > 通知中启用 MLX LoRA Studio，然后重试。
+AppStore.swift:783	\(failureBody) Exit status：\(status)。
+AppStore.swift:868	无法创建环境：\(error.localizedDescription)
+AppStore.swift:981	无法载入先前的合成数据设置：\(specURL.path)
+AppStore.swift:995	已从 \(specURL.path) 载入合成数据设置 — backend：\(decoded.backend.title)，\(modelNote)：\(restoredModel)
+MemoryEstimator.swift:306	尝试 4-bit quantization
+MemoryEstimator.swift:313	降低 batch size
+MemoryEstimator.swift:317	减小 max sequence length
+MemoryEstimator.swift:321	启用 grad checkpointing
+MemoryEstimator.swift:325	切换到 LoRA
+MemoryEstimator.swift:329	使用较小的 reference model
+MemoryEstimator.swift:335	关闭其他应用以释放 RAM

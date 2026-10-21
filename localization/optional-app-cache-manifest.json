@@ -1,0 +1,82 @@
+{
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/__pycache__/__init__.cpython-312.pyc": {
+    "sha256": "5cae373f1b6b3373d7a7d527c33920c88b7689a6aa4e780fbec24edf7fbd0897",
+    "size": 365
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/__pycache__/_version.cpython-312.pyc": {
+    "sha256": "a9f19979238d2874b5367d5624252c25c21afa3a7ccf116845e6d04574efe146",
+    "size": 232
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/__pycache__/recurrent_patch.cpython-312.pyc": {
+    "sha256": "be8331b25f8d5b515c703107125cbfc1bc3ebee71e96ab001820d75a6f7cd6f9",
+    "size": 11352
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/__pycache__/train.cpython-312.pyc": {
+    "sha256": "c3cd8965fbbd622d5970a3d0436a2407149b7730d0f78ef67e6608997deb8bfc",
+    "size": 49578
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/__pycache__/utils.cpython-312.pyc": {
+    "sha256": "3c87177a2094ad56bf12ed426cef2161c32ad9c88ff258890fc33a0a20fa7b70",
+    "size": 19792
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/__pycache__/visuals.cpython-312.pyc": {
+    "sha256": "5e5922cf297620663fcfac667ca726ac45c713a7dc6809c4fad648a3d3238457",
+    "size": 10341
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/__init__.cpython-312.pyc": {
+    "sha256": "eca9f5e252ef5bf109b7bbd438a0fe4f0f48e3f002576ddcef6aee6b009e541a",
+    "size": 214
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/cpo_trainer.cpython-312.pyc": {
+    "sha256": "1ee108981c3e878acac9459228235faeef9d54091835fcc7b523c8c3d36db66a",
+    "size": 24598
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/datasets.cpython-312.pyc": {
+    "sha256": "99ac5e680f8001875f98f138aa11818ef8e21e770670c834a4e48d2f20739ab4",
+    "size": 31343
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/dpo_trainer.cpython-312.pyc": {
+    "sha256": "91c020eeb3a77724a6e4f7d965fba54ce8182215e6f5d1def4ace55c6e20b4a6",
+    "size": 27110
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/ftpo_trainer.cpython-312.pyc": {
+    "sha256": "a73938bc8adba1be7ad78c53a2abe13c796042a43ad9b695ec775830d6d40ba5",
+    "size": 16946
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/grpo_reward_functions.cpython-312.pyc": {
+    "sha256": "c1703d59678362c841545c0bff5c3cb4691ba3d3e5bbfb698f7dee111095cd11",
+    "size": 7432
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/grpo_trainer.cpython-312.pyc": {
+    "sha256": "695c5ffc658102e3d5b4e6d35f282609329fbf2028c6ccba8fdb3c971569a465",
+    "size": 42346
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/judge.cpython-312.pyc": {
+    "sha256": "38cf15fec69442cb5425e554c85e564412e7eba488f79e723b46f06ea92985ab",
+    "size": 14484
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/online_dpo_trainer.cpython-312.pyc": {
+    "sha256": "47fde09e9a91af543824b5210b430d40256dc0e65e323672628e1337a4c1b895",
+    "size": 28267
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/orpo_trainer.cpython-312.pyc": {
+    "sha256": "59526d84f8d53655beaea9d425cdcdcdb91bbb61ffa03ff108f365546161ac58",
+    "size": 27127
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/ppo_trainer.cpython-312.pyc": {
+    "sha256": "a0aa196492a62f662379201dd64854ff040fb9ff805e0ed0d2cc3f2fe1973af0",
+    "size": 25339
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/rlhf_reinforce_trainer.cpython-312.pyc": {
+    "sha256": "4c642be3d572d2ca24711e4ead2c70512bb017cb11353838472096cf1beff998",
+    "size": 19953
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/sft_trainer.cpython-312.pyc": {
+    "sha256": "80cd43e99d28fb438034f55d804d46447e462b1557da79f7aac6eb4f23838e3e",
+    "size": 29254
+  },
+  "Contents/Resources/StudioSupport/vendor/mlx-lm-lora/mlx_lm_lora/trainer/__pycache__/xpo_trainer.cpython-312.pyc": {
+    "sha256": "4bc4e3e09797dfbcdabb447537fa710db0929b01271ccb62e91e2e79c8248b9a",
+    "size": 27408
+  }
+}

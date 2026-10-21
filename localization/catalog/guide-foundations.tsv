@@ -1,0 +1,62 @@
+AlgorithmGuideView.swift:1042	实际影响
+AlgorithmGuideView.swift:1259	哪些 tensor 接收 gradients
+AlgorithmGuideView.swift:1262#1	mlx-lm-lora 的每个 trainer 都使用由 `mlx_lm_lora.utils.from_pretrained` 加载的同一 base model。`lora`、`dora` 与 `full` 的区别在于哪些 tensor **可训练**，以及如何计算 gradients。LoRA 冻结 base model，为每个目标 linear layer 学习 low-rank update；DoRA 保留相同的 low-rank update，但将组合 weight 分解为 magnitude vector 与 direction matrix，使两者可独立调整；`full` 则解冻整个 model。
+AlgorithmGuideView.swift:1266#1	• **LoRA** 假设最优 weight change `ΔW` 可由低 rank 表达：`ΔW = (α/r) · B · A`，其中 `A ∈ R^{r×in}`、`B ∈ R^{out×r}`，且 `r ≪ min(in, out)`。对于 `r=8` 的 7B model，可训练 parameters 可从约 7B 降至约 4M。\n• **DoRA** 将 frozen + LoRA weight 分解为 unit-norm direction `V` 和可学习的 magnitude `m`，写作 `W' = m · V / ‖V‖`。其经验依据是 full fine-tuning 对 direction 与 magnitude 的更新幅度通常不同，DoRA 在接近 LoRA parameter count 的条件下模拟这一行为。\n• **`full` fine-tuning** 对每个 weight 都进行训练。Optimiser state 与 parameter count 成正比，原指南估计 fp16 的 7B model 约需 28 GB 的 activation + optimiser memory；笔记本上超过 1B 规模时通常较难使用。\n• 三者共用 forward pass 的基础机制，变化主要是传给 `nn.value_and_grad(model, …)` 的 parameter 列表。因此上方各算法可搭配不同 adaptation method。
+AlgorithmGuideView.swift:1276	令 *W*<sub>0</sub> ∈ ℝ<sup>out × in</sup> 为冻结的 base weight，*x* 为输入，*y* 为目标 `nn.Linear` layer 的输出。
+AlgorithmGuideView.swift:1287	原版指南按论文中的 *α ⁄ r* 描述 *scaling factor*。本机 mlx-lm 0.32.2 的 LoRA 层实际直接使用 `scale` 作为更新乘数，并不在层内再除以 `rank`。这里保留论文公式用于说明，界面参数沿用本机实现，不进行 α/r 换算。
+AlgorithmGuideView.swift:1299	对 **V** 进行 unit-norm rescaling，是 DoRA 区别于“LoRA 加上 magnitude multiplier”的关键。
+AlgorithmGuideView.swift:1308	设置会改变什么
+AlgorithmGuideView.swift:1312	可选 `lora`（默认）、`dora` 或 `full`。切换到 `full` 会完全移除 adapter wrapper；该配置下 `num_layers` 不生效。
+AlgorithmGuideView.swift:1314	Low-rank update 的内部 rank。4 较小、8 常用、16 容量较高，32+ 在笔记本上通常偏大。提高 rank 会按相同比例增加 memory 和 adapter 文件大小。
+AlgorithmGuideView.swift:1316	原版指南将此项与论文中的 α 对应，并以 `(rank=8, scale=20.0)` 说明 2.5x 的 α/r 比值。实际本机 MLX LoRA 层直接以 `scale` 乘以更新量；请保持参数原值，不按 `rank` 再除一次。许多论文采用 1x 的公式约定，与此参数的定义需分开理解。
+AlgorithmGuideView.swift:1318	在 `ΔW · x` 加入 `W_0 · x` 之前应用 Dropout。通常仅在小 dataset 训练或 loss curve 显示 overfitting 时，才有必要设为大于 0。
+AlgorithmGuideView.swift:1320	为顶部多少个 transformer layers 添加 LoRA/DoRA adapters。Trainer 从顶部计数，因此 32-layer model 的 `num_layers = 8` 对应 layers 24–31。
+AlgorithmGuideView.swift:1322	此前保存的 `adapters.safetensors` 路径。适用于不同 `train_type`，但文件必须与新运行的 layer names 匹配。
+AlgorithmGuideView.swift:1324	为 true 时，训练后将 LoRA/DoRA updates 合并回 `W_0`，并把 merged model 保存到 `adapter_path`。关闭时将 adapter 文件分开保留。
+AlgorithmGuideView.swift:1328	如何选择
+AlgorithmGuideView.swift:1328#1	• **LoRA** 是本应用常用的默认选择。约 4M 可训练 parameters，可放入 CPU RAM，便于快速迭代。\n• 当 LoRA 在风格或格式相关 metric 上进入平台期时，可尝试 **DoRA**。研究报告其 instruction-following 效果更接近 full fine-tuning，memory 与耗时通常相近，adapter 文件会略大。\n• **Full** 适用于 LoRA / DoRA 表达能力不足的情况，例如在领域语料上从头训练小 model。原指南估计，在 16 GB Apple Silicon 机器上，fp16 的实际规模上限约为 1B parameters。
+AlgorithmGuideView.swift:1335	可从 `rank=8, scale=20.0, dropout=0.0` 开始。Loss 进入平台期时，可先将 `rank` 提高到 16，再调整 learning rate；瓶颈可能是容量而非 step size。
+AlgorithmGuideView.swift:1336	DoRA 的 magnitude vector 按 output-column 保存，因此 output dim 较大的 layer，在相同 rank 下会比 LoRA 存储更多 parameters。差异较小，通常每层几百个 floats，但会反映在 adapter 文件大小上。
+AlgorithmGuideView.swift:1337	两次运行之间改变 `train_type` 时，应先处理旧的 `adapters.safetensors`。不同类型的 layer name 约定不同，旧文件可能无法正确加载。
+AlgorithmGuideView.swift:1338	进行 `full` fine-tuning 时，建议一开始就设置 `grad_checkpoint = true`；对于笔记本上的 7B model，仅 activation memory 就可能导致 OOM。
+AlgorithmGuideView.swift:1356	Gradients 如何转换为 weight updates
+AlgorithmGuideView.swift:1359#1	本节介绍 mlx-lm-lora 的三种 optimizers：**Adam**、**AdamW** 和 **Muon**。前两者较常用；Muon（Jordan et al., 2024）相对较新，已有 transformer hidden weights 更快收敛的实验结果。选择由 `config.optimizer` 提供，trainer 在构建时从 `mlx.optimizers` 选取对应 class。
+AlgorithmGuideView.swift:1363#1	• **Adam** 为每个 parameter 维护 gradient 的 first moment `m` 和 second moment `v` 的 exponential moving average，并执行 bias-corrected update。默认 `betas = (0.9, 0.999)` 适用于较广范围的 LR。\n• **AdamW** 在 Adam 基础上使用 **decoupled weight decay**，将 regularisation `λ · W` 直接加入 update，而非放入 gradient 内部。这将 adaptive optimizers 的 weight decay 与 gradient 更新分开，是 transformer fine-tuning 的常见选择。\n• 原指南以“用 momentum 的 Newton-Schulz orthogonalisation 替换 second moment”概括 **Muon**。具体而言，每个 tensor 的 update 会先投影为近似 orthogonal matrix，再进行 scaling。在 hidden 2D weights（transformer blocks 内的 QKV 和 MLP projections）上已有较快收敛的经验结果，但 1D weights（biases、norms）更适合配合 AdamW 等方法，因此常见实现会组合使用。\n• 三者在 mlx-lm-lora 中均以 `opt = OptClass(learning_rate=lr, **optimizer_config[opt_name])` 调用，因此各 optimizer 的 hyperparameters，例如 `betas`、`eps`、`weight_decay`、`momentum`，会从 spec 的 `optimizer_config` dict 原样传入。
+AlgorithmGuideView.swift:1373	令 *g*<sub>t</sub> = ∇**ℒ**(θ<sub>t−1</sub>) 为 step *t* 的 gradient，*lr* 为 learning rate。三种 optimizers 在 `optimizer.state` 中维护各自 state；trainer 使用 `mx.random.state` 初始化相关 state，以支持确定性执行。
+AlgorithmGuideView.swift:1385	`mlx.optimizers` 的默认值：β₁ = 0.9、β₂ = 0.999、ε = 1×10⁻⁸。不应用 L2 regularisation；需要 weight decay 时可使用 AdamW。
+AlgorithmGuideView.swift:1394	*λ · θ* 项是 decoupled weight decay。默认 `weight_decay = 0.01`，调整它可控制将 model 拉向零的强度，也影响对较小 LoRA / DoRA adapters 的偏好。
+AlgorithmGuideView.swift:1405	Newton–Schulz iteration 是一个较小的 fixed-point loop，原说明采用 5 steps，将 matrix 映射为近似 semi-orthogonal matrix。它使用 matrix multiplications；具体耗时取决于实现与 tensor 大小。
+AlgorithmGuideView.swift:1410	设置会改变什么
+AlgorithmGuideView.swift:1414	可选 `adam`、`adamw` 或 `muon`。从 `mlx.optimizers` 加载对应 class，以 `learning_rate=lr` 和匹配的 `optimizer_config` dict 构建。
+AlgorithmGuideView.swift:1416	Peak learning rate。LoRA/DoRA 可参考：AdamW 为 1e-5 至 5e-5，Muon 为 5e-4 至 5e-3。Muon 的参数定义不同，通常采用更大的 LR；full fine-tuning 搭配 AdamW 时通常使用 1e-6 至 5e-6。
+AlgorithmGuideView.swift:1418	可选的 schedule 来自 `mlx_lm.tuner.utils.build_schedule`。非空时 runner 用 schedule 包装 `learning_rate`，否则按固定 `learning_rate` 使用。
+AlgorithmGuideView.swift:1420	传给 `optim.Adam(...)` 的额外 kwargs。支持 `betas`、`eps`，默认采用 `mlx.optimizers.Adam` 的默认值。
+AlgorithmGuideView.swift:1422	传给 `optim.AdamW(...)` 的额外 kwargs。支持 `betas`、`eps`、`weight_decay`。默认 `weight_decay=0.01`；若训练中 LoRA magnitudes 持续增大，可考虑提高到 0.05。
+AlgorithmGuideView.swift:1424	传给 `optim.Muon(...)` 的额外 kwargs。支持 `momentum`、`nesterov`、`weight_decay`，默认采用 Muon 默认值：momentum=0.95、nesterov=True。
+AlgorithmGuideView.swift:1428	如何选择
+AlgorithmGuideView.swift:1428#1	• **AdamW** 是本应用较稳妥的默认选择，没有明确原因时可优先采用。\n• 希望显式关闭 regularisation 时，可选择不含 weight decay 的 **Adam**，例如 base model 已有 regularisation，且不希望进一步惩罚 LoRA adapters。\n• 原指南报告 **Muon** 在部分 1B+ model 的 LoRA/DoRA hidden weights 上可用更少 iterations 达到相近 loss，但并非所有负载的保证。可搭配较高 learning rate（5e-3 至 1e-2）；若不需要 regularise LoRA magnitudes，可保持 `weight_decay=0.0`。
+AlgorithmGuideView.swift:1435	从 AdamW 切换到 Muon 时，原指南建议将 learning rate 提高约 100x。Muon update 的参数定义不同，直接沿用 AdamW 的 1e-5 可能训练不足。
+AlgorithmGuideView.swift:1436	切换 optimizer 后，观察前 50 steps 的实时 loss curve。突然发散通常提示 LR 不合适，应结合运行结果检查。
+AlgorithmGuideView.swift:1437	在 `full` fine-tuning 中为 AdamW 设置 `weight_decay` 后，regulariser 将 weights 拉向零，前 100 steps 可能出现小幅 loss 上升，通常在一个 epoch 内恢复。
+AlgorithmGuideView.swift:1438	`lr_schedule` 是上游 mlx-examples 的小型 DSL。常见写法包括 `cosine:<iters>:<min_lr>`，以及先 warm-up 后 decay 的 `warmup_cosine:<warmup>:<iters>:<min_lr>`。
+AlgorithmGuideView.swift:1458	以低 precision 加载 base model，并针对 quantised weights 训练
+AlgorithmGuideView.swift:1461#1	mlx-lm-lora 支持容易混淆的**两类 quantisation**：\n\n1. **Load-time quantisation**：从磁盘读取 base model 时，`mlx.nn.quantize` 将 `nn.Linear` 替换为保存 quantised weights 和 per-group scale 的 `QuantizedLinear`。Base model 在后续运行中保持这种 memory 表示，LoRA / DoRA adapters 在其上以 full precision 训练。\n2. **Quantization-Aware Training (QAT)**：在首次 optimiser step 后，为相关 `nn.Linear` 安装 hook，在进入 forward pass 时对 weight 进行 fake quantisation（straight-through estimator），以模拟 inference quantisation。Optimiser 仍使用 full-precision weights 进行更新。\n\n两者分别通过 `quantization` 和 `qat_*` 设置暴露，也可以组合。例如“QLoRA + QAT”先以 4-bit 加载 base model，再启用 QAT hook，使 LoRA updates 更适应部署 precision。
+AlgorithmGuideView.swift:1470#1	• **Load-time quantisation** 用于 QLoRA 类 pipeline。原指南以分组对称整数 quantisation 公式作示意：将 `W ∈ R^{out×in}` 按最后一轴分为 `group_size` 个连续 columns 的 groups，采用 scale `s_g = max(|W_g|) / qmax`，得到 `Q_g = round(W_g / s_g)`，再以 `Q_g · s_g ≈ W_g` 表示 dequantised weight。具体格式仍由 MLX quantisation mode 决定。\n• **QAT** 让 model 在训练时模拟较低 precision 的部署，而非只在 fp16 训练后直接转为 4-bit。Hook 作用于相关 `nn.Linear` 的 forward；完成后恢复 full-precision weights，供 optimiser 更新。\n• **Straight-through estimator** 使 forward 使用 quantised weight，而 backward 采用 identity 近似，让 gradients 继续传播。若直接对 quantise-then-round 求导，gradient 在大部分位置会为零。\n• mlx-lm-lora 的 QAT hook 由 `qat_start_step` 延迟启用，并按 `qat_interval` steps 重新应用，避免一开始便对接近初始化状态的 LoRA 更新进行投影。
+AlgorithmGuideView.swift:1489	示意公式中 *q*<sub>max</sub> = 2<sup>N − 1</sup> − 1，*q*<sub>min</sub> = −*q*<sub>max</sub> − 1。N = 4 时，*q*<sub>max</sub> = 7、*q*<sub>min</sub> = −8。MXFP4 使用 group size 32 和 8-bit E8M0 scale，是 *microscaling* 格式；具体数值编码不能简单等同于该整数示意公式。
+AlgorithmGuideView.swift:1502	Hook 的示意实现如下
+AlgorithmGuideView.swift:1509	注意 `( quantize(*w*) − *w* )` 外的 `stop_gradient`，它实现 STE。外部的 `+ *w*` 使 forward 值为 *Ŵ*，backward 的对应导数为 1，而 optimiser 只更新 full-precision *w*。
+AlgorithmGuideView.swift:1514	设置会改变什么
+AlgorithmGuideView.swift:1518	加载时将 base model quantise 为 4-bit，group size 128。这是较激进的选项，常与 LoRA/DoRA 搭配。相对于 8-bit，它降低 weights memory，使相同机器上可留出更多 adapter 容量。
+AlgorithmGuideView.swift:1520	6-bit quantisation，group size 128。通常优先比较更小的 4-bit 或质量更稳妥的 8-bit，再决定是否使用。
+AlgorithmGuideView.swift:1522	8-bit quantisation，group size 128。适合 preference training，以及需要在长 context 中保留较精确数值的运行。
+AlgorithmGuideView.swift:1524	MXFP4（microscaling 4-bit），group size 32。近期 NVIDIA/Microscaling 硬件使用此格式；在 Apple Silicon 上同样提供低 precision 表示，但分组和 E8M0 scale 编码与常规 4-bit 不同。
+AlgorithmGuideView.swift:1526	在首次 optimiser step 后，为相关 `nn.Linear` 安装 STE fake-quantise hook。仅对调用 `_install_qat_hooks` 的 SFT/DPO/ORPO trainers 生效。
+AlgorithmGuideView.swift:1528	QAT hook 的 Bit-width。应与计划的 inference quantisation 匹配：部署为 4-bit 时可用 `qat_bits=4`，部署为 8-bit 时可用 `qat_bits=8`。
+AlgorithmGuideView.swift:1530	QAT hook 的 Group size。0 或负值表示 per-tensor。尽量匹配部署 group size；64 或 128 较常见。
+AlgorithmGuideView.swift:1532	安装 hook 的首个 optimiser step。若最初几个 steps 出现 NaN gradients，可考虑提高该值，因为接近初始化状态的 weights 可能难以适应投影。
+AlgorithmGuideView.swift:1534	每 N 个 optimiser steps 重新应用 QAT projection。默认 `1` 表示每个 step 都应用；若性能分析显示 projection 开销明显，可考虑提高至 `4` 等值。
+AlgorithmGuideView.swift:1538#1	• **Default（不启用 quantisation 或 QAT）**：适合拥有 ≥32 GB unified memory 的机器上较小的 models（≤1B），也较便于调试。\n• **4-bit load + LoRA + QAT (8-bit)**：原指南列出的低 memory 方案，面向在有限 memory 下训练 7B–13B models；能否容纳仍取决于配置。QAT hook 用于改善 adapter 对合并和部署 quantisation 的适应性。\n• **8-bit load + LoRA + QAT (8-bit)**：比 4-bit 方案使用更多 memory，但 quantisation 较温和，loss curve 可能更稳定。\n• **MXFP4**：适合部署目标采用 MXFP4，或明确希望在训练时使用 microscaling 4-bit 的情况。实际 throughput 应在本机测量。\n• **No load quantisation + QAT (4-bit)**：适合希望 base model 保持 fp16，同时让 adapter 适应 4-bit 部署的情况；效果需要针对实际 model 验证。
+AlgorithmGuideView.swift:1547	原指南主要从 LoRA/DoRA adapter 的训练角度介绍 QAT。`train_type=full` 的作用范围应以当前后端 hook 与导出实现为准，不能将 adapter 场景的结论直接推广到 full fine-tuning。
+AlgorithmGuideView.swift:1548	运行几百 steps 后，若 loss 开始振荡或出现 NaN，可检查 QAT 的 `qat_bits` 与当前 learning rate 是否过于激进，并尝试 8-bit 设置。
+AlgorithmGuideView.swift:1549	Group size 32（MXFP4 默认值）对 outliers 更敏感，128 通常更宽松。存在疑问时，可先增加 group size，再考虑降低 bit-width。
+AlgorithmGuideView.swift:1550	Load-time quantisation 会改变已加载的 model object；修改 base precision 需要重新加载 model。更改 `load_in_*` flags 后应重新启动 runner。

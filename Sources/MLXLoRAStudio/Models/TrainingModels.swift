@@ -1,0 +1,1388 @@
+import Foundation
+import Observation
+
+enum SidebarSection: String, CaseIterable, Identifiable {
+    case train
+    case metrics
+    case synthetic
+    case upload
+    case guide
+    case runs
+    case about
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .train: "训练"
+        case .metrics: "实时指标"
+        case .synthetic: "合成数据（旧版）"
+        case .upload: "上传到 HF"
+        case .guide: "算法指南"
+        case .runs: "运行记录"
+        case .about: "关于"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .train: "cpu"
+        case .metrics: "chart.line.uptrend.xyaxis"
+        case .synthetic: "sparkles"
+        case .upload: "arrow.up.circle"
+        case .guide: "book"
+        case .runs: "chart.xyaxis.line"
+        case .about: "info.circle"
+        }
+    }
+}
+
+enum TrainMode: String, CaseIterable, Identifiable {
+    case sft
+    case dpo
+    case ftpo
+    case cpo
+    case orpo
+    case grpo
+    case onlineDPO = "online_dpo"
+    case xpo
+    case rlhfReinforce = "rlhf_reinforce"
+    case ppo
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .sft: "SFT"
+        case .dpo: "DPO"
+        case .ftpo: "FTPO"
+        case .cpo: "CPO"
+        case .orpo: "ORPO"
+        case .grpo: "GRPO"
+        case .onlineDPO: "Online DPO"
+        case .xpo: "XPO"
+        case .rlhfReinforce: "RLHF Reinforce"
+        case .ppo: "PPO"
+        }
+    }
+
+    var family: String {
+        switch self {
+        case .sft: "监督学习（Supervised）"
+        case .dpo, .ftpo, .cpo, .orpo: "偏好学习（Preference）"
+        case .grpo, .onlineDPO, .xpo, .rlhfReinforce, .ppo: "强化学习／在线（RL / Online）"
+        }
+    }
+
+    var summary: String {
+        switch self {
+        case .sft:
+            "使用提示与回答（prompt/completion）或对话（chat）示例学习。适合作为调整文风、领域知识和指令遵循能力的第一步。"
+        case .dpo:
+            "通过冻结的参考模型（reference model），让模型更偏好优选回答（chosen），而非被拒绝的回答（rejected）。"
+        case .ftpo:
+            "针对 Antidoom 偏好数据中的最终 token 分布（final-token distribution）进行优化，修复推理中的反复循环（reasoning doom loops）。"
+        case .cpo:
+            "偏好优化（preference optimization）；训练主循环无需单独指定参考模型（reference model）路径。"
+        case .orpo:
+            "将监督学习与 preference odds 合并到同一个高效的偏好优化目标中。"
+        case .grpo:
+            "每组生成多个回答（completions），再通过奖励函数（reward functions）改进行为。"
+        case .onlineDPO:
+            "训练过程中采样回答（completions），并由评审模型（judge）构建在线偏好数据。"
+        case .xpo:
+            "在线偏好优化的一种变体，通过 alpha 控制更新强度。"
+        case .rlhfReinforce:
+            "使用评审奖励（judge rewards）的策略梯度（policy-gradient）RLHF 训练循环。"
+        case .ppo:
+            "结合参考模型（reference）与评审模型（judge）的反馈，执行经典的裁剪策略优化（clipped policy optimization）。"
+        }
+    }
+
+    var datasetHint: String {
+        switch self {
+        case .sft: "默认：mlx-community/JOSIE-v2-Instruct-5K"
+        case .dpo, .cpo: "默认：mlx-community/Human-Like-DPO"
+        case .ftpo: "默认：mlx-community/gemma-3-27b-it-antislop-ftpo-preference-dataset"
+        case .orpo: "默认：mlx-community/Josiefied-Qwen3-dpo-v1-flat"
+        case .grpo: "默认：mlx-community/Dolci-Think-RL-7B-2k"
+        case .onlineDPO, .xpo, .rlhfReinforce, .ppo: "默认：mlx-community/Human-Like-DPO"
+        }
+    }
+
+    /// The HF dataset we suggest for a fresh run of this algorithm.
+    /// Each default has been picked so the dataset's *first* row already
+    /// contains the field names the trainer's `create_dataset()` looks for
+    /// (see `mlx_lm_lora/trainer/datasets.py`). A wrong default produces a
+    /// `ValueError("Unsupported data format for … training.")` at load time.
+    var defaultDataset: String {
+        switch self {
+        case .sft:
+            "mlx-community/JOSIE-v2-Instruct-5K"
+        case .dpo, .cpo:
+            "mlx-community/Human-Like-DPO"
+        case .ftpo:
+            "mlx-community/gemma-3-27b-it-antislop-ftpo-preference-dataset"
+        case .orpo:
+            // ORPO requires `chosen`+`rejected` (no `prompt`). Human-Like-DPO
+            // has `prompt` too, but the DPO examples in the upstream repo
+            // use the flat version which has no `prompt`.
+            "mlx-community/Josiefied-Qwen3-dpo-v1-flat"
+        case .grpo:
+            // GRPO needs a `prompt` field. gsm8k uses `question`/`answer`
+            // and fails; this reasoning dataset matches the official
+            // `grpo_minimal.ipynb` example.
+            "mlx-community/Dolci-Think-RL-7B-2k"
+        case .onlineDPO, .xpo, .rlhfReinforce, .ppo:
+            // These modes just need a `prompt` field. Human-Like-DPO has
+            // one and is small enough to load on a laptop.
+            "mlx-community/Human-Like-DPO"
+        }
+    }
+
+    var needsReference: Bool {
+        switch self {
+        case .dpo, .ftpo, .grpo, .onlineDPO, .xpo, .rlhfReinforce, .ppo: true
+        case .sft, .cpo, .orpo: false
+        }
+    }
+
+    var needsJudge: Bool {
+        switch self {
+        case .onlineDPO, .xpo, .rlhfReinforce, .ppo: true
+        case .sft, .dpo, .ftpo, .cpo, .orpo, .grpo: false
+        }
+    }
+
+    var supportsQAT: Bool {
+        switch self {
+        case .sft, .dpo, .orpo: true
+        default: false
+        }
+    }
+}
+
+enum SFTLossType: String, CaseIterable, Identifiable {
+    case nll
+    case chunkedNLL = "chunked_nll"
+    case dft
+
+    var id: String { rawValue }
+    var title: String {
+        switch self {
+        case .nll: "NLL"
+        case .chunkedNLL: "Chunked NLL"
+        case .dft: "Dynamic Fine-Tuning"
+        }
+    }
+}
+
+enum JudgeKind: String, CaseIterable, Identifiable {
+    case llm
+    case user
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .llm: "语言模型（LLM）"
+        case .user: "人工（User）"
+        }
+    }
+}
+
+enum TrainType: String, CaseIterable, Identifiable {
+    case lora
+    case dora
+    case full
+
+    var id: String { rawValue }
+    var title: String { rawValue.uppercased() }
+}
+
+enum ModelFamily: String, CaseIterable, Identifiable {
+    case text
+    case visionLanguage = "vision_language"
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .text: "文本模型（Text LLM）"
+        case .visionLanguage: "视觉语言模型（Vision-Language）"
+        }
+    }
+}
+
+enum Quantization: String, CaseIterable, Identifiable {
+    case none
+    case fourBit
+    case sixBit
+    case eightBit
+    case mxfp4
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .none: "不量化（None）"
+        case .fourBit: "4-bit"
+        case .sixBit: "6-bit"
+        case .eightBit: "8-bit"
+        case .mxfp4: "MXFP4"
+        }
+    }
+}
+
+enum OptimizerKind: String, CaseIterable, Identifiable {
+    case sgd
+    case rmsprop
+    case adagrad
+    case adadelta
+    case adam
+    case adamw
+    case adamax
+    case lion
+    case adafactor
+    case muon
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .sgd: "SGD"
+        case .rmsprop: "RMSprop"
+        case .adagrad: "Adagrad"
+        case .adadelta: "AdaDelta"
+        case .adam: "Adam"
+        case .adamw: "AdamW"
+        case .adamax: "Adamax"
+        case .lion: "Lion"
+        case .adafactor: "Adafactor"
+        case .muon: "Muon"
+        }
+    }
+}
+
+enum LearningRateScheduleKind: String, CaseIterable, Identifiable {
+    case constant
+    case cosineDecay = "cosine_decay"
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .constant: "固定（Constant）"
+        case .cosineDecay: "余弦衰减（Cosine Decay）"
+        }
+    }
+}
+
+struct GRPORewardFunction: Identifiable, Equatable {
+    let name: String
+    let title: String
+    let summary: String
+
+    var id: String { name }
+
+    static let defaults: [GRPORewardFunction] = [
+        GRPORewardFunction(
+            name: "r1_accuracy_reward_func",
+            title: "Accuracy",
+            summary: "提取的 <answer> 与 dataset answer 完全一致时，得分为 2.0。"
+        ),
+        GRPORewardFunction(
+            name: "r1_int_reward_func",
+            title: "Integer Answer",
+            summary: "提取的 <answer> 是仅含数字的 integer 时，得分为 0.5。"
+        ),
+        GRPORewardFunction(
+            name: "r1_strict_format_reward_func",
+            title: "Strict Format",
+            summary: "输出严格符合 <think> ... </think> <answer> ... </answer> 格式时，得分为 0.5。"
+        ),
+        GRPORewardFunction(
+            name: "r1_soft_format_reward_func",
+            title: "Soft Format",
+            summary: "think 和 answer XML tags 按正确顺序出现且包含内容时，得分为 0.5。"
+        ),
+        GRPORewardFunction(
+            name: "r1_count_xml",
+            title: "XML Count",
+            summary: "恰好有一组 think/answer tags 时给予少量得分，并对末尾多余文本扣分。"
+        )
+    ]
+}
+
+enum SyntheticKind: String, CaseIterable, Identifiable {
+    case sft
+    case dpo
+
+    var id: String { rawValue }
+    var title: String { rawValue.uppercased() }
+
+    var defaultDataset: String {
+        "mlx-community/ultrafeedback-prompts-flat-rlhf"
+    }
+}
+
+enum SyntheticDPOGenerationTarget: String, CaseIterable, Identifiable {
+    case both
+    case chosen
+    case rejected
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .both: "Chosen + rejected"
+        case .chosen: "Chosen only"
+        case .rejected: "Rejected only"
+        }
+    }
+
+    var summary: String {
+        switch self {
+        case .both:
+            "生成完整的 DPO triple：teacher response 作为 chosen，base response 作为 rejected。"
+        case .chosen:
+            "仅生成或重新生成 chosen，并保留源 dataset 中的 rejected。"
+        case .rejected:
+            "仅生成或重新生成 rejected，并保留源 dataset 中的 chosen。"
+        }
+    }
+}
+
+enum SyntheticBackend: String, CaseIterable, Identifiable {
+    case mlx
+    case openai
+    case openrouter
+    case ollama
+    case lmstudio
+    case omlx
+    case custom
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .mlx: "MLX local"
+        case .openai: "OpenAI"
+        case .openrouter: "OpenRouter"
+        case .ollama: "Ollama"
+        case .lmstudio: "LM Studio"
+        case .omlx: "oMLX"
+        case .custom: "Custom"
+        }
+    }
+
+    var defaultBaseURL: String {
+        switch self {
+        case .mlx: ""
+        case .openai: "https://api.openai.com/v1"
+        case .openrouter: "https://openrouter.ai/api/v1"
+        case .ollama: "http://localhost:11434/v1"
+        case .lmstudio: "http://localhost:1234/v1"
+        case .omlx: "http://localhost:8060/v1"
+        case .custom: ""
+        }
+    }
+
+    // The picker used to carry a hand-curated `defaultModel` and
+    // `suggestedModels` for each backend, but those lists drifted
+    // out of date the moment a new model shipped. The picker now
+    // live-scrapes the provider's `/models` endpoint (or Ollama's
+    // `/api/tags`) via `ProviderModelCatalog`, so the dropdown
+    // always reflects what the provider actually has right now.
+}
+
+struct CustomProvider: Codable, Equatable, Identifiable {
+    let id: UUID
+    var name: String
+    var baseURL: String
+}
+
+enum HFModelUploadKind: String, CaseIterable, Identifiable {
+    case adaptersOnly
+    case mergedWeights
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .adaptersOnly: "仅 adapters（Adapters Only）"
+        case .mergedWeights: "合并权重（Merged Weights）"
+        }
+    }
+}
+
+enum HFUploadTarget: String, CaseIterable, Identifiable {
+    case model
+    case dataset
+    case all
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .model: "Model"
+        case .dataset: "Synthetic Dataset"
+        case .all: "Model + Dataset"
+        }
+    }
+}
+
+struct HFUploadConfig: Equatable {
+    var modelUploadKind: HFModelUploadKind = .adaptersOnly
+    var localModelPath = ""
+    var modelRepo = ""
+    var uploadSyntheticDataset = false
+    var localDatasetPath = ""
+    var datasetRepo = ""
+    var privateRepo = false
+    var commitMessage = "Upload from MLX LoRA Studio"
+
+    func runSpecData(target: HFUploadTarget) throws -> Data {
+        var spec: [String: Any] = [
+            "upload_target": target.rawValue,
+            "private": privateRepo,
+            "commit_message": commitMessage
+        ]
+        if target == .model || target == .all {
+            spec["model_upload_kind"] = modelUploadKind.rawValue
+            spec["local_model_path"] = localModelPath
+            spec["model_repo"] = modelRepo
+        }
+        if target == .dataset || target == .all {
+            spec["upload_synthetic_dataset"] = target == .dataset ? true : uploadSyntheticDataset
+            spec["local_dataset_path"] = localDatasetPath
+            spec["dataset_repo"] = datasetRepo
+        }
+        spec = spec.mapValues { value in
+            if let string = value as? String {
+                return string.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            return value
+        }
+        return try JSONSerialization.data(withJSONObject: spec, options: [.prettyPrinted, .sortedKeys])
+    }
+}
+
+struct TrainingConfig: Equatable {
+    static let defaultModel = "Qwen/Qwen3-0.6B"
+    static let builtInDatasets = Set(TrainMode.allCases.map(\.defaultDataset) + ["data/"])
+
+    var model = Self.defaultModel
+    var modelFamily: ModelFamily = .text
+    var vlmModel = ""
+    var vlmOutputPath = ""
+    var vlmDequantize = true
+    var data = TrainMode.sft.defaultDataset
+    var adapterPath = "adapters"
+    var runFolderName = ""
+    var lmStudioName = ""
+    var trainMode: TrainMode = .sft
+    var sftLossType: SFTLossType = .nll
+    var trainType: TrainType = .lora
+    var quantization: Quantization = .fourBit
+    var optimizer: OptimizerKind = .adamw
+    var seed = 0
+    var numLayers = 16
+    var batchSize = 1
+    var iters = 1000
+    var epochs = 0
+    var gradientAccumulationSteps = 1
+    var valBatches = 25
+    var learningRate = 0.00001
+    var learningRateSchedule: LearningRateScheduleKind = .constant
+    var lrWarmupSteps = 40
+    var lrWarmupInit = 0.0000001
+    var lrDecayFraction = 0.8
+    var lrFinal = 0.000002
+    var stepsPerReport = 10
+    var stepsPerEval = 200
+    var saveEvery = 100
+    var test = false
+    var testBatches = 100
+    var maxSeqLength = 2048
+    var gradCheckpoint = true
+    var efficientLongContext = false
+    var seqStepSize = 512
+    var maskPrompt = false
+    var fuse = true
+    var fuseDequantize = true
+    var fuseRemoveAdapters = true
+    var resumeAdapterFile = ""
+    var rank = 8
+    var scale = 20.0
+    var dropout = 0.0
+    var beta = 0.1
+    var rewardScaling = 1.0
+    var dpoCpoLossType = "sigmoid"
+    var delta = 50.0
+    var lambdaMSETarget = 0.05
+    var tauMSETarget = 1.0
+    var lambdaMSE = 0.4
+    var clipEpsilonLogits = 2.0
+    var referenceModelPath = ""
+    var judgeKind: JudgeKind = .llm
+    var judge = "Qwen/Qwen3-0.6B"
+    var groupSize = 4
+    var epsilon = 0.0001
+    var epsilonHigh = ""
+    var maxCompletionLength = 512
+    var temperature = 0.8
+    var topP = 0.95
+    var topK = 20
+    var minP = 0.0
+    var rewardWeights = ""
+    var rewardFunctions = ""
+    var rewardFunctionsFile = ""
+    var grpoLossType = "grpo"
+    var importanceSamplingLevel = ""
+    var judgeSystem = ""
+    var alpha = "0.00001"
+    // Optional column-name overrides for custom datasets. Empty string means
+    // "use the trainer's default for this mode" (prompt / completion /
+    // chosen / rejected / messages / text).
+    var promptFeature = ""
+    var completionFeature = ""
+    var chosenFeature = ""
+    var rejectedFeature = ""
+    var chatFeature = ""
+    var textFeature = ""
+    var systemFeature = ""
+    var datasetSystemPrompt = ""
+    var preferenceScoreFeature = ""
+    var answerFeature = ""
+    var typeFeature = ""
+    var ftpoContextFeature = "context_with_chat_template"
+    var ftpoRejectedFeature = "rejected_decoded"
+    var ftpoChosenFeature = "multi_chosen_decoded"
+    var qatEnable = false
+    var qatBits = 8
+    var qatGroupSize = 64
+    var qatStartStep = 1
+    var qatInterval = 1
+
+    var selectedGRPORewardFunctionNames: [String] {
+        let names = rewardFunctions
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        guard !names.isEmpty else {
+            return GRPORewardFunction.defaults.map(\.name)
+        }
+        return names
+    }
+
+    mutating func toggleDefaultGRPORewardFunction(_ name: String) {
+        var selected = selectedGRPORewardFunctionNames
+        if selected.contains(name) {
+            selected.removeAll { $0 == name }
+        } else {
+            selected.append(name)
+        }
+        rewardFunctions = selected.joined(separator: ", ")
+    }
+
+    mutating func useDefaultGRPORewardFunctions() {
+        rewardFunctions = ""
+    }
+
+    mutating func applyDefaultDataset(for mode: TrainMode) {
+        guard Self.builtInDatasets.contains(data) else { return }
+        data = mode.defaultDataset
+    }
+
+    func automaticRunFolderName(date: Date = .now) -> String {
+        let modelName = model
+            .split(separator: "/")
+            .last
+            .map(String.init) ?? "model"
+        return RunFolderNamer.makeName(
+            pieces: [modelName, trainType.rawValue, trainMode.rawValue],
+            date: date
+        )
+    }
+
+    func resolvedRunFolderName(date: Date = .now) -> String {
+        let customName = runFolderName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !customName.isEmpty else {
+            return automaticRunFolderName(date: date)
+        }
+        return RunFolderNamer.sanitize(customName)
+    }
+
+    func runSpecData(adapterPath overrideAdapterPath: String? = nil) throws -> Data {
+        var spec: [String: Any] = [
+            "model": model,
+            "model_family": modelFamily.rawValue,
+            "train": true,
+            "train_type": trainType.rawValue,
+            "train_mode": trainMode.rawValue,
+            "sft_loss_type": sftLossType.rawValue,
+            "optimizer": optimizer.rawValue,
+            "data": data,
+            "seed": seed,
+            "num_layers": numLayers,
+            "batch_size": batchSize,
+            "gradient_accumulation_steps": gradientAccumulationSteps,
+            "val_batches": valBatches,
+            "learning_rate": learningRate,
+            "steps_per_report": stepsPerReport,
+            "steps_per_eval": stepsPerEval,
+            "adapter_path": overrideAdapterPath ?? adapterPath,
+            "save_every": saveEvery,
+            "test": test,
+            "test_batches": testBatches,
+            "max_seq_length": maxSeqLength,
+            "grad_checkpoint": gradCheckpoint,
+            "efficient_long_context": efficientLongContext,
+            "seq_step_size": seqStepSize,
+            "mask_prompt": maskPrompt,
+            "fuse": fuse,
+            "fuse_dequantize": qatEnable ? false : fuseDequantize,
+            "fuse_remove_adapters": fuseRemoveAdapters,
+            "beta": beta,
+            "reward_scaling": rewardScaling,
+            "dpo_cpo_loss_type": dpoCpoLossType,
+            "delta": delta,
+            "lambda_mse_target": lambdaMSETarget,
+            "tau_mse_target": tauMSETarget,
+            "lambda_mse": lambdaMSE,
+            "clip_epsilon_logits": clipEpsilonLogits,
+            "group_size": groupSize,
+            "epsilon": epsilon,
+            "max_completion_length": maxCompletionLength,
+            "temperature": temperature,
+            "top_p": topP,
+            "top_k": topK,
+            "min_p": minP,
+            "grpo_loss_type": grpoLossType,
+            "lora_parameters": [
+                "rank": rank,
+                "scale": scale,
+                "dropout": dropout
+            ],
+            "load_in_4bits": quantization == .fourBit,
+            "load_in_6bits": quantization == .sixBit,
+            "load_in_8bits": quantization == .eightBit,
+            "load_in_mxfp4": quantization == .mxfp4,
+            "qat_enable": qatEnable,
+            "qat_bits": qatBits,
+            "qat_group_size": qatGroupSize,
+            "qat_mode": "affine",
+            "qat_start_step": qatStartStep,
+            "qat_interval": qatInterval
+        ]
+
+        if epochs > 0 {
+            spec["epochs"] = epochs
+            spec["iters"] = NSNull()
+        } else {
+            spec["iters"] = iters
+            spec["epochs"] = NSNull()
+        }
+        if let lrSchedule = learningRateScheduleSpec {
+            spec["lr_schedule"] = lrSchedule
+        }
+        appendSpecString(&spec, "lm_studio_name", lmStudioName)
+        appendSpecString(&spec, "vlm_model", vlmModel)
+        appendSpecString(&spec, "vlm_output_path", vlmOutputPath)
+        spec["vlm_dequantize"] = vlmDequantize
+        appendSpecString(&spec, "reference_model_path", referenceModelPath)
+        if trainMode.needsJudge { appendSpecString(&spec, "judge", judge) }
+        appendSpecString(&spec, "epsilon_high", epsilonHigh)
+        appendSpecString(&spec, "reward_weights", rewardWeights)
+        appendSpecString(&spec, "reward_functions", rewardFunctions)
+        appendSpecString(&spec, "reward_functions_file", rewardFunctionsFile)
+        appendSpecString(&spec, "importance_sampling_level", importanceSamplingLevel)
+        appendSpecString(&spec, "judge_system", judgeSystem)
+        appendSpecString(&spec, "alpha", alpha)
+        appendSpecString(&spec, "prompt_feature", promptFeature)
+        appendSpecString(&spec, "completion_feature", completionFeature)
+        appendSpecString(&spec, "chosen_feature", chosenFeature)
+        appendSpecString(&spec, "rejected_feature", rejectedFeature)
+        appendSpecString(&spec, "chat_feature", chatFeature)
+        appendSpecString(&spec, "text_feature", textFeature)
+        appendSpecString(&spec, "system_feature", systemFeature)
+        appendSpecString(&spec, "dataset_system_prompt", datasetSystemPrompt)
+        appendSpecString(&spec, "preference_score_feature", preferenceScoreFeature)
+        appendSpecString(&spec, "answer_feature", answerFeature)
+        appendSpecString(&spec, "type_feature", typeFeature)
+        appendSpecString(&spec, "ftpo_context_feature", ftpoContextFeature)
+        appendSpecString(&spec, "ftpo_rejected_feature", ftpoRejectedFeature)
+        appendSpecString(&spec, "ftpo_chosen_feature", ftpoChosenFeature)
+        appendSpecString(&spec, "resume_adapter_file", resumeAdapterFile)
+
+        return try JSONSerialization.data(
+            withJSONObject: spec,
+            options: [.prettyPrinted, .sortedKeys]
+        )
+    }
+
+    private var learningRateScheduleSpec: [String: Any]? {
+        switch learningRateSchedule {
+        case .constant:
+            nil
+        case .cosineDecay:
+            [
+                "name": LearningRateScheduleKind.cosineDecay.rawValue,
+                "warmup": max(0, lrWarmupSteps),
+                "warmup_init": lrWarmupInit,
+                "arguments": [
+                    learningRate,
+                    ["iters_fraction": min(max(lrDecayFraction, 0.0), 1.0)],
+                    lrFinal
+                ]
+            ]
+        }
+    }
+}
+
+struct SyntheticConfig: Equatable {
+    static let builtInDatasets = Set(SyntheticKind.allCases.map(\.defaultDataset))
+
+    var kind: SyntheticKind = .sft
+    var backend: SyntheticBackend = .mlx
+    var customProviderID: UUID?
+    var datasetPath = SyntheticKind.sft.defaultDataset
+    var model = "Goekdeniz-Guelmez/JOSIE-1.1-4B-Instruct"
+    var baseURL = ""
+    var apiKey = ""
+    var multiturn = false
+    var maxTurns = 4
+    var maxConcurrent = 4
+    var multiturnPercentile = 0.6
+    var humanRoleModel = ""
+    var baseModel = "mlx-community/Qwen3-4B-Instruct-2507-4bit"
+    var teacherModel = "Goekdeniz-Guelmez/JOSIE-1.1-4B-Instruct"
+    var dpoGenerationTarget: SyntheticDPOGenerationTarget = .both
+    var outputDir = "./output"
+    var resumeOutputDir = ""
+    var runFolderName = ""
+    var systemPrompt = ""
+    var includeSystemPrompt = false
+    var useGroundTruth = true
+    var numSamples = 10000
+    var validSplit = ""
+    var testSplit = ""
+    var batchSize = 2
+    var useGenerationSettings = false
+    var maxTokens = 4096
+    var temperature = 0.6
+    var topP = 0.95
+    var minP = 0.0
+    var topK = 20
+    var minTokensToKeep = 1
+    var xtcProbability = 0.0
+    var xtcThreshold = 0.0
+    var seed = 42
+
+    mutating func applyDefaultDataset(for kind: SyntheticKind) {
+        guard Self.builtInDatasets.contains(datasetPath) else { return }
+        datasetPath = kind.defaultDataset
+    }
+
+    mutating func applyBackendDefaults(for backend: SyntheticBackend) {
+        if baseURL.isEmpty || SyntheticBackend.allCases.map(\.defaultBaseURL).contains(baseURL) {
+            baseURL = backend.defaultBaseURL
+        }
+        // Keep model ids stable across provider changes. The provider picker
+        // still lets the user choose a different id, but auto-clearing here
+        // would also erase ids loaded from previous synthetic run specs.
+        let defaultProviderModel = "Goekdeniz-Guelmez/JOSIE-1.1-4B-Instruct"
+        if backend == .mlx {
+            if model.isEmpty {
+                model = defaultProviderModel
+            }
+            if teacherModel.isEmpty {
+                teacherModel = defaultProviderModel
+            }
+        }
+    }
+
+    func automaticRunFolderName(date: Date = .now) -> String {
+        RunFolderNamer.makeName(
+            pieces: ["synthetic", kind.rawValue, datasetPath.split(separator: "/").last.map(String.init) ?? "dataset"],
+            date: date
+        )
+    }
+
+    func resolvedRunFolderName(date: Date = .now) -> String {
+        let customName = runFolderName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !customName.isEmpty else {
+            return automaticRunFolderName(date: date)
+        }
+        return RunFolderNamer.sanitize(customName)
+    }
+
+    func runSpecData(outputDir overrideOutputDir: String? = nil) throws -> Data {
+        var spec: [String: Any] = [
+            "kind": kind.rawValue,
+            "backend": backend.rawValue,
+            "dataset_path": datasetPath,
+            "model": model,
+            "base_url": baseURL,
+            "multiturn": multiturn,
+            "max_turns": maxTurns,
+            "max_concurrent": maxConcurrent,
+            "multiturn_percentile": multiturnPercentile,
+            "human_role_model": humanRoleModel,
+            "base_model": baseModel,
+            "teacher_model": teacherModel,
+            "dpo_generation_target": dpoGenerationTarget.rawValue,
+            "output_dir": overrideOutputDir ?? outputDir,
+            "resume_output_dir": resumeOutputDir,
+            "system_prompt": systemPrompt,
+            "include_system_prompt": includeSystemPrompt,
+            "use_ground_truth": useGroundTruth,
+            "num_samples": numSamples,
+            "valid_split": validSplit,
+            "test_split": testSplit,
+            "batch_size": batchSize,
+            "use_generation_settings": useGenerationSettings,
+            "max_tokens": maxTokens,
+            "temperature": temperature,
+            "top_p": topP,
+            "min_p": minP,
+            "top_k": topK,
+            "min_tokens_to_keep": minTokensToKeep,
+            "xtc_probability": xtcProbability,
+            "xtc_threshold": xtcThreshold,
+            "seed": seed
+        ]
+        spec = spec.mapValues { value in
+            if let string = value as? String {
+                return string.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            return value
+        }
+        return try JSONSerialization.data(withJSONObject: spec, options: [.prettyPrinted, .sortedKeys])
+    }
+}
+
+extension SyntheticConfig {
+    init(jsonData data: Data) throws {
+        self.init()
+        let object = try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
+        Self.applySpec(object, to: &self)
+    }
+
+    static func decoded(from specURL: URL) -> SyntheticConfig? {
+        guard let data = try? Data(contentsOf: specURL) else { return nil }
+        return try? Self(jsonData: data)
+    }
+
+    private static func applySpec(_ spec: [String: Any], to config: inout SyntheticConfig) {
+        if let v = spec["kind"] as? String, let kind = SyntheticKind(rawValue: v) { config.kind = kind }
+        if let v = spec["backend"] as? String, let backend = SyntheticBackend(rawValue: v) { config.backend = backend }
+        if let v = spec["dataset_path"] as? String { config.datasetPath = v }
+        if let v = spec["model"] as? String { config.model = v }
+        if let v = spec["base_url"] as? String { config.baseURL = v }
+        if let v = spec["human_role_model"] as? String { config.humanRoleModel = v }
+        if let v = spec["base_model"] as? String { config.baseModel = v }
+        if let v = spec["teacher_model"] as? String { config.teacherModel = v }
+        if let v = spec["dpo_generation_target"] as? String,
+           let target = SyntheticDPOGenerationTarget(rawValue: v) {
+            config.dpoGenerationTarget = target
+        }
+        if let v = spec["output_dir"] as? String { config.outputDir = v }
+        if let v = spec["resume_output_dir"] as? String { config.resumeOutputDir = v }
+        if let v = spec["system_prompt"] as? String { config.systemPrompt = v }
+        config.multiturn = boolValue(spec["multiturn"]) ?? config.multiturn
+        config.includeSystemPrompt = boolValue(spec["include_system_prompt"]) ?? config.includeSystemPrompt
+        config.useGroundTruth = boolValue(spec["use_ground_truth"]) ?? config.useGroundTruth
+        config.useGenerationSettings = boolValue(spec["use_generation_settings"]) ?? config.useGenerationSettings
+        config.maxTurns = intValue(spec["max_turns"]) ?? config.maxTurns
+        config.maxConcurrent = intValue(spec["max_concurrent"]) ?? config.maxConcurrent
+        config.numSamples = intValue(spec["num_samples"]) ?? config.numSamples
+        config.batchSize = intValue(spec["batch_size"]) ?? config.batchSize
+        config.maxTokens = intValue(spec["max_tokens"]) ?? config.maxTokens
+        config.topK = intValue(spec["top_k"]) ?? config.topK
+        config.minTokensToKeep = intValue(spec["min_tokens_to_keep"]) ?? config.minTokensToKeep
+        config.seed = intValue(spec["seed"]) ?? config.seed
+        config.multiturnPercentile = doubleValue(spec["multiturn_percentile"]) ?? config.multiturnPercentile
+        config.temperature = doubleValue(spec["temperature"]) ?? config.temperature
+        config.topP = doubleValue(spec["top_p"]) ?? config.topP
+        config.minP = doubleValue(spec["min_p"]) ?? config.minP
+        config.xtcProbability = doubleValue(spec["xtc_probability"]) ?? config.xtcProbability
+        config.xtcThreshold = doubleValue(spec["xtc_threshold"]) ?? config.xtcThreshold
+        if let v = spec["valid_split"] as? String { config.validSplit = v }
+        if let v = spec["test_split"] as? String { config.testSplit = v }
+    }
+
+    private static func intValue(_ value: Any?) -> Int? {
+        switch value {
+        case let v as Int: return v
+        case let v as NSNumber: return v.intValue
+        case let v as Double: return Int(v)
+        case let v as String: return Int(v)
+        case is NSNull: return nil
+        default: return nil
+        }
+    }
+
+    private static func doubleValue(_ value: Any?) -> Double? {
+        switch value {
+        case let v as Double: return v
+        case let v as NSNumber: return v.doubleValue
+        case let v as Int: return Double(v)
+        case let v as String: return Double(v)
+        case is NSNull: return nil
+        default: return nil
+        }
+    }
+
+    private static func boolValue(_ value: Any?) -> Bool? {
+        switch value {
+        case let v as Bool: return v
+        case let v as NSNumber: return v.boolValue
+        case is NSNull: return nil
+        default: return nil
+        }
+    }
+}
+
+struct TrainingMetric: Identifiable, Equatable, Codable {
+    /// A fresh id is generated on every decode so the encoded form stays
+    /// compact (no UUID noise) but the in-memory copy still satisfies
+    /// `Identifiable` for SwiftUI lists.
+    var id: UUID = UUID()
+    let step: Int
+    /// Every numeric value parsed from this step's report, keyed by the
+    /// canonical name the UI uses (`loss`, `chosen_r`, `kl`,
+    /// `reward_<name>_mean`, …). Anything not yet seen is just not in the
+    /// dict — the Live Metrics view re-discovers which cards to show on
+    /// every render by inspecting `values.keys`.
+    ///
+    /// Validation values are stored with a `val_` prefix (so a val report
+    /// of `Val loss 1.234` lands as `values["val_loss"]`) and the chart
+    /// code uses that prefix to render them as dashed lines.
+    let values: [String: Double]
+    /// The raw line(s) that produced this metric. For an inline trainer
+    /// report it's the single line; for a GRPO block it's the joined
+    /// block. Kept so the "Recent raw lines" strip on the metrics page
+    /// can show what the trainer actually said for the latest step.
+    let rawLine: String
+
+    init(step: Int, values: [String: Double], rawLine: String) {
+        self.step = step
+        self.values = values
+        self.rawLine = rawLine
+    }
+
+    // Convenience accessors used by code that only needs the headline
+    // SFT-style metrics. Live Metrics reads from `values` directly.
+    var loss: Double? { values["loss"] }
+    var validationLoss: Double? { values["val_loss"] }
+    var testLoss: Double? { values["test_loss"] }
+    var learningRate: Double? { values["learning_rate"] ?? values["lr"] }
+    var memoryGB: Double? { values["peak_mem"] ?? values["memory"] }
+}
+
+// MARK: - Persisted training metrics (on disk in the run folder)
+
+/// Reads and writes the `metrics.json` file that lives next to every
+/// training run's `run_spec.json`. The file is the canonical record of
+/// what the trainer reported during the run — the live `runner.metrics`
+/// array is in-memory only, so this file is what makes the Runs page
+/// able to show loss curves for runs that finished in previous sessions.
+enum TrainingMetricIO {
+    static let filename = "metrics.json"
+
+    static func write(_ metrics: [TrainingMetric], to url: URL) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data = try encoder.encode(metrics)
+        try data.write(to: url, options: .atomic)
+    }
+
+    static func read(from url: URL) -> [TrainingMetric] {
+        guard let data = try? Data(contentsOf: url) else { return [] }
+        let decoder = JSONDecoder()
+        guard let decoded = try? decoder.decode([TrainingMetric].self, from: data) else {
+            return []
+        }
+        // The runner sometimes emits multiple lines per step that get
+        // merged in insertion order; preserve step order on read so
+        // charts always draw left-to-right in time.
+        return decoded.sorted { $0.step < $1.step }
+    }
+}
+
+// MARK: - Previous runs (discovered from the output root)
+
+/// A snapshot of a run that has been written to the output root in a
+/// previous session (or earlier in this session). The store loads these
+/// at launch and on demand; the Runs page renders one card per entry.
+struct PersistedRun: Identifiable, Equatable {
+    enum Kind: String, Equatable {
+        /// A training run (`run_spec.json` present, `adapters/` populated).
+        case training
+        /// A synthetic-data run (not yet decoded — placeholder for parity).
+        case synthetic
+        /// A Hugging Face upload (not yet decoded — placeholder for parity).
+        case hfUpload
+    }
+
+    /// Run folder name, which is unique under the output root and doubles
+    /// as a stable id (the folder can be moved but the id stays with it).
+    let id: String
+    let folderURL: URL
+    let kind: Kind
+    let createdAt: Date
+    /// "Qwen3-0.6B · SFT · lora" — built from the decoded spec when
+    /// available, otherwise from the folder name.
+    let title: String
+    /// Decoded `run_spec.json` payload. `nil` for non-training runs (and
+    /// for training folders whose spec couldn't be decoded — the card
+    /// still appears so the user can find the folder in Finder).
+    let spec: TrainingConfig?
+    /// `metrics.json` contents, sorted by step. Empty for runs that
+    /// never produced a report or for non-training runs.
+    let metrics: [TrainingMetric]
+    /// Decoded `synthetic_spec.json` payload. `nil` for training runs
+    /// and for synthetic folders whose spec could not be decoded.
+    let syntheticSpec: SyntheticConfig?
+    /// A small bounded preview of generated JSONL records for synthetic
+    /// dataset runs. Empty when no generated data file was found.
+    let syntheticSamples: [SyntheticDatasetSample]
+    /// Display string for the on-card subtitle and the detail sheet.
+    let command: String
+
+    var hasMetrics: Bool { !metrics.isEmpty }
+    var hasSpec: Bool { spec != nil }
+    var hasSyntheticSpec: Bool { syntheticSpec != nil }
+
+    /// Final train + val loss from the last metric that reported one.
+    /// `nil` when the run never produced a loss sample.
+    var finalLoss: Double? { metrics.reversed().compactMap(\.loss).first }
+    var finalValidationLoss: Double? { metrics.reversed().compactMap(\.validationLoss).first }
+}
+
+struct SyntheticDatasetSample: Identifiable, Equatable {
+    let index: Int
+    let sourceFile: String
+    let fields: [SyntheticSampleField]
+
+    var id: String { "\(sourceFile)#\(index)" }
+}
+
+struct SyntheticSampleField: Identifiable, Equatable {
+    let key: String
+    let value: String
+
+    var id: String { key }
+}
+
+struct TrainingResumeCandidate: Equatable {
+    let adapterFile: URL
+    let step: Int?
+}
+
+struct RunRecord: Identifiable, Equatable {
+    let id: UUID
+    let title: String
+    let command: String
+    let startedAt: Date
+    var endedAt: Date?
+    var status: String
+
+    init(id: UUID = UUID(), title: String, command: String, startedAt: Date, endedAt: Date? = nil, status: String) {
+        self.id = id
+        self.title = title
+        self.command = command
+        self.startedAt = startedAt
+        self.endedAt = endedAt
+        self.status = status
+    }
+}
+
+struct LocalRunOutput: Identifiable, Equatable {
+    let name: String
+    let path: String
+    let hasAdapters: Bool
+
+    var id: String { path }
+
+    nonisolated init(name: String, path: String, hasAdapters: Bool = true) {
+        self.name = name
+        self.path = path
+        self.hasAdapters = hasAdapters
+    }
+}
+
+private func appendSpecString(_ spec: inout [String: Any], _ key: String, _ value: String) {
+    let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else { return }
+    spec[key] = trimmed
+}
+
+enum RunFolderNamer {
+    static func makeName(pieces: [String], date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd-HHmmss"
+        let prefix = pieces
+            .map(sanitize)
+            .filter { !$0.isEmpty }
+            .joined(separator: "-")
+        return "\(prefix)-\(formatter.string(from: date))"
+    }
+
+    static func sanitize(_ value: String) -> String {
+        let allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-_."))
+        let scalars = value.unicodeScalars.map { scalar in
+            allowed.contains(scalar) ? Character(scalar) : "-"
+        }
+        let collapsed = String(scalars)
+            .split(separator: "-", omittingEmptySubsequences: true)
+            .joined(separator: "-")
+            .trimmingCharacters(in: CharacterSet(charactersIn: "-_. "))
+        return collapsed.isEmpty ? "run" : collapsed
+    }
+}
+
+// MARK: - TrainingConfig JSON decoder
+
+extension TrainingConfig {
+    /// Reconstructs a `TrainingConfig` from a `run_spec.json` payload
+    /// (the file written by `runSpecData(adapterPath:)` for every
+    /// training run). All fields are optional in the input dict — the
+    /// writer only emits a key when it differs from the default — so
+    /// missing keys fall back to the struct's own defaults, which mirror
+    /// the values a fresh `TrainingConfig()` ships with. Fields the
+    /// trainer never persists (`lmStudioName`, `runFolderName`,
+    /// `pythonExecutable`, `workingDirectory`) stay at their defaults.
+    init(jsonData: Data) throws {
+        guard let object = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
+            throw NSError(
+                domain: "TrainingConfig",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "run_spec.json is not a JSON object"]
+            )
+        }
+        self.init()
+        Self.applySpec(object, to: &self)
+    }
+
+    /// Convenience: load + decode in one call. Returns `nil` if the
+    /// file is missing or the payload can't be parsed; the caller can
+    /// then decide to skip the run or surface a parse error.
+    static func decoded(from specURL: URL) -> TrainingConfig? {
+        guard let data = try? Data(contentsOf: specURL) else { return nil }
+        return try? Self(jsonData: data)
+    }
+
+    /// Reconstruct the "command" string the live `RunRecord` shows, so
+    /// the persisted-run card mirrors the in-memory card's subtitle.
+    /// It's a best-effort display — not what was actually executed
+    /// (the wrapper script is in `Backend/training_runner.py`) but
+    /// close enough for the Runs page.
+    var reconstructedCommand: String {
+        let adapter = adapterPath.isEmpty ? "adapters" : adapterPath
+        var parts = ["python -m mlx_lm_lora train"]
+        parts += ["--model", model]
+        parts += ["--train-mode", trainMode.rawValue]
+        parts += ["--train-type", trainType.rawValue]
+        parts += ["--data", data]
+        parts += ["--adapter-path", adapter]
+        if !referenceModelPath.isEmpty {
+            parts += ["--reference-model-path", referenceModelPath]
+        }
+        if trainMode.needsJudge, !judge.isEmpty {
+            parts += ["--judge", judge]
+        }
+        return parts
+            .map { $0.contains(" ") ? "\"\($0)\"" : $0 }
+            .joined(separator: " ")
+    }
+
+    // MARK: - Spec application
+
+    private static func applySpec(_ spec: [String: Any], to config: inout TrainingConfig) {
+        if let v = spec["model"] as? String { config.model = v }
+        if let v = spec["model_family"] as? String, let family = ModelFamily(rawValue: v) {
+            config.modelFamily = family
+        }
+        if let v = spec["vlm_model"] as? String { config.vlmModel = v }
+        if let v = spec["vlm_output_path"] as? String { config.vlmOutputPath = v }
+        if let v = spec["data"] as? String { config.data = v }
+        if let v = spec["adapter_path"] as? String { config.adapterPath = v }
+        if let v = spec["train_mode"] as? String, let mode = TrainMode(rawValue: v) {
+            config.trainMode = mode
+        }
+        if let v = spec["train_type"] as? String, let type = TrainType(rawValue: v) {
+            config.trainType = type
+        }
+        if let v = spec["optimizer"] as? String, let opt = OptimizerKind(rawValue: v) {
+            config.optimizer = opt
+        }
+
+        // Numeric scalars
+        config.seed = intValue(spec["seed"]) ?? config.seed
+        config.numLayers = intValue(spec["num_layers"]) ?? config.numLayers
+        config.batchSize = intValue(spec["batch_size"]) ?? config.batchSize
+        config.iters = intValue(spec["iters"]) ?? config.iters
+        // The writer sets `epochs` to `NSNull()` when iters is used (and
+        // vice-versa); `intValue` already coerces null to nil, so the
+        // fallback keeps the existing default.
+        config.epochs = intValue(spec["epochs"]) ?? config.epochs
+        config.gradientAccumulationSteps = intValue(spec["gradient_accumulation_steps"])
+            ?? config.gradientAccumulationSteps
+        config.valBatches = intValue(spec["val_batches"]) ?? config.valBatches
+        config.learningRate = doubleValue(spec["learning_rate"]) ?? config.learningRate
+        config.stepsPerReport = intValue(spec["steps_per_report"]) ?? config.stepsPerReport
+        config.stepsPerEval = intValue(spec["steps_per_eval"]) ?? config.stepsPerEval
+        config.saveEvery = intValue(spec["save_every"]) ?? config.saveEvery
+        config.testBatches = intValue(spec["test_batches"]) ?? config.testBatches
+        config.maxSeqLength = intValue(spec["max_seq_length"]) ?? config.maxSeqLength
+        config.seqStepSize = intValue(spec["seq_step_size"]) ?? config.seqStepSize
+        config.lrWarmupSteps = intValue(spec["warmup"]) ?? config.lrWarmupSteps
+        config.qatBits = intValue(spec["qat_bits"]) ?? config.qatBits
+        config.qatGroupSize = intValue(spec["qat_group_size"]) ?? config.qatGroupSize
+        config.qatStartStep = intValue(spec["qat_start_step"]) ?? config.qatStartStep
+        config.qatInterval = intValue(spec["qat_interval"]) ?? config.qatInterval
+
+        // Booleans
+        config.test = boolValue(spec["test"]) ?? config.test
+        config.gradCheckpoint = boolValue(spec["grad_checkpoint"]) ?? config.gradCheckpoint
+        config.efficientLongContext = boolValue(spec["efficient_long_context"])
+            ?? config.efficientLongContext
+        config.maskPrompt = boolValue(spec["mask_prompt"]) ?? config.maskPrompt
+        config.fuse = boolValue(spec["fuse"]) ?? config.fuse
+        config.fuseDequantize = boolValue(spec["fuse_dequantize"]) ?? config.fuseDequantize
+        config.fuseRemoveAdapters = boolValue(spec["fuse_remove_adapters"]) ?? config.fuseRemoveAdapters
+        config.qatEnable = boolValue(spec["qat_enable"]) ?? config.qatEnable
+        config.vlmDequantize = boolValue(spec["vlm_dequantize"]) ?? config.vlmDequantize
+        if config.qatEnable {
+            config.fuseDequantize = false
+        }
+
+        // Floats
+        config.beta = doubleValue(spec["beta"]) ?? config.beta
+        config.rewardScaling = doubleValue(spec["reward_scaling"]) ?? config.rewardScaling
+        config.delta = doubleValue(spec["delta"]) ?? config.delta
+        config.epsilon = doubleValue(spec["epsilon"]) ?? config.epsilon
+        config.maxCompletionLength = intValue(spec["max_completion_length"])
+            ?? config.maxCompletionLength
+        config.temperature = doubleValue(spec["temperature"]) ?? config.temperature
+        config.topP = doubleValue(spec["top_p"]) ?? config.topP
+        config.topK = intValue(spec["top_k"]) ?? config.topK
+        config.minP = doubleValue(spec["min_p"]) ?? config.minP
+        config.lrWarmupInit = doubleValue(spec["warmup_init"]) ?? config.lrWarmupInit
+        config.lrDecayFraction = doubleValue(spec["iters_fraction"]) ?? config.lrDecayFraction
+        config.lrFinal = doubleValue(spec["lr_final"]) ?? config.lrFinal
+
+        // Strings (and stringified numerics that the writer always emits as strings)
+        if let v = spec["dpo_cpo_loss_type"] as? String { config.dpoCpoLossType = v }
+        if let v = spec["sft_loss_type"] as? String, let loss = SFTLossType(rawValue: v) { config.sftLossType = loss }
+        config.lambdaMSETarget = doubleValue(spec["lambda_mse_target"]) ?? config.lambdaMSETarget
+        config.tauMSETarget = doubleValue(spec["tau_mse_target"]) ?? config.tauMSETarget
+        config.lambdaMSE = doubleValue(spec["lambda_mse"]) ?? config.lambdaMSE
+        config.clipEpsilonLogits = doubleValue(spec["clip_epsilon_logits"]) ?? config.clipEpsilonLogits
+        if let v = spec["grpo_loss_type"] as? String { config.grpoLossType = v }
+        if let v = spec["epsilon_high"] as? String { config.epsilonHigh = v }
+        if let v = spec["reward_weights"] as? String { config.rewardWeights = v }
+        if let v = spec["reward_functions"] as? String { config.rewardFunctions = v }
+        if let v = spec["reward_functions_file"] as? String { config.rewardFunctionsFile = v }
+        if let v = spec["importance_sampling_level"] as? String { config.importanceSamplingLevel = v }
+        if let v = spec["judge_system"] as? String { config.judgeSystem = v }
+        if let v = spec["alpha"] as? String { config.alpha = v }
+        if let v = spec["judge"] as? String {
+            config.judge = v
+            config.judgeKind = v.trimmingCharacters(in: .whitespacesAndNewlines)
+                .localizedCaseInsensitiveCompare("human") == .orderedSame ? .user : .llm
+        }
+        if let v = spec["reference_model_path"] as? String { config.referenceModelPath = v }
+        if let v = spec["resume_adapter_file"] as? String { config.resumeAdapterFile = v }
+        if let v = spec["lm_studio_name"] as? String { config.lmStudioName = v }
+        if let v = spec["prompt_feature"] as? String { config.promptFeature = v }
+        if let v = spec["completion_feature"] as? String { config.completionFeature = v }
+        if let v = spec["chosen_feature"] as? String { config.chosenFeature = v }
+        if let v = spec["rejected_feature"] as? String { config.rejectedFeature = v }
+        if let v = spec["chat_feature"] as? String { config.chatFeature = v }
+        if let v = spec["text_feature"] as? String { config.textFeature = v }
+        if let v = spec["system_feature"] as? String { config.systemFeature = v }
+        if let v = spec["dataset_system_prompt"] as? String { config.datasetSystemPrompt = v }
+        if let v = spec["preference_score_feature"] as? String { config.preferenceScoreFeature = v }
+        if let v = spec["answer_feature"] as? String { config.answerFeature = v }
+        if let v = spec["type_feature"] as? String { config.typeFeature = v }
+        if let v = spec["ftpo_context_feature"] as? String { config.ftpoContextFeature = v }
+        if let v = spec["ftpo_rejected_feature"] as? String { config.ftpoRejectedFeature = v }
+        if let v = spec["ftpo_chosen_feature"] as? String { config.ftpoChosenFeature = v }
+
+        // Quantization is encoded as one of four booleans in the spec.
+        if let v = spec["load_in_4bits"] as? Bool, v { config.quantization = .fourBit }
+        else if let v = spec["load_in_6bits"] as? Bool, v { config.quantization = .sixBit }
+        else if let v = spec["load_in_8bits"] as? Bool, v { config.quantization = .eightBit }
+        else if let v = spec["load_in_mxfp4"] as? Bool, v { config.quantization = .mxfp4 }
+
+        // LoRA parameters (rank/scale/dropout) live in a sub-dict; the
+        // writer also emits the flat keys, but those duplicate the
+        // lora_parameters values, so we read from the sub-dict first.
+        if let lora = spec["lora_parameters"] as? [String: Any] {
+            config.rank = intValue(lora["rank"]) ?? config.rank
+            config.scale = doubleValue(lora["scale"]) ?? config.scale
+            config.dropout = doubleValue(lora["dropout"]) ?? config.dropout
+        }
+        config.rank = intValue(spec["rank"]) ?? config.rank
+        config.scale = doubleValue(spec["scale"]) ?? config.scale
+        config.dropout = doubleValue(spec["dropout"]) ?? config.dropout
+
+        // Learning-rate schedule. The writer emits a dict like
+        // `{name, warmup, warmup_init, arguments: [lr, {iters_fraction}, lr_final]}`.
+        if let schedule = spec["lr_schedule"] as? [String: Any],
+           let name = schedule["name"] as? String,
+           let kind = LearningRateScheduleKind(rawValue: name) {
+            config.learningRateSchedule = kind
+            if let warmup = intValue(schedule["warmup"]) {
+                config.lrWarmupSteps = warmup
+            }
+            if let warmupInit = doubleValue(schedule["warmup_init"]) {
+                config.lrWarmupInit = warmupInit
+            }
+            if let args = schedule["arguments"] as? [Any], args.count >= 3 {
+                if let lr = doubleValue(args[0]) { config.learningRate = lr }
+                if let fractionDict = args[1] as? [String: Any],
+                   let fraction = doubleValue(fractionDict["iters_fraction"]) {
+                    config.lrDecayFraction = fraction
+                }
+                if let lrFinal = doubleValue(args[2]) { config.lrFinal = lrFinal }
+            }
+        }
+    }
+
+    private static func intValue(_ value: Any?) -> Int? {
+        switch value {
+        case let v as Int: return v
+        case let v as NSNumber: return v.intValue
+        case let v as Double: return Int(v)
+        case let v as String: return Int(v)
+        case is NSNull: return nil
+        default: return nil
+        }
+    }
+
+    private static func doubleValue(_ value: Any?) -> Double? {
+        switch value {
+        case let v as Double: return v
+        case let v as NSNumber: return v.doubleValue
+        case let v as Int: return Double(v)
+        case let v as String: return Double(v)
+        case is NSNull: return nil
+        default: return nil
+        }
+    }
+
+    private static func boolValue(_ value: Any?) -> Bool? {
+        switch value {
+        case let v as Bool: return v
+        case let v as NSNumber: return v.boolValue
+        case is NSNull: return nil
+        default: return nil
+        }
+    }
+}

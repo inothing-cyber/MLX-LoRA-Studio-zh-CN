@@ -1,0 +1,112 @@
+[
+  {
+    "file": "Sources/MLXLoRAStudio/Views/RunsView.swift",
+    "before": "Text(run.status)",
+    "after": "Text(StudioL10n.display(run.status))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/RunsView.swift",
+    "before": "Text(deleteErrorMessage)",
+    "after": "Text(StudioL10n.display(deleteErrorMessage))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SettingsView.swift",
+    "before": "Text(store.completionNotificationsStatus)",
+    "after": "Text(StudioL10n.display(store.completionNotificationsStatus))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SettingsView.swift",
+    "before": "Text(store.iogpuWiredLimitStatus)",
+    "after": "Text(StudioL10n.display(store.iogpuWiredLimitStatus))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SettingsView.swift",
+    "before": "Text(ANSIText.clean(line))",
+    "after": "Text(StudioL10n.log(ANSIText.clean(line)))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SharedControls.swift",
+    "before": "Text(suggestion)",
+    "after": "Text(StudioL10n.suggestion(suggestion))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SharedControls.swift",
+    "before": "Text(runner.progressLabel.isEmpty ? \"进度\" : runner.progressLabel)",
+    "after": "Text(StudioL10n.display(runner.progressLabel.isEmpty ? \"进度\" : runner.progressLabel))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift",
+    "before": "Text(runner.currentCommand.isEmpty ? \"就绪\" : runner.currentCommand)",
+    "after": "Text(StudioL10n.display(runner.currentCommand.isEmpty ? \"就绪\" : runner.currentCommand))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SettingsView.swift",
+    "before": "Text(store.packageRunner.currentCommand.isEmpty ? \"尚未执行包管理命令。\" : store.packageRunner.currentCommand)",
+    "after": "Text(StudioL10n.display(store.packageRunner.currentCommand.isEmpty ? \"尚未执行包管理命令。\" : store.packageRunner.currentCommand))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SyntheticDataView.swift",
+    "before": "Text(commandSummary)",
+    "after": "Text(StudioL10n.display(commandSummary))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift",
+    "before": "ANSIRenderer.attributed(line)",
+    "after": "ANSIRenderer.attributed(StudioL10n.log(line))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SyntheticDataView.swift",
+    "before": "Text(line)",
+    "after": "Text(StudioL10n.log(line))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SyntheticDataView.swift",
+    "before": "Text(lastError)",
+    "after": "Text(StudioL10n.display(lastError))",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SyntheticDataView.swift",
+    "before": "Label(lastError, systemImage:",
+    "after": "Label(StudioL10n.display(lastError), systemImage:",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Services/JobCompletionNotifier.swift",
+    "before": "content.title = title",
+    "after": "content.title = StudioL10n.display(title)",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Services/JobCompletionNotifier.swift",
+    "before": "content.body = body",
+    "after": "content.body = StudioL10n.display(body)",
+    "count": 1
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/SharedControls.swift",
+    "before": "Text(title)\n                .font(.caption)\n                .foregroundStyle(.secondary)\n                .lineLimit(1)\n                .minimumScaleFactor(0.8)",
+    "after": "Text(title)\n                .font(.caption)\n                .foregroundStyle(.secondary)\n                .lineLimit(2)\n                .minimumScaleFactor(0.8)\n                .fixedSize(horizontal: false, vertical: true)\n                .frame(minHeight: 30, alignment: .topLeading)",
+    "count": 2,
+    "purpose": "Keep bilingual numeric labels readable without modifying values or parsing."
+  },
+  {
+    "file": "Sources/MLXLoRAStudio/Views/TrainingView.swift",
+    "before": "Text(type.title).tag(type)",
+    "after": "Text(StudioL10n.display(type.title)).tag(type)",
+    "count": 1,
+    "purpose": "Translate the display-only FULL choice; rawValue and selection tag stay identical."
+  }
+]

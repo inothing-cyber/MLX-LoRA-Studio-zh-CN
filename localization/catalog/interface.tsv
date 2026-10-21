@@ -1,0 +1,132 @@
+# Explicit reviewed UI occurrence selectors. Technical labels not listed stay original.
+MLXLoRAStudioApp.swift:55	停止任务
+MLXLoRAStudioApp.swift:72	开始任务
+MLXLoRAStudioApp.swift:74	恢复任务
+MLXLoRAStudioApp.swift:74#1	暂停任务
+ContentView.swift:43	停止
+ContentView.swift:85	恢复
+ContentView.swift:85#1	暂停
+ContentView.swift:87	运行
+AboutView.swift:8	关于
+AboutView.swift:9	作者、引用方式，以及这个应用诞生的原因。
+AboutView.swift:14	MLX LoRA Studio 是一款原生桌面应用，可在 Apple silicon 上通过 LoRA、DoRA、supervised fine-tuning、preference optimization 和 reinforcement-style training loops 对语言模型进行 fine-tuning，并实时监控运行。
+AboutView.swift:18	我开发它，是为了让 MLX fine-tuning 工作流从一堆脚本变成专注的工作室：选择 model 和数据，调整关键参数，启动训练并观察运行，同时保留底层命令行的透明性。
+AboutView.swift:25	如何引用本项目
+AboutView.swift:27	如果你在项目中使用本应用或其训练工作流，请引用以下内容：
+AboutView.swift:71	支持本项目与作者
+AboutView.swift:80	在 GitHub 上赞助
+AboutView.swift:83	支持 MLX LoRA Studio 的开发
+AboutView.swift:117	关于
+AboutView.swift:162	已复制
+AboutView.swift:162#1	复制
+HFAssetPicker.swift:45	选择
+HFAssetPicker.swift:69	重新扫描本地 Hugging Face cache
+HFAssetPicker.swift:84	已设置 HF key
+HFAssetPicker.swift:88	Hugging Face token 已保存在 Keychain 中，访问 gated 或 private repo 时会自动进行身份验证。
+HFAssetPicker.swift:90	未设置 HF key
+HFAssetPicker.swift:94	在设置 → Hugging Face 中添加 token，以加载 gated 或 private repo。
+HFAssetPicker.swift:129	本地 HF cache（\(cached.count)）
+HFAssetPicker.swift:131	尚未下载任何内容
+HFAssetPicker.swift:144	合成数据运行记录（\(syntheticOutputs.count)）
+HFAssetPicker.swift:146	尚无 generated-data 目录
+HFAssetPicker.swift:160	自定义路径（\(custom.count)）
+HFAssetPicker.swift:185	添加 HF repo…
+HFAssetPicker.swift:188	浏览本地路径…
+HFAssetPicker.swift:202	选择本地 model 目录（包含 config.json 的目录）。
+HFAssetPicker.swift:203	选择本地 dataset 目录或文件。
+HFAssetPicker.swift:204	使用此路径
+HFAssetPicker.swift:222	添加 Hugging Face model
+HFAssetPicker.swift:222#1	添加 Hugging Face dataset
+HFAssetPicker.swift:224	粘贴 huggingface.co 上的 repo id，支持 `owner/name` 和 `owner--name` 两种写法。
+HFAssetPicker.swift:232	取消
+HFAssetPicker.swift:233	添加
+HFUploadView.swift:20	上传到 HF
+HFUploadView.swift:21	HF token 已就绪
+HFUploadView.swift:21#1	请先在设置中添加 HF token
+HFUploadView.swift:55	上传到 HF
+HFUploadView.swift:87	取消上传
+HFUploadView.swift:118	上次上传：\(store.hfUploadRunner.lastRunFolder)
+HFUploadView.swift:141	训练记录
+HFUploadView.swift:142	选择训练记录
+HFUploadView.swift:149	自定义 model 目录
+HFUploadView.swift:150	目标 model repo，例如 username/model-name
+HFUploadView.swift:162	本次运行没有 adapter checkpoint 文件，请改为上传 merged model weights。
+HFUploadView.swift:166	上传 adapter 文件、adapter config、已有的 tokenizer/config 元数据，以及生成的 README.md。
+HFUploadView.swift:168	上传所选 model 的完整目录，包括 merged model weights、tokenizer/config 文件和 README.md。
+HFUploadView.swift:229	合成数据运行记录
+HFUploadView.swift:230	选择合成数据运行记录
+HFUploadView.swift:234	自定义 dataset 目录
+HFUploadView.swift:235	目标 dataset repo，例如 username/dataset-name
+HFUploadView.swift:236	创建或更新 Hugging Face dataset repo，并写入 dataset README.md。
+HFUploadView.swift:249	Hub 设置
+HFUploadView.swift:250	将新建 repo 设为 private
+HFUploadView.swift:251	Commit message
+HFUploadView.swift:301	自定义：\(URL(fileURLWithPath: selection).lastPathComponent)
+HFUploadView.swift:327	浏览
+HFUploadView.swift:337	选择
+OnboardingTourView.swift:73	跳过引导
+OnboardingTourView.swift:87	跳过引导
+OnboardingTourView.swift:93	上一步
+OnboardingTourView.swift:100	完成
+OnboardingTourView.swift:100#1	下一步
+OnboardingTourView.swift:152	选择工作区
+OnboardingTourView.swift:153	通过侧栏可以训练 adapter、查看 metrics、生成 dataset、上传到 Hugging Face、阅读指南，以及重新查看已保存的运行记录。
+OnboardingTourView.swift:162	配置训练
+OnboardingTourView.swift:163	从训练页开始选择 model、dataset、LoRA 设置和算法，点击工具栏中的运行按钮即可启动所选任务。
+OnboardingTourView.swift:173	实时观察运行
+OnboardingTourView.swift:174	任务运行时，实时指标页会将训练日志转换为 loss、reward、KL 和 learning-rate 图表。
+OnboardingTourView.swift:184	需要时创建数据
+OnboardingTourView.swift:185	运行记录页会整理本地输出，便于查看设置、比较 metrics，或稍后恢复训练。
+OnboardingTourView.swift:195	设置工作室
+OnboardingTourView.swift:196	打开设置，管理 Python 环境、输出目录、Hugging Face token、后端包更新、通知与资源限制。
+PythonPickerSection.swift:15	未找到 interpreter
+PythonPickerSection.swift:16	选择 interpreter
+PythonPickerSection.swift:22	自定义路径…
+PythonPickerSection.swift:45	刷新
+PythonPickerSection.swift:53	创建新环境…
+PythonPickerSection.swift:92	自定义路径
+PythonPickerSection.swift:98	尚未选择 interpreter
+PythonPickerSection.swift:110	未安装 mlx_lm_lora
+PythonPickerSection.swift:148	创建 Python 环境
+PythonPickerSection.swift:152	名称
+PythonPickerSection.swift:153	类型
+PythonPickerSection.swift:159	基础 interpreter
+PythonPickerSection.swift:160	选择基础 interpreter
+PythonPickerSection.swift:168	位置
+PythonPickerSection.swift:181	取消
+PythonPickerSection.swift:182	创建
+SettingsView.swift:11	mlx-lm-lora 包路径
+SettingsView.swift:12	工作目录
+SettingsView.swift:15	输出
+SettingsView.swift:16	运行输出目录
+SettingsView.swift:17	每个任务都会在此创建独立目录。默认位置为 ~/.mlxlorastudio/runs，也可以指定其他目录。在训练或合成数据页将单次运行的目录名留空，即可自动生成。
+SettingsView.swift:24	token 保存在 macOS Keychain 中。运行器会将其作为 `HF_TOKEN` 和 `HUGGING_FACE_HUB_TOKEN` 注入每个 Python 任务，使 gated 或 private repo 的加载方式与执行 `huggingface-cli login` 后一致。
+SettingsView.swift:30	通知
+SettingsView.swift:31	任务结束时通知
+SettingsView.swift:33	训练、合成数据生成或 Hugging Face 上传结束时显示 macOS 通知。首次开启时，macOS 可能要求授予通知权限。
+SettingsView.swift:84	通过 macOS 管理员授权提示执行 `sudo sysctl iogpu.wired_limit_mb=\(store.iogpuWiredLimitMB)`。此处默认值为 21504 MB。
+SettingsView.swift:91	正在应用
+SettingsView.swift:91#1	应用限制
+SettingsView.swift:103	使用引导
+SettingsView.swift:106	产品导览
+SettingsView.swift:108	重新显示首次使用时的界面引导。
+SettingsView.swift:116	重新查看引导
+SettingsView.swift:121	包更新
+SettingsView.swift:122	内置后端
+SettingsView.swift:126	这是每次构建应用时复制进来的后端。3.1.2 版本为 recurrent 和 hybrid SSM model 添加了自动 memory-safe training 支持，无需额外配置。
+SettingsView.swift:133	Python 后端
+SettingsView.swift:135	更新或重新安装 MLX runtime 包，然后安装此版本应用固定使用的本地 mlx-lm-lora 及其依赖，其中包括 OpenAI-compatible API 支持。
+SettingsView.swift:144	更新
+SettingsView.swift:149	运行中
+SettingsView.swift:149#1	重新安装
+SettingsView.swift:151	在所选 Python 环境中强制重新安装 MLX runtime 包和本地 mlx-lm-lora 所需依赖。
+SettingsView.swift:172	当前命令
+SettingsView.swift:173	尚未执行包管理命令。
+SettingsView.swift:245	保存
+SettingsView.swift:248	取消
+SettingsView.swift:253	替换…
+SettingsView.swift:253#1	设置…
+SettingsView.swift:263	移除已保存的 token
+SettingsView.swift:271	••• token 已保存在 Keychain 中
+SettingsView.swift:272	未设置 token — gated / private HF 资源将无法加载
+SidebarView.swift:94	由 Gökdeniz Gülmez 用 ❤️ 制作

@@ -1,0 +1,57 @@
+name: 源码与回归检查
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: 公开文件检查
+        run: python3 -B tools/check_public.py
+      - name: 更新工具与归档边界测试
+        run: python3 -B -m unittest discover -s tool_tests -v
+      - name: 官方后端原有测试（模拟依赖，不启动训练）
+        run: |
+          python3 -m venv "$RUNNER_TEMP/mlx-zh-python"
+          "$RUNNER_TEMP/mlx-zh-python/bin/python" -m pip install -r validation/test-requirements.txt
+          "$RUNNER_TEMP/mlx-zh-python/bin/python" -B -m unittest discover -s Tests -p 'test_*.py' -v
+      - name: 下载已审定官方源码
+        run: python3 -B tools/upstream.py fetch --output .cache/upstream
+      - name: 核对中文源码可重现与后端不变
+        run: python3 -B tools/localize.py verify --source .cache/upstream
+
+  swift:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: 选择已有 Xcode 26
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+          candidates=sorted(Path('/Applications').glob('Xcode_26*.app'))
+          if not candidates:raise SystemExit('Runner needs Xcode 26 or later.')
+          with open(os.environ['GITHUB_ENV'],'a') as out:
+              out.write('DEVELOPER_DIR='+str(candidates[-1]/'Contents/Developer')+'\n')
+          PY
+      - name: 下载已审定官方源码
+        run: python3 -B tools/upstream.py fetch --output .cache/upstream
+      - name: 配置、显示、输入及原有测试
+        run: |
+          python3 -m venv "$RUNNER_TEMP/mlx-zh-python"
+          "$RUNNER_TEMP/mlx-zh-python/bin/python" -m pip install -r validation/test-requirements.txt
+          python3 -B tools/validate.py --source .cache/upstream --python "$RUNNER_TEMP/mlx-zh-python/bin/python"

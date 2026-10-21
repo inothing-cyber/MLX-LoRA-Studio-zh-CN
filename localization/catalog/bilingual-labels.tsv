@@ -1,0 +1,297 @@
+# User confirmed Chinese labels plus original English on 2026-10-19. Runtime values and units stay original.
+HFUploadView.swift:98#0	上传模型
+HFUploadView.swift:106#0	上传数据集
+HFUploadView.swift:116#0	模型与数据集分别上传
+HFUploadView.swift:131#0	模型权重（Model Weights）
+HFUploadView.swift:227#0	合成数据集（Synthetic Dataset）
+LiveMetricsView.swift:46#0	步数（Step）
+LiveMetricsView.swift:47#0	损失（Loss）
+LiveMetricsView.swift:48#0	速度（Speed）
+LiveMetricsView.swift:50#0	内存
+LiveMetricsView.swift:51#0	学习率（LR）
+LiveMetricsView.swift:93#0	训练（Train）
+LiveMetricsView.swift:103#0	验证（Validation）
+LiveMetricsView.swift:115#0	测试（Test）
+LiveMetricsView.swift:128#0	损失（Loss）
+LiveRunPanel.swift:156#0	内存
+SettingsView.swift:46#0	内存上限
+SettingsView.swift:57#0	内存上限
+SettingsView.swift:61#0	训练运行会在峰值内存达到系统 RAM 的此占比前停止。降低此值可留出更多内存余量；默认值为 78%。
+SettingsView.swift:68#0	iGPU 锁定内存上限（wired limit）
+SettingsView.swift:79#0	iGPU 锁定内存上限（wired limit）
+SharedControls.swift:221#0	在此编写系统提示词（system prompt），或从下拉菜单载入。
+SharedControls.swift:222#0	\(text.count) 个字符 · 从下拉菜单保存或载入可复用的提示词。
+SharedControls.swift:243#0	已保存的提示词（\(store.customSystemPrompts.count)）
+SharedControls.swift:245#0	尚未保存提示词
+SharedControls.swift:261#0	保存当前提示词
+SharedControls.swift:269#0	添加自定义提示词…
+SharedControls.swift:274#0	移除已保存的提示词
+SharedControls.swift:304#0	添加系统提示词
+SharedControls.swift:306#0	粘贴可复用的系统提示词（system prompt）。它会保存在本地，选中后载入输入框。
+SharedControls.swift:506#0	预估峰值内存：\(estimate.estimatedPeakString)
+SharedControls.swift:535#1	点击查看实时内存详情
+SharedControls.swift:547#0	实时内存
+TrainingModels.swift:71#0	监督学习（Supervised）
+TrainingModels.swift:72#0	偏好学习（Preference）
+TrainingModels.swift:73#0	强化学习／在线（RL / Online）
+TrainingModels.swift:80#0	使用提示与回答（prompt/completion）或对话（chat）示例学习。适合作为调整文风、领域知识和指令遵循能力的第一步。
+TrainingModels.swift:82#0	通过冻结的参考模型（reference model），让模型更偏好优选回答（chosen），而非被拒绝的回答（rejected）。
+TrainingModels.swift:84#0	针对 Antidoom 偏好数据中的最终 token 分布（final-token distribution）进行优化，修复推理中的反复循环（reasoning doom loops）。
+TrainingModels.swift:86#0	偏好优化（preference optimization）；训练主循环无需单独指定参考模型（reference model）路径。
+TrainingModels.swift:88#0	将监督学习与 preference odds 合并到同一个高效的偏好优化目标中。
+TrainingModels.swift:90#0	每组生成多个回答（completions），再通过奖励函数（reward functions）改进行为。
+TrainingModels.swift:92#0	训练过程中采样回答（completions），并由评审模型（judge）构建在线偏好数据。
+TrainingModels.swift:94#0	在线偏好优化的一种变体，通过 alpha 控制更新强度。
+TrainingModels.swift:96#0	使用评审奖励（judge rewards）的策略梯度（policy-gradient）RLHF 训练循环。
+TrainingModels.swift:98#0	结合参考模型（reference）与评审模型（judge）的反馈，执行经典的裁剪策略优化（clipped policy optimization）。
+TrainingModels.swift:188#0	语言模型（LLM）
+TrainingModels.swift:189#0	人工（User）
+TrainingModels.swift:211#0	文本模型（Text LLM）
+TrainingModels.swift:212#0	视觉语言模型（Vision-Language）
+TrainingModels.swift:228#0	不量化（None）
+TrainingModels.swift:275#0	固定（Constant）
+TrainingModels.swift:276#0	余弦衰减（Cosine Decay）
+TrainingModels.swift:413#0	仅 adapters（Adapters Only）
+TrainingModels.swift:414#0	合并权重（Merged Weights）
+TrainingView.swift:93#0	算法（Algorithm）
+TrainingView.swift:94#0	模型类型（Model family）
+TrainingView.swift:102#0	VLM 模式只微调语言模型，再把训练后的文本权重合并回原始 VLM，导出完整的视觉语言模型（vision-language model）。
+TrainingView.swift:108#0	支持 Transformer、线性模型（linear）和混合循环模型（hybrid recurrent）。会自动识别 Qwen3.5/Next、Kimi Linear、Mamba、Jamba、Falcon H1 等 SSM 架构，并使用节省内存的分块检查点机制（checkpointed blocks）训练。
+TrainingView.swift:127#0	训练模式（Mode）
+TrainingView.swift:153#0	微调方式（Fine-tune）
+TrainingView.swift:155#0	微调方式（Fine-tune）
+TrainingView.swift:176#0	训练层数（Layers）
+TrainingView.swift:177#0	秩（Rank）
+TrainingView.swift:180#0	缩放系数（Scale）
+TrainingView.swift:181#0	丢弃率（Dropout）
+TrainingView.swift:191#0	量化（Quantization）
+TrainingView.swift:211#0	模型与数据
+TrainingView.swift:215#0	可训练的文本模型或 HF 仓库
+TrainingView.swift:215#1	模型名称或 Hugging Face 仓库
+TrainingView.swift:222#0	原始 VLM 仓库或本地目录
+TrainingView.swift:223#0	保留此模型的视觉编码器（vision tower）、处理器（processor）和 VLM 配置。
+TrainingView.swift:225#0	请选择与 VLM 中语言模型相匹配的文本模型。训练完成后，Studio 会导出完整的 MLX-VLM 模型。
+TrainingView.swift:233#0	数据集路径或本地数据目录
+TrainingView.swift:249#0	正在扫描本地 HF 缓存…
+TrainingView.swift:253#0	本地 HF 缓存：\(n) 个模型 · \(d) 个数据集 · 合成数据运行记录：\(s)
+TrainingView.swift:274#0	权重保存在本次运行目录的 adapters 子目录中。可在设置里指定上一级输出目录。
+TrainingView.swift:279#0	导出 VLM 时对文本权重反量化（Dequantize）
+TrainingView.swift:280#0	导出目录留空时，合并后的 VLM 会保存在运行目录的 full-vlm 子目录中。
+TrainingView.swift:313#0	训练参数
+TrainingView.swift:315#0	迭代次数（Iterations）
+TrainingView.swift:316#0	数据轮次（Epochs）
+TrainingView.swift:317#0	批大小（Batch）
+TrainingView.swift:320#0	最大序列长度（Max Seq）
+TrainingView.swift:321#0	随机种子（Seed）
+TrainingView.swift:324#0	学习率（Learning Rate）
+TrainingView.swift:325#0	优化器（Optimizer）
+TrainingView.swift:329#0	学习率计划（LR Schedule）
+TrainingView.swift:334#0	预热步数（Warmup）
+TrainingView.swift:335#0	预热初值（Warmup Init）
+TrainingView.swift:336#0	衰减比例（Decay Fraction）
+TrainingView.swift:337#0	最终学习率（Final LR）
+TrainingView.swift:339#0	余弦衰减（Cosine decay）以上方学习率为峰值，再在所选的总 iterations 占比内逐渐衰减。
+TrainingView.swift:345#0	报告间隔（Report）
+TrainingView.swift:346#0	评估间隔（Eval）
+TrainingView.swift:347#0	保存间隔（Save）
+TrainingView.swift:348#0	验证批数（Val Batches）
+TrainingView.swift:350#0	梯度检查点（Gradient checkpointing）
+TrainingView.swift:352#0	梯度累积步数（Gradient accumulation steps）
+TrainingView.swift:354#0	高效长上下文（Efficient long context）
+TrainingView.swift:356#0	序列分块长度（Sequence step size）
+TrainingView.swift:358#0	屏蔽提示部分的 loss（Mask prompt loss）
+TrainingView.swift:360#0	SFT 损失函数（SFT loss）
+TrainingView.swift:364#0	Dynamic fine-tuning 降低模型已经很有把握的 tokens 的权重，使学习更关注困难的 tokens。
+TrainingView.swift:366#0	Chunked NLL 将词表的 loss 分块计算，以限制峰值内存。
+TrainingView.swift:367#0	标准的下一 token 负对数似然（next-token negative log-likelihood）。
+TrainingView.swift:371#1	训练后合并模型权重（Fuse）
+TrainingView.swift:373#0	对合并模型反量化（Dequantize）
+TrainingView.swift:374#0	合并后移除 adapters
+TrainingView.swift:376#0	评估测试数据（test split）
+TrainingView.swift:378#0	测试批数（Test Batches）
+TrainingView.swift:397#0	使用包含 context_with_chat_template、rejected_decoded 和 multi_chosen_decoded 字段的 Hugging Face 数据集或本地 JSONL 数据。
+TrainingView.swift:401#0	目标 MSE 系数（Target MSE λ）
+TrainingView.swift:402#0	目标 MSE 阈值（Target MSE τ）
+TrainingView.swift:405#0	非目标 MSE 系数（Non-target MSE λ）
+TrainingView.swift:406#0	Logit 裁剪阈值（Logit clip ε）
+TrainingView.swift:408#0	参考模型路径（Reference model，可选）
+TrainingView.swift:436#0	偏好与评审（Preference / Judge）
+TrainingView.swift:438#0	系数（Beta）
+TrainingView.swift:439#0	惩罚系数（Delta）
+TrainingView.swift:440#0	奖励缩放（Reward Scale）
+TrainingView.swift:442#0	损失函数（Loss）
+TrainingView.swift:449#0	参考模型路径（Reference model）
+TrainingView.swift:452#0	评审模型（Judge）或 human
+TrainingView.swift:467#0	GRPO 生成与奖励
+TrainingView.swift:469#0	组大小（Group）
+TrainingView.swift:470#0	回答长度（Completion）
+TrainingView.swift:471#0	采样温度（Temp）
+TrainingView.swift:472#0	裁剪阈值（Epsilon）
+TrainingView.swift:475#0	Top P 阈值（Top P）
+TrainingView.swift:476#0	Top K 数量（Top K）
+TrainingView.swift:477#0	Min P 阈值（Min P）
+TrainingView.swift:478#0	裁剪上界（Epsilon high）
+TrainingView.swift:481#0	GRPO 损失函数（GRPO Loss）
+TrainingView.swift:486#0	重要性比粒度（Importance）
+TrainingView.swift:489#0	序列级（Sequence）
+TrainingView.swift:494#0	默认奖励函数（Reward Functions）
+TrainingView.swift:500#0	清除自定义选择，让 GRPO 使用后端默认的奖励函数集合。
+TrainingView.swift:510#0	自定义列表留空时使用全部默认项。选择条目后，会将对应的函数名传给训练器。
+TrainingView.swift:515#0	自定义奖励函数名（reward function names），以逗号分隔
+TrainingView.swift:517#0	奖励权重（Reward weights），例如 [2.0, 0.5, 0.5, 0.5, 0.5]
+TrainingView.swift:520#0	奖励函数的 Python 文件
+TrainingView.swift:528#0	自定义 Python 文件应通过 @register_reward_function() 注册函数，再在上方填写对应名称。
+TrainingView.swift:592#0	在线偏好（Online Preference）
+TrainingView.swift:594#0	回答长度（Completion）
+TrainingView.swift:596#0	采样温度（Temp）
+TrainingView.swift:599#0	裁剪阈值（Epsilon）
+TrainingView.swift:602#0	评审方式（Judge）
+TrainingView.swift:612#0	评审模型（Judge model）
+TrainingView.swift:615#0	评审模型：\(judgeDisplayName)
+TrainingView.swift:621#0	评审系统提示词（Judge system prompt）
+TrainingView.swift:625#0	Alpha 计划（Alpha schedule）
+TrainingView.swift:634#0	用户／人工（User / human）
+TrainingView.swift:656#0	数据集字段映射
+TrainingView.swift:658#0	上下文（Context）
+TrainingView.swift:660#0	被拒绝的回答（Rejected）
+TrainingView.swift:661#0	多个优选回答（Multiple chosen）
+TrainingView.swift:665#0	提示（Prompt）
+TrainingView.swift:666#0	回答（Completion）
+TrainingView.swift:669#0	优选回答（Chosen）
+TrainingView.swift:670#0	被拒绝的回答（Rejected）
+TrainingView.swift:673#0	对话（Chat）
+TrainingView.swift:674#0	文本（Text）
+TrainingView.swift:677#0	系统（System）
+TrainingView.swift:678#0	答案（Answer）
+TrainingView.swift:679#0	类型（Type）
+TrainingView.swift:682#0	备用系统提示词（Fallback system prompt，system 字段缺失或为空时使用）
+TrainingView.swift:687#0	偏好分数（Preference score）
+TrainingView.swift:724#0	启用 QAT 投影（projection）
+TrainingView.swift:727#0	位宽（Bits）
+TrainingView.swift:728#0	分组大小（Group）
+TrainingView.swift:729#0	起始 step（Start）
+TrainingView.swift:730#0	执行间隔（Interval）
+SettingsView.swift:44#0	资源保护（Resource Guard）
+LiveMetricsView.swift:191#0	指标（Key）
+LiveMetricsView.swift:322#0	偏好奖励（Preference Rewards）
+LiveMetricsView.swift:344#0	奖励分布（Reward Distribution）
+LiveMetricsView.swift:354#0	KL 散度（KL Divergence）
+LiveMetricsView.swift:365#0	PPO 裁剪（PPO Clipping）
+LiveMetricsView.swift:376#0	生成（Generation）
+LiveMetricsView.swift:393#0	吞吐量（Throughput）
+LiveMetricsView.swift:406#1	训练：优选回答（Chosen (train)）
+LiveMetricsView.swift:409#1	训练：被拒绝的回答（Rejected (train)）
+LiveMetricsView.swift:412#1	验证：优选回答（Chosen (val)）
+LiveMetricsView.swift:415#1	验证：被拒绝的回答（Rejected (val)）
+LiveMetricsView.swift:423#1	奖励（Rewards）
+LiveMetricsView.swift:424#1	KL 惩罚（KL Penalty）
+LiveMetricsView.swift:425#1	优势值（Advantages）
+LiveMetricsView.swift:431#1	总奖励均值（Total μ）
+LiveMetricsView.swift:432#1	总奖励标准差（Total σ）
+LiveMetricsView.swift:433#1	组奖励均值（Group μ）
+LiveMetricsView.swift:434#1	组奖励标准差（Group σ）
+LiveMetricsView.swift:440#1	下限裁剪（Low）
+LiveMetricsView.swift:441#1	上限裁剪（High）
+LiveMetricsView.swift:442#1	总裁剪（Total）
+LiveMetricsView.swift:448#1	平均 tokens（Avg tokens）
+LiveMetricsView.swift:449#1	最少 tokens（Min tokens）
+LiveMetricsView.swift:450#1	最多 tokens（Max tokens）
+LiveMetricsView.swift:451#1	命中上限（Hit limit）
+LiveMetricsView.swift:485#1	均值（μ）
+LiveMetricsView.swift:486#1	标准差（σ）
+LiveMetricsView.swift:487#1	覆盖率（Coverage）
+LiveMetricsView.swift:490#0	奖励（Reward）· \(humanise(name))
+RunsView.swift:397#0	最终损失（Final loss）
+RunsView.swift:405#0	验证（Val）
+RunsView.swift:532#0	损失（Loss）
+RunsView.swift:559#0	训练（Train）
+RunsView.swift:570#0	验证（Validation）
+RunsView.swift:636#0	指标（Key）
+RunsView.swift:828#0	数据集（Dataset）
+RunsView.swift:829#0	类型（Type）
+RunsView.swift:830#0	源数据集（Source dataset）
+RunsView.swift:835#0	样本总数（Samples）
+RunsView.swift:836#0	验证集划分（Validation split）
+RunsView.swift:837#0	测试集划分（Test split）
+RunsView.swift:839#0	服务提供方（Provider）
+RunsView.swift:840#0	后端（Backend）
+RunsView.swift:841#0	基础地址（Base URL）
+RunsView.swift:843#0	模型（Model）
+RunsView.swift:845#0	基础模型（Base model）
+RunsView.swift:846#0	教师模型（Teacher model）
+RunsView.swift:847#0	生成目标（Generation target）
+RunsView.swift:850#0	生成设置（Generation）
+RunsView.swift:851#0	批大小（Batch size）
+RunsView.swift:852#0	最大并发数（Max concurrent）
+RunsView.swift:853#0	随机种子（Seed）
+RunsView.swift:854#0	系统提示词（System prompt）
+RunsView.swift:859#0	对话（Conversation）
+RunsView.swift:860#0	多轮对话（Multiturn）
+RunsView.swift:861#0	最大轮数（Max turns）
+RunsView.swift:862#0	多轮对话比例（Multiturn percentile）
+RunsView.swift:863#0	用户角色模型（Human role model）
+RunsView.swift:867#0	采样（Sampling）
+RunsView.swift:868#0	最大 tokens 数（Max tokens）
+RunsView.swift:869#0	采样温度（Temperature）
+RunsView.swift:870#0	累计概率阈值（Top-p）
+RunsView.swift:871#0	Min-p 阈值（Min-p）
+RunsView.swift:872#0	候选数量（Top-k）
+RunsView.swift:873#0	最少保留 tokens 数（Min tokens to keep）
+RunsView.swift:874#0	XTC 概率（XTC probability）
+RunsView.swift:875#0	XTC 阈值（XTC threshold）
+RunsView.swift:920#0	模型与数据（Model & Data）
+RunsView.swift:921#0	模型（Model）
+RunsView.swift:922#0	数据集（Dataset）
+RunsView.swift:923#0	适配器路径（Adapter path）
+RunsView.swift:925#0	算法（Algorithm）
+RunsView.swift:926#0	训练模式（Mode）
+RunsView.swift:927#0	算法类别（Family）
+RunsView.swift:928#0	微调方式（Train type）
+RunsView.swift:929#0	优化器（Optimizer）
+RunsView.swift:930#0	量化（Quantization）
+RunsView.swift:932#0	参考模型（Reference model）
+RunsView.swift:935#0	评审模型（Judge）
+RunsView.swift:938#0	优化设置（Optimisation）
+RunsView.swift:939#0	学习率（Learning rate）
+RunsView.swift:940#0	学习率计划（LR schedule）
+RunsView.swift:941#0	批大小（Batch size）
+RunsView.swift:942#0	梯度累积步数（Grad accumulation）
+RunsView.swift:944#0	验证批数（Val batches）
+RunsView.swift:945#0	最大序列长度（Max seq length）
+RunsView.swift:947#0	LoRA 参数（LoRA Parameters）
+RunsView.swift:948#0	秩（Rank）
+RunsView.swift:949#0	缩放系数（Scale）
+RunsView.swift:950#0	丢弃率（Dropout）
+RunsView.swift:953#0	报告间隔（Steps per report）
+RunsView.swift:954#0	评估间隔（Steps per eval）
+RunsView.swift:955#0	保存间隔（Save every）
+RunsView.swift:958#0	梯度检查点（Grad checkpoint）
+RunsView.swift:959#0	高效长上下文（Efficient long context）
+RunsView.swift:960#0	屏蔽提示部分的损失（Mask prompt）
+RunsView.swift:961#0	合并权重（Fuse）
+RunsView.swift:990#0	偏好／强化学习（Preference / RL）
+RunsView.swift:991#0	系数（β (beta)）
+RunsView.swift:993#0	损失类型（Loss type）
+RunsView.swift:996#0	惩罚系数（δ (delta)）
+RunsView.swift:999#0	系数（α (alpha)）
+RunsView.swift:1002#0	奖励缩放（Reward scaling）
+RunsView.swift:1007#0	目标 MSE 系数（Target MSE λ）
+RunsView.swift:1008#0	目标 MSE 阈值（Target MSE τ）
+RunsView.swift:1009#0	非目标 MSE 系数（Non-target MSE λ）
+RunsView.swift:1010#0	Logit 裁剪阈值（Logit clip ε）
+RunsView.swift:1014#0	组大小（Group size）
+RunsView.swift:1015#0	裁剪阈值（ε (epsilon)）
+RunsView.swift:1017#0	裁剪上界（ε high）
+RunsView.swift:1019#0	损失类型（Loss type）
+RunsView.swift:1020#0	最大回答长度（Max completion length）
+RunsView.swift:1021#0	采样温度（Temperature）
+RunsView.swift:1022#0	累计概率阈值（Top-p）
+RunsView.swift:1023#0	候选数量（Top-k）
+RunsView.swift:1024#0	Min-p 阈值（Min-p）
+RunsView.swift:1027#1	损失（Loss）
+RunsView.swift:1035#0	位宽（Bits）
+RunsView.swift:1036#0	量化分组大小（Group size）
+RunsView.swift:1037#0	起始 step（Start step）
+RunsView.swift:1038#0	执行间隔（Interval）
+RunsView.swift:1068#0	数据轮次（Epochs）
+RunsView.swift:1068#1	迭代次数（Iterations）

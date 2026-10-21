@@ -1,0 +1,2 @@
+# Only needed for the original Python tests. No MLX/model/trainer installation.
+numpy>=2.0,<3

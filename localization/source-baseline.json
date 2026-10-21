@@ -1,0 +1,385 @@
+{
+  "commit": "69e34a31aca717b6d5a0a4f5306e25cf7c0b18f1",
+  "files": {
+    ".github/workflows/release.yml": {
+      "size": 11142,
+      "sha256": "fa26bb23f18bf0b0bdc36f108a6e777abf7bf761b59321190632bbd6e645c453",
+      "executable": true
+    },
+    ".gitignore": {
+      "size": 112,
+      "sha256": "e3c3f28ae4e338b7765bf885a0cc8484ee08e872c84f4cd7b18e2acaad4357d1",
+      "executable": true
+    },
+    ".pre-commit-config.yaml": {
+      "size": 237,
+      "sha256": "fc71c307aaddfdfb802fb157d8f4c78adc799af4f7b6d71d5390b6c36f7c5848",
+      "executable": true
+    },
+    "Backend/hf_upload.py": {
+      "size": 42101,
+      "sha256": "166c0401e3a8529b9f6ee0e013e29316e3f653b114543c0f169fb96a1eb5f86f",
+      "executable": true
+    },
+    "Backend/requirements.txt": {
+      "size": 34,
+      "sha256": "c0533ab8362c96101634182c4d79b4b73871eb17b9a37ca092528ca372ac21c6",
+      "executable": true
+    },
+    "Backend/training_runner.py": {
+      "size": 34978,
+      "sha256": "624e9f7b1d7158b86e7daaf0e09939e7e1d34622e83dbb1db92ca3404360e9d3",
+      "executable": true
+    },
+    "LICENSE": {
+      "size": 1074,
+      "sha256": "c3d8d5beb4ba01ef645ca2e3a3061942aa3af39a7bd146b22d11ad096f62e404",
+      "executable": true
+    },
+    "Package.swift": {
+      "size": 566,
+      "sha256": "030ac0805c53237a2a27ab51d7280a60f386a4f36835d11e032f53b430dc45bb",
+      "executable": true
+    },
+    "README.md": {
+      "size": 26434,
+      "sha256": "a7f89a822e70cee2b1e57a5ecb39d162dbe62f6793cca542b04836b5d199aaa2",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/App/MLXLoRAStudioApp.swift": {
+      "size": 2670,
+      "sha256": "9f7ff19535b5e14e2eebff8d02bf10126a514e90f466279954e367eb15d702f9",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Models/PythonEnvironment.swift": {
+      "size": 1603,
+      "sha256": "0a2eafdd18f45f92a486321e040dd1cccb1469b9e65bfa0e2f6e5286b81f076d",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Models/TrainingModels.swift": {
+      "size": 53498,
+      "sha256": "91ca1998389d587477eec98c2a75aa8c675b223266147871d8d7312647f6ceff",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Services/HFCacheScanner.swift": {
+      "size": 4332,
+      "sha256": "300bf486449813d63a1ca5635a457ca47a2331396876ea7e52abc9e29e1e66fe",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Services/IOGPUWiredLimitService.swift": {
+      "size": 1646,
+      "sha256": "53ff86abbfe2105d52fcba223b89a9a599869acf805af475e0098909c0b307cb",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Services/JobCompletionNotifier.swift": {
+      "size": 2419,
+      "sha256": "0a98355abec94a22542bf16f9769c05818109bc04dbe14a4d919b48e136472fe",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Services/ProviderModelCatalog.swift": {
+      "size": 11226,
+      "sha256": "734e3743519f85366e93a97010011aecc6907c1a6c90bf3074571b6de78b15b2",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Services/PythonEnvironmentDiscovery.swift": {
+      "size": 14970,
+      "sha256": "e800a8d8006c24fe270e31f81f0088c6f58d4057b6d1a53d02498690dc0fb69c",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Services/PythonEnvironmentProvisioner.swift": {
+      "size": 9699,
+      "sha256": "b284a80b64c36d311ca1beed7b0c98a73caa8627faacd950a34cec9cb735cf15",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Services/PythonJobRunner.swift": {
+      "size": 51003,
+      "sha256": "2883d9f494539dfa221587573b338a877911f1bb7dee3c625c3694bc0a44424c",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Services/RunArchive.swift": {
+      "size": 14189,
+      "sha256": "653a99efa8c922d74d90e4fa6b75bd1a4c7a0e5d8f8ecf2cafa310253be71467",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Stores/AppStore.swift": {
+      "size": 54536,
+      "sha256": "1cb6fbeccc63cc80686e5696f00884473abb895d45de64c65ce40d994655a99d",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Support/LiveMemoryMonitor.swift": {
+      "size": 3483,
+      "sha256": "a4d693d007996aa0a3f6a51108229eda9c8ade772503e2af11907ccb6b4f06dd",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Support/MemoryEstimator.swift": {
+      "size": 16716,
+      "sha256": "33a484f5cf0faf30af646f72589132a2db20577f079ede74a54c46a675b8c75b",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/AboutView.swift": {
+      "size": 9121,
+      "sha256": "281e66508bbcc600a6c67648d0788f769ffc89120fefe9223972c38a00e3d1e7",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/AlgorithmGuideView.swift": {
+      "size": 105551,
+      "sha256": "0aabae84d6f63f2f9bf5bce6d616380a9186df2a629e4f5abb7fc31783e9c1ed",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/ContentView.swift": {
+      "size": 3637,
+      "sha256": "88e18d590b069ff3d5553088e6393997153bac043989b2810a503db9117123e9",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/HFAssetPicker.swift": {
+      "size": 9570,
+      "sha256": "a3d492fc755e384781d3d75b4bcafec6da131114b1b0f1ae4ccdd54f775ab5ad",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/HFUploadView.swift": {
+      "size": 12525,
+      "sha256": "8d56747eebc2bda88e9efa7bb35c6ac1ff666cf31ebe98a30b26212c659a0dee",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/LiveMetricsView.swift": {
+      "size": 24115,
+      "sha256": "20489de88a91515b46da2ea3c9de67f2d35f1bf304132f8e0573ef418bb7e961",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/LiveRunPanel.swift": {
+      "size": 10599,
+      "sha256": "102775e6efe5005433ae3a8fa5d9d20c2000042f8a2caa4f5951f4e533e10db5",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/OnboardingTourView.swift": {
+      "size": 7614,
+      "sha256": "20a10c43f0d421868c5770c5633099b18d747b119cb562cdcce5f60bd9683d4c",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/PythonPickerSection.swift": {
+      "size": 7829,
+      "sha256": "59d0c385e38c5af00e12d3f13dd19784aad1242cfa64fd8d604a9fa9d7356501",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/RunsView.swift": {
+      "size": 40503,
+      "sha256": "685628ca44a5dd87b7c495453b6bbd4bcf47c8587a3c04fb118bcf91b88673a5",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/SettingsView.swift": {
+      "size": 13364,
+      "sha256": "0f574e014193910dcef5cea880d1e22117a76dc3966e1ef1d97ab255793ac988",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/SharedControls.swift": {
+      "size": 40359,
+      "sha256": "1f2c472ebdc3a6ea604573bdbad5af102da0e3db08f44a9c7a5b0f73d7f0e8c9",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/SidebarView.swift": {
+      "size": 6408,
+      "sha256": "d80936d5fa9bb2893f3b3b1d063e76252da05b45c445c01d0f35b3d0164221fa",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/SyntheticDataView.swift": {
+      "size": 31775,
+      "sha256": "a6750b8a8d6d702806a439bf9aa60a2c17a840a2fd21e8b4d703f8eb964f5a8a",
+      "executable": true
+    },
+    "Sources/MLXLoRAStudio/Views/TrainingView.swift": {
+      "size": 33335,
+      "sha256": "31e0c4b64ba5632cbdf561f7d389439e86b6951e19eb5c32ad0f79dadff29657",
+      "executable": true
+    },
+    "Sources/Media/app_algorythm_guide.png": {
+      "size": 1776165,
+      "sha256": "62b49984e43e6417eab5e5623277e40874411dd3c18b61735fe27140b27ddc22",
+      "executable": true
+    },
+    "Sources/Media/app_live_metrics.png": {
+      "size": 1515066,
+      "sha256": "4ba52c6ce4bd3465b0e1534eccef62ee8d875f44b00b2bce220885a2ba849fc9",
+      "executable": true
+    },
+    "Sources/Media/app_runs.png": {
+      "size": 1066091,
+      "sha256": "0d63528e6de9bf2871fc12c56030af941fcc188005a9c7a039d2e5d69a98a19c",
+      "executable": true
+    },
+    "Sources/Media/app_symthetic_data.png": {
+      "size": 1587818,
+      "sha256": "be54f6464e186961a9f339b80e6ac95eab3609b78654864aa7d179b94811f702",
+      "executable": true
+    },
+    "Sources/Media/app_train.png": {
+      "size": 1642300,
+      "sha256": "5e53d6cbd6345b1215550dbe370ed4a7f74f813ecccf457a8e40ec27ad275cbb",
+      "executable": true
+    },
+    "Sources/Media/app_train_active.png": {
+      "size": 1887751,
+      "sha256": "ca5b65716c9b4c84bd9f9fb1f8b41223f05fe6d2394cb6422dae89d340239d41",
+      "executable": true
+    },
+    "Sources/Media/app_upload.png": {
+      "size": 1499005,
+      "sha256": "48bd00358a5fca3644f7136ce76457002467d2d793185158cd95f500e8ba81e6",
+      "executable": true
+    },
+    "Sources/Media/logo.png": {
+      "size": 2595601,
+      "sha256": "c2e7355cba237cc7977b5ae2e829012f6808a35edf5460e48e9001b2e6990878",
+      "executable": true
+    },
+    "Sources/Media/logo_ultra-wide.png": {
+      "size": 2296657,
+      "sha256": "b5c74b3aa91c821b0cf446f1f0fcd7650088680eb7d9e26b8f44fe3e118d70f9",
+      "executable": true
+    },
+    "Tests/MLXLoRAStudioTests/TrainingConfigTests.swift": {
+      "size": 14690,
+      "sha256": "261738c2dedfd7c1ded11083518e36c271ae8a78e32f3bcaea7e029438c573d0",
+      "executable": true
+    },
+    "Tests/test_training_runner.py": {
+      "size": 19557,
+      "sha256": "5446451d2dd47aab9f7cb89fc45545f41f872e313c557ec3c331a3b7d1a98c51",
+      "executable": true
+    },
+    "docs/Algorithm-Guide.md": {
+      "size": 39,
+      "sha256": "2120c43f09f53be51c175435282bc01ca33f1b89b5f603b9172472b93a106ebe",
+      "executable": true
+    },
+    "docs/CPO.md": {
+      "size": 4056,
+      "sha256": "6de2f5c37526524a948b7533a1cfd3a75dc897fd94a98fe14172337284d62d91",
+      "executable": true
+    },
+    "docs/DPO.md": {
+      "size": 5423,
+      "sha256": "a21f89c2f2a87a5a264d5bfd13379ea5ad1852bc664a9465ab818d42c23f554f",
+      "executable": true
+    },
+    "docs/DoRA.md": {
+      "size": 3115,
+      "sha256": "be254b3719ad9023bee41ec0836fa0d1bcc34a075b9f72640c793196a7fb37a3",
+      "executable": true
+    },
+    "docs/Dynamic-Fine-Tuning.md": {
+      "size": 1097,
+      "sha256": "73c773ccf9cc07c221606ce91e0326197599f28ce98b4088480fae983e3fd997",
+      "executable": true
+    },
+    "docs/FTPO.md": {
+      "size": 1753,
+      "sha256": "8beda91fb7618d599e7f28b65ae88708042b9884ef13dc9c2badfe6dc27ef268",
+      "executable": true
+    },
+    "docs/Full-Fine-Tuning.md": {
+      "size": 2694,
+      "sha256": "fb109384644b077f5f587bf1c8314ff127be8a093a05231877db669038b2d89d",
+      "executable": true
+    },
+    "docs/GRPO.md": {
+      "size": 13950,
+      "sha256": "e24f10b4a65ddae24175574503154390908998b4162aa0f5b61b91edabcd0b96",
+      "executable": true
+    },
+    "docs/Live-Metrics.md": {
+      "size": 36,
+      "sha256": "c939aaa5c02fc6749d304490c749b8bbf34302b133d8fecf43abddd189fe21c2",
+      "executable": true
+    },
+    "docs/LoRA.md": {
+      "size": 4339,
+      "sha256": "390174681fef1cdfbad043eb7cf361e71a3c5409f45d1a0709eeca634ecfea4f",
+      "executable": true
+    },
+    "docs/ORPO.md": {
+      "size": 4334,
+      "sha256": "95b13d3dfc044de1f33624452590150064965be5b81ff3818c0868e0678266c3",
+      "executable": true
+    },
+    "docs/Online-DPO.md": {
+      "size": 5129,
+      "sha256": "e7b5d473e3822e976517025690986852a953a9ccd87ae2c6a3900ac55c8dd88e",
+      "executable": true
+    },
+    "docs/Optimizers.md": {
+      "size": 7249,
+      "sha256": "31a6131bcbb571817526bb4a9b5d8ed53a7fd69814d12123dede1c558b257bc1",
+      "executable": true
+    },
+    "docs/PPO.md": {
+      "size": 5436,
+      "sha256": "9aa89fc3c26a7d926a20f35dff7f1863b1b818ea6c6b79a9c6ae15041fd0487c",
+      "executable": true
+    },
+    "docs/QAT.md": {
+      "size": 5466,
+      "sha256": "9b2560375a2558d8b4ecd8d6b168112c1777520c55f5e39e4757fc1ea4bf4fd3",
+      "executable": true
+    },
+    "docs/QLoRA.md": {
+      "size": 4895,
+      "sha256": "6443732630bb0d190266c75528301069409f88f6e26fb8028310e1618cb444e2",
+      "executable": true
+    },
+    "docs/RLHF-Reinforce.md": {
+      "size": 4516,
+      "sha256": "7958518f5891791d106c094f94f3dd85ba4becf1c52870824a1cb08b006cc7f1",
+      "executable": true
+    },
+    "docs/Runs.md": {
+      "size": 28,
+      "sha256": "27c67b74f7eefd28cf3144b7ad1ffa7dd91871c8fa4e22c74f2bb942773d0823",
+      "executable": true
+    },
+    "docs/SFT.md": {
+      "size": 9810,
+      "sha256": "0eb90a8da603c19b38d257569e91054ec047120acd425f71db2213b23bc59007",
+      "executable": true
+    },
+    "docs/Settings-and-Onboarding.md": {
+      "size": 45,
+      "sha256": "0fb2258fa38f3638f35f952ee2cfffbad126abeafda02dae1f617b1abc9e7199",
+      "executable": true
+    },
+    "docs/Train.md": {
+      "size": 29,
+      "sha256": "39e908444fc3da798c0f52f7b0248d5b2c4f743498251ea56975ab3109ff17d9",
+      "executable": true
+    },
+    "docs/Upload-to-HF.md": {
+      "size": 36,
+      "sha256": "0e5c790d893f6d8fb644f66029617e03f457b29a9d58a9a40354bc8669bfcfd3",
+      "executable": true
+    },
+    "docs/XPO.md": {
+      "size": 4444,
+      "sha256": "1b142bb082ff514b9f3fb0bcbe9d039052dea3316e190b05187858fb0457cceb",
+      "executable": true
+    },
+    "docs/_Sidebar.md": {
+      "size": 769,
+      "sha256": "0b9c6c8b9a23a13f235796949716000a26e244b6a6c2f088e341042aceb9fd74",
+      "executable": true
+    },
+    "docs/index.md": {
+      "size": 4769,
+      "sha256": "e0d70a93c86712126d42c2bb9cffc9d29fec1a5dea478fc265194fb069a049e6",
+      "executable": true
+    },
+    "script/build_and_run.sh": {
+      "size": 13956,
+      "sha256": "6331d883a98854b46e4646c8218b885d87dcbc099fb03b1f802d0f7256fe56a4",
+      "executable": true
+    },
+    "version": {
+      "size": 6,
+      "sha256": "be695fc8092ad3706d7d7d3b5104e1eaf8fe69666e5958e375c9952a06fa9514",
+      "executable": true
+    }
+  }
+}
